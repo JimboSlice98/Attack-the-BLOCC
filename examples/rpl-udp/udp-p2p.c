@@ -3,8 +3,12 @@
 #include "random.h"
 #include "net/netstack.h"
 #include "net/ipv6/simple-udp.h"
+#include "net/ipv6/uiplib.h"
+#include "net/ipv6/uip-ds6.h"
 #include <stdint.h>
 #include <inttypes.h>
+#include <string.h>
+#include "msg-cache.h"
 
 #include "sys/log.h"
 #define LOG_MODULE "App"
@@ -22,6 +26,27 @@ static uint32_t missed_tx_count = 0;
 PROCESS(udp_p2p_process, "UDP P2P");
 AUTOSTART_PROCESSES(&udp_p2p_process);
 /*---------------------------------------------------------------------------*/
+void
+format_data(char *buffer, size_t buffer_size, uint32_t message_num,
+            const uip_ipaddr_t *origin_addr)
+{
+  char addr_str[UIPLIB_IPV6_MAX_STR_LEN];
+  uiplib_ipaddr_snprint(addr_str, sizeof(addr_str), origin_addr);
+  snprintf(buffer, buffer_size, "%u|%s", message_num, addr_str);
+}
+/*---------------------------------------------------------------------------*/
+int
+parse_data(const char *data_str, uint32_t *message_num,
+           uip_ipaddr_t *origin_addr)
+{
+  char addr_str[UIPLIB_IPV6_MAX_STR_LEN];
+  int num_parsed = sscanf(data_str, "%u|%s", message_num, addr_str);
+  if (num_parsed == 2) {
+    return uiplib_ipaddrconv(addr_str, origin_addr);
+  }
+  return 0;
+}
+/*---------------------------------------------------------------------------*/
 static void
 udp_rx_callback(struct simple_udp_connection *c,
                 const uip_ipaddr_t *sender_addr,
@@ -31,31 +56,46 @@ udp_rx_callback(struct simple_udp_connection *c,
                 const uint8_t *data,
                 uint16_t datalen)
 {
-  LOG_INFO("Received message '%.*s' from ", datalen, (char *) data);
-  LOG_INFO_6ADDR(sender_addr);
-#if LLSEC802154_CONF_ENABLED
-  LOG_INFO_(" LLSEC LV:%d", uipbuf_get_attr(UIPBUF_ATTR_LLSEC_LEVEL));
-#endif
-  LOG_INFO_("\n");
-  rx_count++;
+  uint32_t message_num;
+  uip_ipaddr_t origin_addr;
 
-#if WITH_SERVER_REPLY
-  /* send back the same string to the client as an echo reply */
-  LOG_INFO("Sending response.\n");
-  simple_udp_sendto(&udp_conn, data, datalen, sender_addr);
-#endif /* WITH_SERVER_REPLY */
+  if (parse_data((const char *)data, &message_num, &origin_addr)) {
+    LOG_INFO("Received message %"PRIu32" from ", message_num);
+    LOG_INFO_6ADDR(&origin_addr);
+    LOG_INFO_("\n");
+
+    if (is_duplicate(data, datalen)) {
+      LOG_INFO("Duplicate message received, ignoring.\n");
+      return;
+    }
+
+    add_to_cache(data, datalen);
+    rx_count++;
+
+    // Repeat the received message to the whole network
+    LOG_INFO("Flooding message: '%.*s'\n", datalen, (char *)data);
+    uip_ipaddr_t dest_ipaddr;
+    uip_create_linklocal_allnodes_mcast(&dest_ipaddr);
+    simple_udp_sendto(&udp_conn, data, datalen, &dest_ipaddr);
+  } else {
+    LOG_INFO("Failed to parse data\n");
+  }
 }
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(udp_p2p_process, ev, data)
 {
   static struct etimer periodic_timer;
-  static char str[32];
+  static char str[MAX_MSG_LEN];
   uip_ipaddr_t dest_ipaddr;
+  uip_ipaddr_t *local_ipaddr;
 
   PROCESS_BEGIN();
 
   /* Initialize UDP connection */
   simple_udp_register(&udp_conn, UDP_PORT, NULL, UDP_PORT, udp_rx_callback);
+
+  /* Initialize message cache */
+  message_cache_init();
 
   /* Add an initial delay to allow the network to form */
   etimer_set(&periodic_timer, CLOCK_SECOND * 30);
@@ -68,19 +108,27 @@ PROCESS_THREAD(udp_p2p_process, ev, data)
     /* Create a broadcast address */
     uip_create_linklocal_allnodes_mcast(&dest_ipaddr);
 
-    /* Print statistics every 10th TX */
-    if(tx_count % 10 == 0) {
-      LOG_INFO("Tx/Rx/MissedTx: %" PRIu32 "/%" PRIu32 "/%" PRIu32 "\n",
-               tx_count, rx_count, missed_tx_count);
-    }
+    /* Retrieve the link-local IP address */
+    local_ipaddr = &uip_ds6_get_link_local(ADDR_PREFERRED)->ipaddr;
 
-    /* Send to all nodes */
-    LOG_INFO("Sending request %"PRIu32" to ", tx_count);
-    LOG_INFO_6ADDR(&dest_ipaddr);
-    LOG_INFO_("\n");
-    snprintf(str, sizeof(str), "hello %" PRIu32 "", tx_count);
-    simple_udp_sendto(&udp_conn, str, strlen(str), &dest_ipaddr);
-    tx_count++;
+    if(local_ipaddr != NULL) {
+      /* Print statistics every 10th TX */
+      if(tx_count % 10 == 0) {
+        LOG_INFO("Tx/Rx/MissedTx: %" PRIu32 "/%" PRIu32 "/%" PRIu32 "\n",
+                 tx_count, rx_count, missed_tx_count);
+      }
+
+      /* Send to all nodes */
+      LOG_INFO("Sending request %"PRIu32" to ", tx_count);
+      LOG_INFO_6ADDR(&dest_ipaddr);
+      LOG_INFO_("\n");
+      format_data(str, sizeof(str), tx_count, local_ipaddr);
+      simple_udp_sendto(&udp_conn, str, strlen(str), &dest_ipaddr);
+      tx_count++;
+    } else {
+      LOG_INFO("No link-local IP address available\n");
+      missed_tx_count++;
+    }
 
     /* Add some jitter */
     etimer_set(&periodic_timer, SEND_INTERVAL
