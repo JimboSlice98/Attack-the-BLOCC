@@ -60,8 +60,9 @@ udp_rx_callback(struct simple_udp_connection *c,
   uip_ipaddr_t origin_addr;
 
   if (parse_data((const char *)data, &message_num, &origin_addr)) {
-    LOG_INFO("Received message %"PRIu32" from ", message_num);
-    LOG_INFO_6ADDR(&origin_addr);
+    LOG_INFO("Rx: '%.*s'\n", datalen, (char *) data);
+    LOG_INFO("From:  ");
+    LOG_INFO_6ADDR(sender_addr);
     LOG_INFO_("\n");
 
     if (is_duplicate(data, datalen)) {
@@ -73,12 +74,12 @@ udp_rx_callback(struct simple_udp_connection *c,
     rx_count++;
 
     // Repeat the received message to the whole network
-    LOG_INFO("Flooding message: '%.*s'\n", datalen, (char *)data);
+    LOG_INFO("Tx: flood '%.*s'\n", datalen, (char *)data);
     uip_ipaddr_t dest_ipaddr;
     uip_create_linklocal_allnodes_mcast(&dest_ipaddr);
     simple_udp_sendto(&udp_conn, data, datalen, &dest_ipaddr);
   } else {
-    LOG_INFO("Failed to parse data\n");
+    LOG_INFO("Rx: failed to parse data\n");
   }
 }
 /*---------------------------------------------------------------------------*/
@@ -124,6 +125,7 @@ PROCESS_THREAD(udp_p2p_process, ev, data)
       LOG_INFO_("\n");
       format_data(str, sizeof(str), tx_count, local_ipaddr);
       simple_udp_sendto(&udp_conn, str, strlen(str), &dest_ipaddr);
+      add_to_cache((const uint8_t *)str, strlen(str));
       tx_count++;
     } else {
       LOG_INFO("No link-local IP address available\n");
