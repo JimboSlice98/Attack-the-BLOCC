@@ -1,0 +1,318 @@
+00:00.042	ID:1	[INFO: Main      ] Starting Contiki-NG-9bb4f8b76-dirty
+00:00.042	ID:1	[INFO: Main      ] - Routing: RPL Lite
+00:00.042	ID:1	[INFO: Main      ] - Net: sicslowpan
+00:00.042	ID:1	[INFO: Main      ] - MAC: CSMA
+00:00.042	ID:1	[INFO: Main      ] - 802.15.4 PANID: 0xabcd
+00:00.042	ID:1	[INFO: Main      ] - 802.15.4 Default channel: 26
+00:00.042	ID:1	[INFO: Main      ] Node ID: 1
+00:00.042	ID:1	[INFO: Main      ] Link-layer address: 0001.0001.0001.0001
+00:00.042	ID:1	[INFO: Main      ] Tentative link-local IPv6 address: fe80::201:1:1:1
+00:00.170	ID:3	[INFO: Main      ] Starting Contiki-NG-9bb4f8b76-dirty
+00:00.170	ID:3	[INFO: Main      ] - Routing: RPL Lite
+00:00.170	ID:3	[INFO: Main      ] - Net: sicslowpan
+00:00.170	ID:3	[INFO: Main      ] - MAC: CSMA
+00:00.170	ID:3	[INFO: Main      ] - 802.15.4 PANID: 0xabcd
+00:00.170	ID:3	[INFO: Main      ] - 802.15.4 Default channel: 26
+00:00.170	ID:3	[INFO: Main      ] Node ID: 3
+00:00.170	ID:3	[INFO: Main      ] Link-layer address: 0003.0003.0003.0003
+00:00.170	ID:3	[INFO: Main      ] Tentative link-local IPv6 address: fe80::203:3:3:3
+00:00.272	ID:4	[INFO: Main      ] Starting Contiki-NG-9bb4f8b76-dirty
+00:00.272	ID:4	[INFO: Main      ] - Routing: RPL Lite
+00:00.272	ID:4	[INFO: Main      ] - Net: sicslowpan
+00:00.272	ID:4	[INFO: Main      ] - MAC: CSMA
+00:00.272	ID:4	[INFO: Main      ] - 802.15.4 PANID: 0xabcd
+00:00.272	ID:4	[INFO: Main      ] - 802.15.4 Default channel: 26
+00:00.272	ID:4	[INFO: Main      ] Node ID: 4
+00:00.272	ID:4	[INFO: Main      ] Link-layer address: 0004.0004.0004.0004
+00:00.272	ID:4	[INFO: Main      ] Tentative link-local IPv6 address: fe80::204:4:4:4
+00:00.516	ID:5	[INFO: Main      ] Starting Contiki-NG-9bb4f8b76-dirty
+00:00.516	ID:5	[INFO: Main      ] - Routing: RPL Lite
+00:00.516	ID:5	[INFO: Main      ] - Net: sicslowpan
+00:00.516	ID:5	[INFO: Main      ] - MAC: CSMA
+00:00.516	ID:5	[INFO: Main      ] - 802.15.4 PANID: 0xabcd
+00:00.516	ID:5	[INFO: Main      ] - 802.15.4 Default channel: 26
+00:00.516	ID:5	[INFO: Main      ] Node ID: 5
+00:00.516	ID:5	[INFO: Main      ] Link-layer address: 0005.0005.0005.0005
+00:00.516	ID:5	[INFO: Main      ] Tentative link-local IPv6 address: fe80::205:5:5:5
+00:00.654	ID:6	[INFO: Main      ] Starting Contiki-NG-9bb4f8b76-dirty
+00:00.654	ID:6	[INFO: Main      ] - Routing: RPL Lite
+00:00.654	ID:6	[INFO: Main      ] - Net: sicslowpan
+00:00.654	ID:6	[INFO: Main      ] - MAC: CSMA
+00:00.654	ID:6	[INFO: Main      ] - 802.15.4 PANID: 0xabcd
+00:00.654	ID:6	[INFO: Main      ] - 802.15.4 Default channel: 26
+00:00.654	ID:6	[INFO: Main      ] Node ID: 6
+00:00.654	ID:6	[INFO: Main      ] Link-layer address: 0006.0006.0006.0006
+00:00.654	ID:6	[INFO: Main      ] Tentative link-local IPv6 address: fe80::206:6:6:6
+00:00.783	ID:2	[INFO: Main      ] Starting Contiki-NG-9bb4f8b76-dirty
+00:00.783	ID:2	[INFO: Main      ] - Routing: RPL Lite
+00:00.783	ID:2	[INFO: Main      ] - Net: sicslowpan
+00:00.783	ID:2	[INFO: Main      ] - MAC: CSMA
+00:00.783	ID:2	[INFO: Main      ] - 802.15.4 PANID: 0xabcd
+00:00.783	ID:2	[INFO: Main      ] - 802.15.4 Default channel: 26
+00:00.783	ID:2	[INFO: Main      ] Node ID: 2
+00:00.783	ID:2	[INFO: Main      ] Link-layer address: 0002.0002.0002.0002
+00:00.783	ID:2	[INFO: Main      ] Tentative link-local IPv6 address: fe80::202:2:2:2
+00:31.533	ID:3	[INFO: App       ] Tx: '0|fe80::203:3:3:3'
+00:31.568	ID:1	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.568	ID:1	[INFO: App       ] From:  fe80::203:3:3:3
+00:31.568	ID:1	[INFO: App       ] Bx: '0|fe80::203:3:3:3'
+00:31.568	ID:2	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.568	ID:2	[INFO: App       ] From:  fe80::203:3:3:3
+00:31.568	ID:2	[INFO: App       ] Bx: '0|fe80::203:3:3:3'
+00:31.568	ID:4	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.568	ID:4	[INFO: App       ] From:  fe80::203:3:3:3
+00:31.568	ID:4	[INFO: App       ] Bx: '0|fe80::203:3:3:3'
+00:31.568	ID:5	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.568	ID:5	[INFO: App       ] From:  fe80::203:3:3:3
+00:31.568	ID:5	[INFO: App       ] Bx: '0|fe80::203:3:3:3'
+00:31.568	ID:6	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.568	ID:6	[INFO: App       ] From:  fe80::203:3:3:3
+00:31.568	ID:6	[INFO: App       ] Bx: '0|fe80::203:3:3:3'
+00:31.582	ID:1	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.582	ID:1	[INFO: App       ] From:  fe80::206:6:6:6
+00:31.582	ID:2	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.582	ID:2	[INFO: App       ] From:  fe80::206:6:6:6
+00:31.582	ID:3	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.582	ID:3	[INFO: App       ] From:  fe80::206:6:6:6
+00:31.582	ID:4	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.582	ID:4	[INFO: App       ] From:  fe80::206:6:6:6
+00:31.582	ID:5	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.582	ID:5	[INFO: App       ] From:  fe80::206:6:6:6
+00:31.592	ID:1	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.592	ID:1	[INFO: App       ] From:  fe80::204:4:4:4
+00:31.592	ID:2	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.592	ID:2	[INFO: App       ] From:  fe80::204:4:4:4
+00:31.592	ID:3	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.592	ID:3	[INFO: App       ] From:  fe80::204:4:4:4
+00:31.592	ID:5	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.592	ID:5	[INFO: App       ] From:  fe80::204:4:4:4
+00:31.592	ID:6	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.592	ID:6	[INFO: App       ] From:  fe80::204:4:4:4
+00:31.601	ID:1	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.601	ID:1	[INFO: App       ] From:  fe80::202:2:2:2
+00:31.601	ID:3	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.601	ID:3	[INFO: App       ] From:  fe80::202:2:2:2
+00:31.601	ID:4	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.601	ID:4	[INFO: App       ] From:  fe80::202:2:2:2
+00:31.601	ID:5	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.601	ID:5	[INFO: App       ] From:  fe80::202:2:2:2
+00:31.601	ID:6	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.601	ID:6	[INFO: App       ] From:  fe80::202:2:2:2
+00:31.605	ID:1	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.605	ID:1	[INFO: App       ] From:  fe80::205:5:5:5
+00:31.605	ID:2	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.605	ID:2	[INFO: App       ] From:  fe80::205:5:5:5
+00:31.605	ID:3	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.605	ID:3	[INFO: App       ] From:  fe80::205:5:5:5
+00:31.605	ID:4	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.605	ID:4	[INFO: App       ] From:  fe80::205:5:5:5
+00:31.605	ID:6	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.605	ID:6	[INFO: App       ] From:  fe80::205:5:5:5
+00:31.611	ID:2	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.611	ID:2	[INFO: App       ] From:  fe80::201:1:1:1
+00:31.611	ID:3	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.611	ID:3	[INFO: App       ] From:  fe80::201:1:1:1
+00:31.611	ID:4	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.611	ID:4	[INFO: App       ] From:  fe80::201:1:1:1
+00:31.611	ID:5	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.611	ID:5	[INFO: App       ] From:  fe80::201:1:1:1
+00:31.611	ID:6	[INFO: App       ] Rx: '0|fe80::203:3:3:3'
+00:31.611	ID:6	[INFO: App       ] From:  fe80::201:1:1:1
+00:35.222	ID:4	[INFO: App       ] Tx: '0|fe80::204:4:4:4'
+00:35.263	ID:1	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.263	ID:1	[INFO: App       ] From:  fe80::204:4:4:4
+00:35.263	ID:1	[INFO: App       ] Bx: '0|fe80::204:4:4:4'
+00:35.263	ID:2	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.263	ID:2	[INFO: App       ] From:  fe80::204:4:4:4
+00:35.263	ID:2	[INFO: App       ] Bx: '0|fe80::204:4:4:4'
+00:35.263	ID:3	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.263	ID:3	[INFO: App       ] From:  fe80::204:4:4:4
+00:35.263	ID:3	[INFO: App       ] Bx: '0|fe80::204:4:4:4'
+00:35.263	ID:5	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.263	ID:5	[INFO: App       ] From:  fe80::204:4:4:4
+00:35.263	ID:5	[INFO: App       ] Bx: '0|fe80::204:4:4:4'
+00:35.263	ID:6	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.263	ID:6	[INFO: App       ] From:  fe80::204:4:4:4
+00:35.263	ID:6	[INFO: App       ] Bx: '0|fe80::204:4:4:4'
+00:35.287	ID:1	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.287	ID:1	[INFO: App       ] From:  fe80::205:5:5:5
+00:35.287	ID:2	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.287	ID:2	[INFO: App       ] From:  fe80::205:5:5:5
+00:35.287	ID:3	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.287	ID:3	[INFO: App       ] From:  fe80::205:5:5:5
+00:35.287	ID:4	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.287	ID:4	[INFO: App       ] From:  fe80::205:5:5:5
+00:35.287	ID:6	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.287	ID:6	[INFO: App       ] From:  fe80::205:5:5:5
+00:35.294	ID:1	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.294	ID:1	[INFO: App       ] From:  fe80::203:3:3:3
+00:35.294	ID:2	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.294	ID:2	[INFO: App       ] From:  fe80::203:3:3:3
+00:35.294	ID:4	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.294	ID:4	[INFO: App       ] From:  fe80::203:3:3:3
+00:35.294	ID:5	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.294	ID:5	[INFO: App       ] From:  fe80::203:3:3:3
+00:35.294	ID:6	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.294	ID:6	[INFO: App       ] From:  fe80::203:3:3:3
+00:35.304	ID:1	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.304	ID:1	[INFO: App       ] From:  fe80::206:6:6:6
+00:35.304	ID:2	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.304	ID:2	[INFO: App       ] From:  fe80::206:6:6:6
+00:35.304	ID:3	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.304	ID:3	[INFO: App       ] From:  fe80::206:6:6:6
+00:35.304	ID:4	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.304	ID:4	[INFO: App       ] From:  fe80::206:6:6:6
+00:35.304	ID:5	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.304	ID:5	[INFO: App       ] From:  fe80::206:6:6:6
+00:35.364	ID:1	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.364	ID:1	[INFO: App       ] From:  fe80::202:2:2:2
+00:35.364	ID:3	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.364	ID:3	[INFO: App       ] From:  fe80::202:2:2:2
+00:35.364	ID:4	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.364	ID:4	[INFO: App       ] From:  fe80::202:2:2:2
+00:35.364	ID:5	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.364	ID:5	[INFO: App       ] From:  fe80::202:2:2:2
+00:35.364	ID:6	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.364	ID:6	[INFO: App       ] From:  fe80::202:2:2:2
+00:35.376	ID:2	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.376	ID:2	[INFO: App       ] From:  fe80::201:1:1:1
+00:35.376	ID:3	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.376	ID:3	[INFO: App       ] From:  fe80::201:1:1:1
+00:35.376	ID:4	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.376	ID:4	[INFO: App       ] From:  fe80::201:1:1:1
+00:35.376	ID:5	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.376	ID:5	[INFO: App       ] From:  fe80::201:1:1:1
+00:35.376	ID:6	[INFO: App       ] Rx: '0|fe80::204:4:4:4'
+00:35.376	ID:6	[INFO: App       ] From:  fe80::201:1:1:1
+00:36.090	ID:5	[INFO: App       ] Tx: '0|fe80::205:5:5:5'
+00:36.104	ID:1	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.104	ID:1	[INFO: App       ] From:  fe80::205:5:5:5
+00:36.104	ID:1	[INFO: App       ] Bx: '0|fe80::205:5:5:5'
+00:36.104	ID:2	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.104	ID:2	[INFO: App       ] From:  fe80::205:5:5:5
+00:36.104	ID:2	[INFO: App       ] Bx: '0|fe80::205:5:5:5'
+00:36.104	ID:3	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.104	ID:3	[INFO: App       ] From:  fe80::205:5:5:5
+00:36.104	ID:3	[INFO: App       ] Bx: '0|fe80::205:5:5:5'
+00:36.104	ID:4	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.104	ID:4	[INFO: App       ] From:  fe80::205:5:5:5
+00:36.104	ID:4	[INFO: App       ] Bx: '0|fe80::205:5:5:5'
+00:36.104	ID:6	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.104	ID:6	[INFO: App       ] From:  fe80::205:5:5:5
+00:36.104	ID:6	[INFO: App       ] Bx: '0|fe80::205:5:5:5'
+00:36.110	ID:1	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.110	ID:1	[INFO: App       ] From:  fe80::202:2:2:2
+00:36.110	ID:3	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.110	ID:3	[INFO: App       ] From:  fe80::202:2:2:2
+00:36.110	ID:4	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.110	ID:4	[INFO: App       ] From:  fe80::202:2:2:2
+00:36.110	ID:5	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.110	ID:5	[INFO: App       ] From:  fe80::202:2:2:2
+00:36.110	ID:6	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.110	ID:6	[INFO: App       ] From:  fe80::202:2:2:2
+00:36.117	ID:1	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.117	ID:1	[INFO: App       ] From:  fe80::204:4:4:4
+00:36.117	ID:2	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.117	ID:2	[INFO: App       ] From:  fe80::204:4:4:4
+00:36.117	ID:3	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.117	ID:3	[INFO: App       ] From:  fe80::204:4:4:4
+00:36.117	ID:5	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.117	ID:5	[INFO: App       ] From:  fe80::204:4:4:4
+00:36.117	ID:6	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.117	ID:6	[INFO: App       ] From:  fe80::204:4:4:4
+00:36.123	ID:1	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.123	ID:1	[INFO: App       ] From:  fe80::203:3:3:3
+00:36.123	ID:2	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.123	ID:2	[INFO: App       ] From:  fe80::203:3:3:3
+00:36.123	ID:4	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.123	ID:4	[INFO: App       ] From:  fe80::203:3:3:3
+00:36.123	ID:5	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.123	ID:5	[INFO: App       ] From:  fe80::203:3:3:3
+00:36.123	ID:6	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.123	ID:6	[INFO: App       ] From:  fe80::203:3:3:3
+00:36.136	ID:2	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.136	ID:2	[INFO: App       ] From:  fe80::201:1:1:1
+00:36.136	ID:3	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.136	ID:3	[INFO: App       ] From:  fe80::201:1:1:1
+00:36.136	ID:4	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.136	ID:4	[INFO: App       ] From:  fe80::201:1:1:1
+00:36.136	ID:5	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.136	ID:5	[INFO: App       ] From:  fe80::201:1:1:1
+00:36.136	ID:6	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.136	ID:6	[INFO: App       ] From:  fe80::201:1:1:1
+00:36.189	ID:1	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.189	ID:1	[INFO: App       ] From:  fe80::206:6:6:6
+00:36.189	ID:2	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.189	ID:2	[INFO: App       ] From:  fe80::206:6:6:6
+00:36.189	ID:3	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.189	ID:3	[INFO: App       ] From:  fe80::206:6:6:6
+00:36.189	ID:4	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.189	ID:4	[INFO: App       ] From:  fe80::206:6:6:6
+00:36.189	ID:5	[INFO: App       ] Rx: '0|fe80::205:5:5:5'
+00:36.189	ID:5	[INFO: App       ] From:  fe80::206:6:6:6
+00:37.284	ID:1	[INFO: App       ] Tx: '0|fe80::201:1:1:1'
+00:37.295	ID:2	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.295	ID:2	[INFO: App       ] From:  fe80::201:1:1:1
+00:37.295	ID:2	[INFO: App       ] Bx: '0|fe80::201:1:1:1'
+00:37.295	ID:3	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.295	ID:3	[INFO: App       ] From:  fe80::201:1:1:1
+00:37.295	ID:3	[INFO: App       ] Bx: '0|fe80::201:1:1:1'
+00:37.295	ID:4	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.295	ID:4	[INFO: App       ] From:  fe80::201:1:1:1
+00:37.295	ID:4	[INFO: App       ] Bx: '0|fe80::201:1:1:1'
+00:37.295	ID:5	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.295	ID:5	[INFO: App       ] From:  fe80::201:1:1:1
+00:37.295	ID:5	[INFO: App       ] Bx: '0|fe80::201:1:1:1'
+00:37.295	ID:6	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.295	ID:6	[INFO: App       ] From:  fe80::201:1:1:1
+00:37.295	ID:6	[INFO: App       ] Bx: '0|fe80::201:1:1:1'
+00:37.299	ID:1	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.299	ID:1	[INFO: App       ] From:  fe80::202:2:2:2
+00:37.299	ID:3	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.299	ID:3	[INFO: App       ] From:  fe80::202:2:2:2
+00:37.299	ID:4	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.299	ID:4	[INFO: App       ] From:  fe80::202:2:2:2
+00:37.299	ID:5	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.299	ID:5	[INFO: App       ] From:  fe80::202:2:2:2
+00:37.299	ID:6	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.299	ID:6	[INFO: App       ] From:  fe80::202:2:2:2
+00:37.310	ID:1	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.310	ID:1	[INFO: App       ] From:  fe80::206:6:6:6
+00:37.310	ID:2	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.310	ID:2	[INFO: App       ] From:  fe80::206:6:6:6
+00:37.310	ID:3	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.310	ID:3	[INFO: App       ] From:  fe80::206:6:6:6
+00:37.310	ID:4	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.310	ID:4	[INFO: App       ] From:  fe80::206:6:6:6
+00:37.310	ID:5	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.310	ID:5	[INFO: App       ] From:  fe80::206:6:6:6
+00:37.325	ID:1	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.325	ID:1	[INFO: App       ] From:  fe80::204:4:4:4
+00:37.325	ID:2	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.325	ID:2	[INFO: App       ] From:  fe80::204:4:4:4
+00:37.325	ID:3	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.325	ID:3	[INFO: App       ] From:  fe80::204:4:4:4
+00:37.325	ID:5	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.325	ID:5	[INFO: App       ] From:  fe80::204:4:4:4
+00:37.325	ID:6	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.325	ID:6	[INFO: App       ] From:  fe80::204:4:4:4
+00:37.329	ID:1	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.329	ID:1	[INFO: App       ] From:  fe80::205:5:5:5
+00:37.329	ID:2	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.329	ID:2	[INFO: App       ] From:  fe80::205:5:5:5
+00:37.329	ID:3	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.329	ID:3	[INFO: App       ] From:  fe80::205:5:5:5
+00:37.329	ID:4	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.329	ID:4	[INFO: App       ] From:  fe80::205:5:5:5
+00:37.329	ID:6	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.329	ID:6	[INFO: App       ] From:  fe80::205:5:5:5
+00:37.335	ID:1	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.335	ID:1	[INFO: App       ] From:  fe80::203:3:3:3
+00:37.335	ID:2	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.335	ID:2	[INFO: App       ] From:  fe80::203:3:3:3
+00:37.335	ID:4	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.335	ID:4	[INFO: App       ] From:  fe80::203:3:3:3
+00:37.335	ID:5	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.335	ID:5	[INFO: App       ] From:  fe80::203:3:3:3
+00:37.335	ID:6	[INFO: App       ] Rx: '0|fe80::201:1:1:1'
+00:37.335	ID:6	[INFO: App       ] From:  fe80::203:3:3:3
