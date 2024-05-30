@@ -1,5 +1,4 @@
-CONTIKI_PROJECT = udp-client udp-server udp-p2p
-PROJECT_SOURCEFILES += msg-cache.c
+CONTIKI_PROJECT = udp-client udp-server
 
 all: $(CONTIKI_PROJECT)
 

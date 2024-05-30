@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "simple-udp.h": "c",
+    "routing.h": "c",
+    "netstack.h": "c",
+    "tcp-socket.h": "c",
+    "contiki.h": "c",
+    "uip-ds6.h": "c",
+    "contiki-net.h": "c"
+  }
+}

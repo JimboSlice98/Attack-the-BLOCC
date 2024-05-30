@@ -35,7 +35,7 @@ COOJA.testlog
 # other nRF52 build artifacts
 *.jlink
 
-#test artifacts
+# test artifacts
 *.testlog
 *.scriptlog
 *.coojalog
@@ -44,3 +44,7 @@ COOJA.testlog
 summary
 tests/18-coap-lwm2m/Californium.properties
 tests/18-coap-lwm2m/leshan-server-demo*.jar
+
+# python analysis
+.venv/
+__pycache__/

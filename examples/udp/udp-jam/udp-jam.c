@@ -11,7 +11,7 @@
 #define LOG_LEVEL LOG_LEVEL_INFO
 
 #define UDP_PORT 8765
-#define JAMMER_SEND_INTERVAL (CLOCK_SECOND / 10)  // Send a packet every 100ms
+#define JAMMER_SEND_INTERVAL (CLOCK_SECOND / 100)  // Send a packet every 10ms
 
 static struct simple_udp_connection jammer_udp_conn;
 static struct etimer jammer_periodic_timer;
@@ -20,9 +20,7 @@ static struct etimer jammer_periodic_timer;
 PROCESS(jammer_process, "Jammer Process");
 AUTOSTART_PROCESSES(&jammer_process);
 /*---------------------------------------------------------------------------*/
-static void
-jammer_send_packet(void)
-{
+static void jammer_send_packet(void) {
   uip_ipaddr_t dest_ipaddr;
   static char jam_msg[] = "JAM";
 
@@ -34,9 +32,15 @@ jammer_send_packet(void)
   // LOG_INFO("Jamming packet sent\n");
 }
 /*---------------------------------------------------------------------------*/
-PROCESS_THREAD(jammer_process, ev, data)
-{
+PROCESS_THREAD(jammer_process, ev, data) {
   PROCESS_BEGIN();
+
+  // Disable CCA
+  if (NETSTACK_RADIO.set_value(RADIO_PARAM_TX_MODE, 0) != RADIO_RESULT_OK) {
+    LOG_ERR("Failed to disable CCA\n");
+  } else {
+    LOG_INFO("CCA disabled\n");
+  }
 
   // Initialize UDP connection on the same port as the target
   simple_udp_register(&jammer_udp_conn, UDP_PORT, NULL, UDP_PORT, NULL);

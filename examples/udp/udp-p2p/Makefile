@@ -1,0 +1,11 @@
+CONTIKI_PROJECT = udp-p2p
+PROJECT_SOURCEFILES += msg-cache.c
+
+MAKE_ROUTING = MAKE_ROUTING_NULLROUTING
+# MAKE_MAC = MAKE_MAC_TSCH
+
+all: $(CONTIKI_PROJECT)
+CFLAGS += -DPROJECT_CONF_H=\"project-conf.h\"
+
+CONTIKI = ../../..
+include $(CONTIKI)/Makefile.include

@@ -1,7 +1,8 @@
 CONTIKI_PROJECT = udp-jam
 
+MAKE_ROUTING = MAKE_ROUTING_NULLROUTING
+
 all: $(CONTIKI_PROJECT)
 
 CONTIKI = ../../..
 include $(CONTIKI)/Makefile.include
-CFLAGS += -DUIP_CONF_TCP=1
