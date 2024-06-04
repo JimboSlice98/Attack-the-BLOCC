@@ -1,6 +1,3 @@
-#include "contiki.h"
-#include "lib/memb.h"
-#include "lib/list.h"
 #include "msg-cache.h"
 #include <stdlib.h>
 #include <string.h>
@@ -9,46 +6,26 @@
 #define LOG_MODULE "Node"
 #define LOG_LEVEL LOG_LEVEL_INFO
 
-typedef struct message {
-  struct message *next;
-  uint8_t *data;
-  uint16_t datalen;
-} message_t;
-
 /*---------------------------------------------------------------------------*/
-MEMB(message_cache_memb, message_t, CACHE_SIZE);
-LIST(message_cache);
-/*---------------------------------------------------------------------------*/
-void
-message_cache_init(void)
-{
-  // LOG_INFO("Message cache initiated\n");
-  memb_init(&message_cache_memb);
-  list_init(message_cache);
-}
+static cached_message_t message_cache[CACHE_SIZE];
+int cache_index = 0;
 /*---------------------------------------------------------------------------*/
 void
 print_cache(void)
 {
-  message_t *msg;
-  int index = 0;
   LOG_INFO("Current cache entries:\n");
-  for(msg = list_head(message_cache); msg != NULL; msg = list_item_next(msg)) {
-    LOG_INFO("  Entry %d: '%.*s'\n", index, msg->datalen, (char *)msg->data);
-    index++;
-  }
-  if(index == 0) {
-    LOG_INFO("  Cache is empty\n");
+  for (int i = 0; i < CACHE_SIZE; i++) {
+    LOG_INFO("  Entry %d: '%.*s'\n", i, message_cache[i].datalen,
+             (char *)message_cache[i].data);
   }
 }
 /*---------------------------------------------------------------------------*/
 int
 is_duplicate(const uint8_t *data, uint16_t datalen)
 {
-  // print_cache();
-  message_t *msg;
-  for(msg = list_head(message_cache); msg != NULL; msg = list_item_next(msg)) {
-    if(msg->datalen == datalen && memcmp(msg->data, data, datalen) == 0) {
+  for (int i = 0; i < CACHE_SIZE; i++) {
+    if (message_cache[i].datalen == datalen
+        && memcmp(message_cache[i].data, data, datalen) == 0) {
       return 1;
     }
   }
@@ -58,27 +35,12 @@ is_duplicate(const uint8_t *data, uint16_t datalen)
 void
 add_to_cache(const uint8_t *data, uint16_t datalen)
 {
-  if(list_length(message_cache) >= CACHE_SIZE) {
-    message_t *oldest_msg = list_chop(message_cache);
-    if (oldest_msg != NULL) {
-      free(oldest_msg->data);
-      memb_free(&message_cache_memb, oldest_msg);
-    }
+  if (cache_index >= CACHE_SIZE) {
+    cache_index = 0;
   }
-  message_t *msg = memb_alloc(&message_cache_memb);
-  if(msg != NULL) {
-    msg->data = malloc(datalen);
-    if (msg->data != NULL) {
-      memcpy(msg->data, data, datalen);
-      msg->datalen = datalen;
-      list_add(message_cache, msg);
-      // LOG_INFO("Added to cache: '%.*s'\n", datalen, (char *)data);
-      // print_cache();
-    } else {
-      LOG_ERR("Failed to allocate memory for message\n");
-      memb_free(&message_cache_memb, msg);
-    }
-  } else {
-    LOG_ERR("Failed to allocate memory for message\n");
-  }
+
+  message_cache[cache_index].datalen = datalen;
+  memcpy(message_cache[cache_index].data, data, datalen);
+  cache_index++;
 }
+/*---------------------------------------------------------------------------*/

@@ -11,7 +11,7 @@
 #define LOG_LEVEL LOG_LEVEL_INFO
 
 #define UDP_PORT 8765
-#define JAMMER_SEND_INTERVAL (CLOCK_SECOND / 100)  // Send a packet every 10ms
+#define JAMMER_SEND_INTERVAL (CLOCK_SECOND / 10000)  // Send a packet every 10ms
 
 static struct simple_udp_connection jammer_udp_conn;
 static struct etimer jammer_periodic_timer;

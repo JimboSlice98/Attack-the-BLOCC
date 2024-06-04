@@ -6,6 +6,9 @@
     "tcp-socket.h": "c",
     "contiki.h": "c",
     "uip-ds6.h": "c",
-    "contiki-net.h": "c"
-  }
+    "contiki-net.h": "c",
+    "node-id.h": "c",
+    "chrono": "c"
+  },
+  "C_Cpp.intelliSenseCachePath": "/vol/bitbucket/jjh17/.vscode_cache"
 }
