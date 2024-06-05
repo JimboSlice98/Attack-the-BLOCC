@@ -8,8 +8,8 @@
       org.contikios.cooja.radiomediums.UDGM
       <transmitting_range>14</transmitting_range>
       <interference_range>20</interference_range>
-      <success_ratio_tx>1.0</success_ratio_tx>
-      <success_ratio_rx>1.0</success_ratio_rx>
+      <success_ratio_tx>0.9</success_ratio_tx>
+      <success_ratio_rx>0.9</success_ratio_rx>
     </radiomedium>
     <events>
       <logoutput>40000</logoutput>

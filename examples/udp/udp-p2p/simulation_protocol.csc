@@ -2,7 +2,7 @@
 <simconf version="2023090101">
   <simulation>
     <title>My simulation</title>
-    <speedlimit>1.0</speedlimit>
+    <speedlimit>20.0</speedlimit>
     <randomseed>generated</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
@@ -56,6 +56,16 @@
           <id>2</id>
         </interface_config>
       </mote>
+      <mote>
+        <interface_config>
+          org.contikios.cooja.interfaces.Position
+          <pos x="42.31306515630397" y="83.03898263763669" />
+        </interface_config>
+        <interface_config>
+          org.contikios.cooja.contikimote.interfaces.ContikiMoteID
+          <id>3</id>
+        </interface_config>
+      </mote>
     </motetype>
     <motetype>
       org.contikios.cooja.contikimote.ContikiMoteType
@@ -93,7 +103,7 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>3.8332876786619536 0.0 0.0 3.8332876786619536 260.1695526922514 -226.2353414700353</viewport>
+      <viewport>2.6854604351479407 0.0 0.0 2.6854604351479407 209.73357399654515 -55.50963794853028</viewport>
     </plugin_config>
     <bounds x="1" y="1" height="400" width="400" z="1" />
   </plugin>
@@ -104,19 +114,20 @@
       <formatted_time />
       <coloring />
     </plugin_config>
-    <bounds x="400" y="160" height="532" width="1320" z="2" />
+    <bounds x="400" y="160" height="532" width="1320" />
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.TimeLine
     <plugin_config>
       <mote>0</mote>
       <mote>1</mote>
+      <mote>2</mote>
       <showRadioRXTX />
       <showRadioHW />
       <showLEDs />
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
-    <bounds x="0" y="801" height="166" width="1720" z="5" />
+    <bounds x="0" y="801" height="166" width="1720" z="3" />
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Notes
@@ -132,6 +143,6 @@
       <split>150</split>
       <formatted_time />
     </plugin_config>
-    <bounds x="0" y="401" height="360" width="401" z="3" />
+    <bounds x="0" y="401" height="360" width="401" z="2" />
   </plugin>
 </simconf>

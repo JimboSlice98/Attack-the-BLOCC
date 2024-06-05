@@ -5,7 +5,7 @@
 #include "contiki.h"
 
 #define MAX_MSG_LEN 64
-#define CACHE_SIZE 16
+#define CACHE_SIZE 2000
 
 typedef struct cached_message {
   uint8_t data[MAX_MSG_LEN];

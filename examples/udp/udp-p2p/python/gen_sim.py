@@ -81,6 +81,6 @@ create_simulation_xml(
     filename="simulation.csc", 
     tx_range=14, 
     interference_range=20, 
-    success_ratio_tx=1.0, 
-    success_ratio_rx=1.0
+    success_ratio_tx=0.9, 
+    success_ratio_rx=0.9
 )
