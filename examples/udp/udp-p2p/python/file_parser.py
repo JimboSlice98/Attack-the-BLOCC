@@ -36,12 +36,22 @@ def parse_log_file(file_path):
             match = log_pattern.match(line)
             if match:
                 log_entry = match.groupdict()
+                
+                # Convert to appropriate data types
                 log_entry['timestamp'] = float(log_entry['timestamp'].replace(':', ''))
-                log_data[int(log_entry['node_id'])].append(log_entry)
-                message_key = (log_entry['message_num'], log_entry['origin_node'])
+                log_entry['node_id'] = int(log_entry['node_id'])
+                log_entry['message_num'] = int(log_entry['message_num'])
+                log_entry['origin_node'] = int(log_entry['origin_node'])
+                log_entry['attest_node'] = int(log_entry['attest_node'])
+                if log_entry['from_node'] is not None:
+                    log_entry['from_node'] = int(log_entry['from_node'])
+                
+                log_data[log_entry['node_id']].append(log_entry)
+                
+                message_key = (log_entry['message_num'], log_entry['origin_node'], log_entry['attest_node'])
                 message_groups[message_key].append(log_entry)
                 
-                node_id = int(log_entry['node_id'])
+                node_id = log_entry['node_id']
                 action = log_entry['action'].lower()
                 
                 if action == 'tx':
@@ -50,6 +60,7 @@ def parse_log_file(file_path):
                         'message_num': log_entry['message_num'],
                         'attestations': []
                     })
+
                 elif action == 'rx':
                     node_states[node_id]['rx'].append({
                         'timestamp': log_entry['timestamp'],
@@ -60,14 +71,15 @@ def parse_log_file(file_path):
                     })
                     
                     # Update attestations for corresponding tx entries
-                    for tx_entry in node_states[int(log_entry['origin_node'])]['tx']:
-                        if tx_entry['message_num'] == log_entry['message_num'] and node_id != int(log_entry['origin_node']):
+                    if log_entry['origin_node'] == node_id and log_entry['attest_node'] != 0:
+                        for tx_entry in node_states[node_id]['tx']:
                             attestations = tx_entry['attestations']
-                            if not any(att['attest_node'] == node_id for att in attestations):
+                            if not any(att['attest_node'] == log_entry['attest_node'] for att in attestations):
                                 tx_entry['attestations'].append({
                                     'timestamp': log_entry['timestamp'],
-                                    'attest_node': node_id
+                                    'attest_node': log_entry['attest_node']
                                 })
+                
                 elif action == 'bx':
                     node_states[node_id]['bx'].append({
                         'timestamp': log_entry['timestamp'],
@@ -75,6 +87,7 @@ def parse_log_file(file_path):
                         'origin_node': log_entry['origin_node'],
                         'attest_node': log_entry['attest_node']
                     })
+
                 elif action == 'ax':
                     node_states[node_id]['ax'].append({
                         'timestamp': log_entry['timestamp'],
@@ -88,39 +101,39 @@ def parse_log_file(file_path):
 """
 pos_dict
 {
-    mote_id_1: (x_coordinate_1, y_coordinate_1),
-    mote_id_2: (x_coordinate_2, y_coordinate_2),
-    # More motes...
+    node_id_1: (x_coordinate_1, y_coordinate_1),  # int: (float, float)
+    node_id_2: (x_coordinate_2, y_coordinate_2),  # int: (float, float)
+    # More nodes...
 }
 
 log_data:
 {
-    1: [
+    node_id_1: [  # int
         {
             'timestamp': float,  # The timestamp of the log entry
-            'mote_id': str,      # The ID of the mote that logged this entry
+            'node_id': int,      # The ID of the node that logged this entry
             'action': str,       # The action type (e.g., 'Tx', 'Rx', 'Bx', 'Ax')
-            'message_num': str,  # The message number
-            'origin_node': str,  # The origin node that created the message
-            'attest_node': str,  # The node that attested the message
-            'from_node': str     # The node from which the message was received (if applicable)
+            'message_num': int,  # The message number
+            'origin_node': int,  # The origin node that created the message
+            'attest_node': int,  # The node that attested the message
+            'from_node': int     # The node from which the message was received (if applicable)
         },
-        # More log entries for mote 1...
+        # More log entries for node 1...
     ],
-    # More motes...
+    # More nodes...
 }
 
 message_groups:
 {
-    (message_num, origin_node): [
+    (message_num, origin_node, attest_node): [  # (int, int, int)
         {
             'timestamp': float,  # The timestamp of the log entry
-            'mote_id': str,      # The ID of the mote that logged this entry
+            'node_id': int,      # The ID of the node that logged this entry
             'action': str,       # The action type (e.g., 'Tx', 'Rx', 'Bx', 'Ax')
-            'message_num': str,  # The message number
-            'origin_node': str,  # The origin node that created the message
-            'attest_node': str,  # The node that attested the message
-            'from_node': str     # The node from which the message was received (if applicable)
+            'message_num': int,  # The message number
+            'origin_node': int,  # The origin node that created the message
+            'attest_node': int,  # The node that attested the message
+            'from_node': int     # The node from which the message was received (if applicable)
         },
         # More log entries for this message...
     ],
@@ -129,61 +142,57 @@ message_groups:
 
 detailed_log:
 {
-    mote_id: [
+    node_id: [  # int
         {
-            'tx': [
+            'tx': [  # str
                 {
                     'timestamp': float,  # The timestamp of the log entry
-                    'message_num': str,  # The number of the message it created
+                    'message_num': int,  # The number of the message it created
                     'attestations': [    # List of attestations received for the given message
                         {
                             'timestamp': float,  # The timestamp the attestation was received
                             'attest_node': int   # The node that attested the message
                         },
-                        # more attestations from other motes
+                        # more attestations from other nodes
                     ]
                 },
-                # more messages that were created and originated from this mote_id
+                # more messages that were created and originated from this node_id
             ]
         },
-
         {
-            'rx': [
+            'rx': [  # str
                 {
                     'timestamp': float,  # The timestamp of the log entry
-                    'message_num': str,  # The message number
-                    'origin_node': str,  # The origin node that created the message
-                    'attest_node': str,  # The node that attested the message
-                    'from_node': str     # The node from which the message was received (if applicable)
+                    'message_num': int,  # The message number
+                    'origin_node': int,  # The origin node that created the message
+                    'attest_node': int,  # The node that attested the message
+                    'from_node': int     # The node from which the message was received (if applicable)
                 },
-                # More messages received by this mote_id
+                # More messages received by this node_id
             ]
         },
-
         {
-            'bx': [
+            'bx': [  # str
                 {
                     'timestamp': float,  # The timestamp of the log entry
-                    'message_num': str,  # The message number
-                    'origin_node': str,  # The origin node that created the message
-                    'attest_node': str   # The node that attested the message
+                    'message_num': int,  # The message number
+                    'origin_node': int,  # The origin node that created the message
+                    'attest_node': int   # The node that attested the message
                 },
-                # More messages broadcast by this mote_id
+                # More messages broadcast by this node_id
             ]
         },
-
         {
-            'ax': [
+            'ax': [  # str
                 {
                     'timestamp': float,  # The timestamp of the log entry
-                    'message_num': str,  # The message number
-                    'origin_node': str   # The origin node that created the message
+                    'message_num': int,  # The message number
+                    'origin_node': int   # The origin node that created the message
                 },
-                # More messages attested by this mote_id
+                # More messages attested by this node_id
             ]
         }
     ],
-
-    # more mote_ids
+    # more node_ids
 }
 """

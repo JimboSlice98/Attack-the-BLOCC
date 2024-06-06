@@ -10,10 +10,25 @@ state = {
     "log_data": None,
     "message_groups": None,
     "node_positions": None,
-    'node_states': None,
-    "G": None,
-    "events": None
+    'node_states': None,    
 }
+
+
+def get_possible_completions(partial_path):
+    if os.path.isdir(partial_path):
+        return [partial_path]
+    
+    dir_name, base_name = os.path.split(partial_path)
+    if not dir_name:
+        dir_name = '.'
+    
+    try:
+        contents = os.listdir(dir_name)
+    except FileNotFoundError:
+        return []
+    
+    completions = [os.path.join(dir_name, item) for item in contents if item.startswith(base_name)]
+    return completions
 
 
 def prompt_for_file_path(stdscr, prompt_message, exit_char=27):
@@ -45,6 +60,14 @@ def prompt_for_file_path(stdscr, prompt_message, exit_char=27):
         elif key == curses.KEY_BACKSPACE or key == 127:  # Handle backspace
             if file_path:
                 file_path = file_path[:-1]
+                stdscr.addstr(24, 0, " " * 60)  # Clear the line
+                stdscr.addstr(24, 0, file_path)
+                stdscr.refresh()
+        elif key == 9:  # Handle tab for auto-complete
+            completions = get_possible_completions(file_path)
+            if completions:
+                common_prefix = os.path.commonprefix(completions)
+                file_path = common_prefix
                 stdscr.addstr(24, 0, " " * 60)  # Clear the line
                 stdscr.addstr(24, 0, file_path)
                 stdscr.refresh()

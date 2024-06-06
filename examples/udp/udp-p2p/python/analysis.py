@@ -3,55 +3,94 @@ import networkx as nx
 from matplotlib.widgets import Button
 from file_loader import state, load_log_data, load_simulation_data
 
-def create_graph(log_data, message_groups):
-    G = nx.DiGraph()
-    events = []
 
-    for message_key, entries in message_groups.items():
-        for entry in entries:
-            from_node = entry.get('from_node')
+def process_events(message_groups):
+    events = []  # event = (timestamp, from_node, to_node, message_key)
+
+    for message_key, msg_events in message_groups.items():
+        for msg_event in msg_events:
+            from_node = msg_event.get('from_node')
             if from_node:
-                events.append((entry['timestamp'], int(from_node), int(entry['node_id']), entry['action'], message_key))
+                events.append((msg_event['timestamp'], from_node, msg_event['node_id'], message_key))
 
     events.sort()
-    return G, events
+    return events
 
-def draw_graph(G, pos_dict, events, message_key=None):
+
+def filter_messages(message_groups, message_mask):
+    def matches_params(t):        
+        if 'message_num' in message_mask:
+            if isinstance(message_mask['message_num'], list):
+                message_num_match = (t[0] in message_mask['message_num'])
+            else:
+                message_num_match = (t[0] == message_mask['message_num'])
+        else:
+            message_num_match = True
+        
+        if 'origin_node' in message_mask:
+            if isinstance(message_mask['origin_node'], list):
+                origin_node_match = (t[1] in message_mask['origin_node'])
+            else:
+                origin_node_match = (t[1] == message_mask['origin_node'])
+        else:
+            origin_node_match = True
+        
+        if 'attest_node' in message_mask:
+            if isinstance(message_mask['attest_node'], list):
+                attest_node_match = (t[2] in message_mask['attest_node'])
+            else:
+                attest_node_match = (t[2] == message_mask['attest_node'])
+        else:
+            attest_node_match = True
+        
+        return message_num_match and origin_node_match and attest_node_match
+
+    filtered_messages = {msg_key: msg_list for msg_key, msg_list in message_groups.items() if matches_params(msg_key)}
+    return filtered_messages
+
+
+def draw_graph(pos_dict, message_groups, message_mask=None):
     fig, ax = plt.subplots(figsize=(12, 8))
-    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.25)  # Adjust layout to make room for buttons
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.2)
 
-    if message_key:
-        events = filter_events_for_message(events, message_key)
+    if message_mask:
+        events = process_events(
+            filter_messages(message_groups, message_mask)
+            )
+    else:
+        events = process_events(message_groups)
 
     num_frames = len(events)
-    current_frame = [0]  # Use a list to keep it mutable within nested functions
+    current_frame = [0]
 
     def update_graph(frame):
         ax.clear()
         G = nx.DiGraph()
-        current_events = events[:frame + 1]
+        G.add_nodes_from(pos_dict)
+        nx.set_node_attributes(G, 'skyblue', 'color')
+        current_events = events[:frame]
         
-        for event in current_events:
-            timestamp, from_node, to_node, action, message_key = event
-            if action == 'Rx':
-                G.add_edge(from_node, to_node, color='blue', weight=2)
-            elif action == 'Tx':
-                G.add_edge(from_node, to_node, color='green', weight=2)
-            elif action == 'Bx':
-                G.add_edge(from_node, to_node, color='red', weight=2)
-            elif action == 'Ax':
-                G.add_edge(from_node, to_node, color='purple', weight=2)
+        for i, event in enumerate(current_events):
+            timestamp, from_node, to_node, message_key = event
+            color = 'yellow' if message_key[2] != 0 else 'blue'
+            G.add_edge(from_node, to_node, color=color, weight=2)
+
+            if i == frame - 1:
+                print(f"Time: {timestamp}, {from_node} -> {to_node}, {'att' if message_key[2] != 0 else 'msg'}")
+                G.nodes[from_node]['color'] = 'red'
+                G.nodes[to_node]['color'] = 'green'
         
         edges = G.edges(data=True)
         colors = [e[2].get('color', 'black') for e in edges]
         weights = [e[2].get('weight', 1) for e in edges]
+        node_colors = [G.nodes[node].get('color', 'skyblue') for node in G.nodes()]
         
-        nx.draw(G, pos=pos_dict, ax=ax, with_labels=True, node_size=700, node_color="skyblue", font_size=15, font_weight="bold", arrows=True, edge_color=colors, width=weights)
+        nx.draw(G, pos=pos_dict, ax=ax, with_labels=True, node_size=700, node_color=node_colors, font_size=15, font_weight="bold", arrows=True, edge_color=colors, width=weights)
         nx.draw_networkx_edge_labels(G, pos=pos_dict, ax=ax, edge_labels=nx.get_edge_attributes(G, 'label'), font_color='red')
         ax.set_title(f'Timestep: {frame}')
 
     def next_frame(event):
-        if current_frame[0] < num_frames - 1:
+        if current_frame[0] < num_frames:
             current_frame[0] += 1
             update_graph(current_frame[0])
             plt.draw()
@@ -62,7 +101,7 @@ def draw_graph(G, pos_dict, events, message_key=None):
             update_graph(current_frame[0])
             plt.draw()
 
-    ax_next = plt.axes([0.81, 0.05, 0.1, 0.075])
+    ax_next = plt.axes([0.85, 0.05, 0.1, 0.075])
     ax_prev = plt.axes([0.7, 0.05, 0.1, 0.075])
     btn_next = Button(ax_next, 'Next')
     btn_prev = Button(ax_prev, 'Back')
@@ -73,18 +112,13 @@ def draw_graph(G, pos_dict, events, message_key=None):
     update_graph(0)  # Initialize the graph
     plt.show()
 
-def filter_events_for_message(events, message_key):
-    events = [event for event in events if event[4] == message_key]
-    print(events)
-    return events
-
 
 if __name__ == "__main__":
     import json
 
     # File paths
     simulation_file = '../simulation.csc'
-    log_file = '../loglistener_short.txt'
+    log_file = '../loglistener.txt'
 
     # Parsing files
     state['simulation_file_path'] = simulation_file
@@ -92,15 +126,24 @@ if __name__ == "__main__":
     load_simulation_data(simulation_file)
     load_log_data(log_file)
 
-    # Generate graph and draw
-    state['G'], state['events'] = create_graph(state['log_data'], state['message_groups'])
+    # for node_id, node_state in state['node_states'].items():
+    #     # if node_id == 1:
+    #         print(f"Node: {node_id}")
+    #         print(json.dumps(node_state['tx'], indent=2))
+    #         print()
 
-    for node_id, node_state in state['node_states'].items():
-        if node_id == 1:
-            print(f"Node: {node_id}")
-            print(json.dumps(node_state['rx'], indent=2))
-            print()
 
-    # # Specific message key (example: message_num='0', origin_node='1')
-    # specific_message_key = ('0', '1') 
-    # draw_graph(state['G'], state['mote_positions'], state['events'], specific_message_key)
+    # for message_key, message_list in state['message_groups'].items():
+    #     print(f"Message Key: {message_key}")
+    #     for message in message_list:
+    #         if message_key[1] == message['node_id'] and int(message['attest_node']) != 0:
+    #             print(json.dumps(message, indent=2))
+    #             print()
+
+    message_mask = {
+        'message_num': 0,
+        'origin_node': 1,
+        'attest_node': 0
+    }
+
+    draw_graph(state['node_positions'], state['message_groups'], message_mask)
