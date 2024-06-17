@@ -75,10 +75,10 @@ def create_simulation_xml(rows, cols, spacing_x, spacing_y, filename, tx_range, 
 # Generate simulation file
 create_simulation_xml(
     rows=4, 
-    cols=3, 
+    cols=4, 
     spacing_x=3, 
     spacing_y=12, 
-    filename="simulation.csc", 
+    filename="../simulation-large.csc", 
     tx_range=14, 
     interference_range=20, 
     success_ratio_tx=0.9, 

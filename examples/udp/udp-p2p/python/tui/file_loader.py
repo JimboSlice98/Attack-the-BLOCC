@@ -10,7 +10,9 @@ state = {
     "log_data": None,
     "message_groups": None,
     "node_positions": None,
-    'node_states': None,    
+    "node_states": None,    
+    "trustsets": None,
+    "malicious_nodes": None
 }
 
 

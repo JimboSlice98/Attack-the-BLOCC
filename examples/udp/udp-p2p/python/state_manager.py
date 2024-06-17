@@ -1,0 +1,179 @@
+import textwrap
+import matplotlib.pyplot as plt
+from file_parser import parse_simulation_file, parse_log_file
+from trustsets import create_trustsets, create_malicious_parties
+from graph import create_graph, visualize_graph
+from assumptions import *
+
+
+class State:
+    def __init__(self):
+        self.simulation_file_path = None
+        self.log_file_path = None
+
+        self.node_positions = None
+        self.log_data = None
+        self.message_groups = None
+        self.node_states = None
+
+        self.trustsets = None
+        self.malicious_nodes = None
+        self.connectivity_graph = None
+
+  
+    def load_log_data(self, file_path):
+        self.log_file_path = file_path
+        self.log_data, self.message_groups, self.node_states = parse_log_file(
+            file_path=file_path
+        )
+    
+
+    def load_simulation_data(self, file_path):
+        self.simulation_file_path = file_path
+        self.node_positions = parse_simulation_file(
+            file_path=file_path
+        )
+
+    
+    def create_trustsets(self, fraction=2/3, allow_overlap=True):
+        self.trustsets = create_trustsets(
+            node_positions=self.node_positions, 
+            fraction=fraction, 
+            allow_overlap=allow_overlap
+        )
+
+    
+    def create_malicious_parties(self, num_malicious):
+        self.malicious_nodes = create_malicious_parties(
+            node_positions=self.node_positions, 
+            num_malicious=num_malicious
+        )
+
+    
+    def create_graph(self):
+        self.connectivity_graph = create_graph(
+            node_positions=self.node_positions,
+            distance_threshold=14
+        )
+
+    
+    def check_assumption_1(self):
+        result, error_message = check_assumption_1(
+            node_positions=self.node_positions,
+            trustsets=self.trustsets            
+        )
+        print(f"Assumption 1: {result}")
+        
+        if not result:
+            print(error_message)
+        return result
+    
+
+    def check_assumption_2(self):
+        result, error_message = check_assumption_2(
+            trustsets=self.trustsets,
+            malicious_nodes=self.malicious_nodes            
+        )
+        print(f"Assumption 2: {result}")
+        
+        if not result:
+            print(error_message)
+        return result
+    
+
+    def check_assumption_3(self):
+        result, error_message = check_assumption_3(
+            trustsets=self.trustsets,
+            malicious_nodes=self.malicious_nodes         
+        )
+        print(f"Assumption 3: {result}")
+        
+        if not result:
+            print(error_message)
+        return result
+    
+
+    def check_assumption_4(self):
+        result, error_message = check_assumption_4(
+            node_states=self.node_states,
+            trustsets=self.trustsets,
+            malicious_nodes=self.malicious_nodes,
+            t_rep=5
+        )
+        print(f"Assumption 4: {result}")
+        
+        if not result:
+            print(error_message)
+        return result
+    
+
+    def check_assumption_5(self):
+        result, C1, C2, violating_source, violating_path = check_assumption_5(
+            G=self.connectivity_graph,
+            trustsets=self.trustsets,
+            malicious_nodes=self.malicious_nodes
+        )
+        print(f"Assumption 5: {result}")
+
+        if not result:
+            print("Assumption 5 is violated.")
+            print("Trustset C1:", C1)
+            print("Trustset C2:", C2)
+            print("Source node:", violating_source)
+            print("Violating path:", violating_path)
+            visualize_graph(self.connectivity_graph, C1, C2, violating_source, violating_path)
+
+        return result
+
+
+    def check_assumption_6(self):
+        result, error_message = check_assumption_6(
+            node_states=self.node_states,
+            trustsets=self.trustsets,
+            malicious_nodes=self.malicious_nodes,
+            t_rep=5
+        )
+        print(f"Assumption 6: {result}")
+        
+        if not result:
+            print(error_message)
+        return result
+
+
+    def check_assumptions(self):
+        print(textwrap.dedent(f"""
+            ===================================================================
+            Honest nodes: {set(self.node_states.keys()) - self.malicious_nodes}
+            Malicious nodes: {self.malicious_nodes}
+            ===================================================================
+        """))
+
+        self.check_assumption_1()
+        self.check_assumption_2()
+        self.check_assumption_3()
+        self.check_assumption_4()
+        self.check_assumption_5()
+        self.check_assumption_6()
+
+
+
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+    from state_manager import State
+
+    simulation_file = '../simulation.csc'
+    log_file = '../loglistener-new.txt'
+
+    state = State()
+    state.load_simulation_data(simulation_file)
+    state.load_log_data(log_file)
+
+    # tx_data = {node_id: node_state['tx'] for node_id, node_state in state.node_states.items()}
+    # print(json.dumps(tx_data, indent=2))
+
+    state.create_trustsets(fraction=2/3, allow_overlap=True)
+    state.create_malicious_parties(num_malicious=4)
+    state.create_graph()
+
+    state.check_assumptions()
+    

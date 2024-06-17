@@ -5,18 +5,21 @@
 #include "contiki.h"
 
 #define MAX_MSG_LEN 64
-#define CACHE_SIZE 2000
-#define INITIAL_HASH_SIZE 20011
-#define LOAD_FACTOR_THRESHOLD 0.75
+#define HASH_SIZE 20011
+#define GRACE_TIME (5 * CLOCK_SECOND) // Define the grace time as 5 seconds
 
 typedef struct CacheEntry {
-  uint8_t data[MAX_MSG_LEN];
-  uint16_t datalen;
+  uint32_t message_num;
+  uint16_t origin_node;
+  uint16_t attest_node;
+  clock_time_t time_of_broadcast;
   struct CacheEntry *next;
 } CacheEntry;
 
+void initialise_cache();
 void print_cache(void);
-int is_duplicate(const uint8_t *data, uint16_t datalen);
-void add_to_cache(const uint8_t *data, uint16_t datalen);
+int is_duplicate(uint32_t message_num, uint16_t origin_node, uint16_t attest_node);
+int within_grace(clock_time_t time_of_broadcast);
+void add_to_cache(uint32_t message_num, uint16_t origin_node, uint16_t attest_node, clock_time_t time_of_broadcast);
 
 #endif /* MSG_CACHE_H */

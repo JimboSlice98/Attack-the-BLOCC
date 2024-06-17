@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 from matplotlib.widgets import Button
-from file_loader import state, load_log_data, load_simulation_data
 
 
 def process_events(message_groups):
@@ -56,6 +55,39 @@ def draw_graph(pos_dict, message_groups, message_mask=None):
     if message_mask:
         events = process_events(
             filter_messages(message_groups, message_mask)
+        )
+    else:
+        events = process_events(message_groups)
+
+    G = nx.Graph()
+    G.add_nodes_from(pos_dict)
+    nx.set_node_attributes(G, 'skyblue', 'color')
+
+    for event in events:
+        timestamp, from_node, to_node, message_key = event
+        color = 'yellow' if message_key[2] != 0 else 'blue'
+        G.add_edge(from_node, to_node, color=color, weight=2)
+        if nx.cycle_basis(G):
+            G.remove_edge(from_node, to_node)
+
+    edges = G.edges(data=True)
+    colors = [e[2].get('color', 'black') for e in edges]
+    weights = [e[2].get('weight', 1) for e in edges]
+    node_colors = [G.nodes[node].get('color', 'skyblue') for node in G.nodes()]
+
+    nx.draw(G, pos=pos_dict, ax=ax, with_labels=True, node_size=700, node_color=node_colors, font_size=15, font_weight="bold", arrows=True, edge_color=colors, width=weights)
+    nx.draw_networkx_edge_labels(G, pos=pos_dict, ax=ax, edge_labels=nx.get_edge_attributes(G, 'label'), font_color='red')
+    ax.set_title(message_mask)
+    plt.show()
+
+
+def draw_graph_increment(pos_dict, message_groups, message_mask=None):
+    fig, ax = plt.subplots(figsize=(12, 8))
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.2)
+
+    if message_mask:
+        events = process_events(
+            filter_messages(message_groups, message_mask)
             )
     else:
         events = process_events(message_groups)
@@ -65,7 +97,7 @@ def draw_graph(pos_dict, message_groups, message_mask=None):
 
     def update_graph(frame):
         ax.clear()
-        G = nx.DiGraph()
+        G = nx.Graph()
         G.add_nodes_from(pos_dict)
         nx.set_node_attributes(G, 'skyblue', 'color')
         current_events = events[:frame]
@@ -74,6 +106,8 @@ def draw_graph(pos_dict, message_groups, message_mask=None):
             timestamp, from_node, to_node, message_key = event
             color = 'yellow' if message_key[2] != 0 else 'blue'
             G.add_edge(from_node, to_node, color=color, weight=2)
+            if nx.cycle_basis(G):
+                G.remove_edge(from_node, to_node)
 
             if i == frame - 1:
                 print(f"Time: {timestamp}, {from_node} -> {to_node}, {'att' if message_key[2] != 0 else 'msg'}")
@@ -109,41 +143,49 @@ def draw_graph(pos_dict, message_groups, message_mask=None):
     btn_next.on_clicked(next_frame)
     btn_prev.on_clicked(prev_frame)
 
-    update_graph(0)  # Initialize the graph
+    update_graph(0)
     plt.show()
 
 
 if __name__ == "__main__":
     import json
+    from state_manager import State
 
-    # File paths
     simulation_file = '../simulation.csc'
-    log_file = '../loglistener.txt'
+    log_file = '../loglistener-new.txt'
+    
+    state = State()
+    state.load_simulation_data(simulation_file)
+    state.load_log_data(log_file)
 
-    # Parsing files
-    state['simulation_file_path'] = simulation_file
-    state['log_file_path'] = log_file
-    load_simulation_data(simulation_file)
-    load_log_data(log_file)
+    mask = {
+        'message_num': 0,
+        'origin_node': 1,
+        'attest_node': [0]
+    }
 
-    # for node_id, node_state in state['node_states'].items():
+    tx_data = {node_id: node_state['tx'] for node_id, node_state in state.node_states.items()}
+
+    # print(json.dumps(tx_data, indent=2))
+    # json_data = json.dumps(tx_data, indent=2)
+    
+    # with open('output.txt', 'w') as file:
+    #     file.write(json_data)
+
+    # # PRINT MESSAGE AND ATTESTATIONS
+    # for node_id, node_state in state.node_states.items():
     #     # if node_id == 1:
     #         print(f"Node: {node_id}")
     #         print(json.dumps(node_state['tx'], indent=2))
     #         print()
 
-
-    # for message_key, message_list in state['message_groups'].items():
+    # # PRINT SPECIFIC MESSAGES
+    # for message_key, message_list in filter_messages(state.message_groups, mask).items():
     #     print(f"Message Key: {message_key}")
     #     for message in message_list:
-    #         if message_key[1] == message['node_id'] and int(message['attest_node']) != 0:
+    #         # if message_key[1] == message['node_id'] and int(message['attest_node']) != 0:
     #             print(json.dumps(message, indent=2))
     #             print()
-
-    message_mask = {
-        'message_num': 0,
-        'origin_node': 1,
-        'attest_node': 0
-    }
-
-    draw_graph(state['node_positions'], state['message_groups'], message_mask)
+    
+    draw_graph(state.node_positions, state.message_groups, mask)
+    # draw_graph_increment(state.node_positions, state.message_groups, mask)

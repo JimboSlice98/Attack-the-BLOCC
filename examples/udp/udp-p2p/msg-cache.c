@@ -1,49 +1,34 @@
 #include "msg-cache.h"
 #include <stdlib.h>
 #include <string.h>
+#include "sys/node-id.h"
 #include "sys/log.h"
 
 #define LOG_MODULE "Node"
 #define LOG_LEVEL LOG_LEVEL_INFO
 
 CacheEntry **hash_table;
-int hash_size = INITIAL_HASH_SIZE;
+int hash_size = HASH_SIZE;
 int cache_size = 0;
 
 /*---------------------------------------------------------------------------*/
 unsigned int
-hash_function(const uint8_t *data, uint16_t datalen)
+hash_function(uint32_t message_num, uint16_t origin_node, uint16_t attest_node)
 {
-  unsigned int hash = 0;
-  for (uint16_t i = 0; i < datalen; i++) {
-    hash = (hash * 31) + data[i];
-  }
+  unsigned int hash = message_num;
+  hash = (hash * 31) + origin_node;
+  hash = (hash * 31) + attest_node;
   return hash % hash_size;
 }
 /*---------------------------------------------------------------------------*/
-// void
-// rehash()
-// {
-//   int old_hash_size = hash_size;
-//   hash_size *= 2; // Double the hash table size
-//   CacheEntry **new_hash_table = (CacheEntry **)calloc(hash_size, sizeof(CacheEntry *));
-//   CacheEntry *entry;
-  
-//   // Rehash all existing entries
-//   for (int i = 0; i < old_hash_size; i++) {
-//     entry = hash_table[i];
-//     while (entry != NULL) {
-//       CacheEntry *next = entry->next;
-//       unsigned int new_index = hash_function(entry->data, entry->datalen);
-//       entry->next = new_hash_table[new_index];
-//       new_hash_table[new_index] = entry;
-//       entry = next;
-//     }
-//   }
-  
-//   free(hash_table);
-//   hash_table = new_hash_table;
-// }
+void
+initialise_cache()
+{
+  hash_table = (CacheEntry **)calloc(hash_size, sizeof(CacheEntry *));
+  if (hash_table == NULL) {
+    LOG_ERR("Memory allocation for hash table failed\n");
+  }
+}
 /*---------------------------------------------------------------------------*/
 void
 print_cache(void)
@@ -52,19 +37,25 @@ print_cache(void)
   for (int i = 0; i < hash_size; i++) {
     CacheEntry *entry = hash_table[i];
     while (entry != NULL) {
-      LOG_INFO("  Entry: '%.*s'\n", entry->datalen, (char *)entry->data);
+      LOG_INFO("  Entry: msg_num: %u, origin_node: %u, attest_node: %u, time: %lu\n",
+               entry->message_num, entry->origin_node, entry->attest_node, entry->time_of_broadcast);
       entry = entry->next;
     }
   }
 }
 /*---------------------------------------------------------------------------*/
 int
-is_duplicate(const uint8_t *data, uint16_t datalen)
+is_duplicate(uint32_t message_num, uint16_t origin_node, uint16_t attest_node)
 {
-  unsigned int index = hash_function(data, datalen);
+  // LOG_INFO("CHECKING: %u|%u|%u\n", message_num, origin_node, attest_node);
+  // print_cache();
+  unsigned int index = hash_function(message_num, origin_node, attest_node);
   CacheEntry *entry = hash_table[index];
   while (entry != NULL) {
-    if (entry->datalen == datalen && memcmp(entry->data, data, datalen) == 0) {
+    if ((entry->message_num == message_num) && 
+        (entry->origin_node == origin_node) &&
+        (entry->attest_node == attest_node)) {
+          // LOG_INFO("MATCH: %u|%u|%u\n", entry->message_num, entry->origin_node, entry->attest_node);
       return 1;
     }
     entry = entry->next;
@@ -72,45 +63,57 @@ is_duplicate(const uint8_t *data, uint16_t datalen)
   return 0;
 }
 /*---------------------------------------------------------------------------*/
-void
-add_to_cache(const uint8_t *data, uint16_t datalen)
+int
+within_grace(clock_time_t time_of_broadcast)
 {
-  if (cache_size >= CACHE_SIZE) {
-    // Remove the oldest entry in a simple round-robin manner
-    static int round_robin_index = 0;
-    while (hash_table[round_robin_index] == NULL) {
-      round_robin_index = (round_robin_index + 1) % hash_size;
+  clock_time_t current_time = clock_time();
+  int32_t time_difference = (int32_t)(current_time - time_of_broadcast);
+
+  // if (abs(time_difference) <= (int32_t)GRACE_TIME) {
+  //   return 1;
+  // }
+  // LOG_INFO("Current: %lu, Broadcast: %lu, Diff: %d, Grace: %lu\n",
+  //          (unsigned long)current_time, (unsigned long)time_of_broadcast, (int)time_difference, (unsigned long)GRACE_TIME);
+  // return 0;
+  return (abs(time_difference) <= (int32_t)GRACE_TIME);
+}
+/*---------------------------------------------------------------------------*/
+void
+add_to_cache(uint32_t message_num, uint16_t origin_node, uint16_t attest_node, clock_time_t time_of_broadcast)
+{
+  // LOG_INFO("ADDING TO CACHE: %u|%u|%u|%lu\n", message_num, origin_node, attest_node, time_of_broadcast);
+  unsigned int index = hash_function(message_num, origin_node, attest_node);
+  CacheEntry *entry = hash_table[index];
+  CacheEntry *prev = NULL;
+
+  while (entry != NULL) {
+    if (clock_time() - entry->time_of_broadcast > GRACE_TIME) {
+      if (prev == NULL) {
+        hash_table[index] = entry->next;
+      } else {
+        prev->next = entry->next;
+      }
+      CacheEntry *expired_entry = entry;
+      entry = entry->next;
+      free(expired_entry);
+      cache_size--;
+    } else {
+      prev = entry;
+      entry = entry->next;
     }
-    CacheEntry *old_entry = hash_table[round_robin_index];
-    hash_table[round_robin_index] = old_entry->next;
-    free(old_entry);
-    cache_size--;
   }
 
-  // if ((float)cache_size / hash_size > LOAD_FACTOR_THRESHOLD) {
-  //   rehash();
-  // }
-
-  unsigned int index = hash_function(data, datalen);
   CacheEntry *new_entry = (CacheEntry *)malloc(sizeof(CacheEntry));
   if (new_entry == NULL) {
     LOG_ERR("Memory allocation failed\n");
     return;
   }
-  memcpy(new_entry->data, data, datalen);
-  new_entry->datalen = datalen;
+  new_entry->message_num = message_num;
+  new_entry->origin_node = origin_node;
+  new_entry->attest_node = attest_node;
+  new_entry->time_of_broadcast = time_of_broadcast;
   new_entry->next = hash_table[index];
   hash_table[index] = new_entry;
   cache_size++;
-}
-/*---------------------------------------------------------------------------*/
-__attribute__((constructor))
-void
-initialize_hash_table()
-{
-  hash_table = (CacheEntry **)calloc(hash_size, sizeof(CacheEntry *));
-  if (hash_table == NULL) {
-    LOG_ERR("Memory allocation for hash table failed\n");
-  }
 }
 /*---------------------------------------------------------------------------*/
