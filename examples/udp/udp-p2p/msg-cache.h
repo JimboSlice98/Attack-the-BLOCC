@@ -6,6 +6,7 @@
 
 #define MAX_MSG_LEN 64
 #define HASH_SIZE 20011
+// #define HASH_SIZE 207
 #define GRACE_TIME (5 * CLOCK_SECOND) // Define the grace time as 5 seconds
 
 typedef struct CacheEntry {

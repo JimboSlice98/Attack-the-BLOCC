@@ -1,5 +1,6 @@
 import itertools
 import random
+import json
 
 
 def create_trustsets(node_positions, fraction=2/3, allow_overlap=True):
@@ -33,3 +34,15 @@ def create_malicious_parties(node_positions, num_malicious):
     
     return malicious_nodes
 
+
+def save_trustsets(trustsets, filename='trustsets.json'):
+    trustsets_list = [list(trustset) for trustset in trustsets]
+    with open(filename, 'w') as f:
+        json.dump(trustsets_list, f)
+
+
+def load_trustsets(filename='trustsets.json'):
+    with open(filename, 'r') as f:
+        trustsets_list = json.load(f)
+    trustsets = set(frozenset(trustset) for trustset in trustsets_list)
+    return trustsets

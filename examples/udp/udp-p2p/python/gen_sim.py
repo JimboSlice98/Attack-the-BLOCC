@@ -74,7 +74,7 @@ def create_simulation_xml(rows, cols, spacing_x, spacing_y, filename, tx_range, 
 
 # Generate simulation file
 create_simulation_xml(
-    rows=4, 
+    rows=5, 
     cols=4, 
     spacing_x=3, 
     spacing_y=12, 

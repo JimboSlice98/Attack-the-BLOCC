@@ -1,7 +1,12 @@
 import json
 import networkx as nx
 import textwrap
+from functools import lru_cache
+import concurrent.futures
+import hashlib
+import subprocess
 from tqdm import tqdm
+from graph import visualize_graph as dg
 
 
 def check_assumption_1(node_positions, trustsets):
@@ -70,35 +75,103 @@ def check_assumption_4(node_states, trustsets, malicious_nodes, t_rep):
 
 def check_assumption_5(G, trustsets, malicious_nodes):
     trustset_list = list(trustsets)
+    valid_nodes = {}
 
     def contains_honest_member(path, trustset):
         return any(node in trustset and node not in malicious_nodes for node in path)
 
-    for i in tqdm(range(len(trustset_list)), desc="Outer Trustsets"):
-        for j in tqdm(range(len(trustset_list)), desc="Inner Trustsets", leave=False):
+    def cache_key(*args):
+        return hashlib.md5(json.dumps(args, sort_keys=True).encode()).hexdigest()
+
+    @lru_cache(maxsize=None)
+    def cached_has_path(source, target):
+        return nx.has_path(G, source, target)
+
+    @lru_cache(maxsize=None)
+    def cached_all_simple_paths(source, target):
+        return list(nx.all_simple_paths(G, source, target))
+
+    tqdm_disable = False
+    for i in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Outer Trustsets"):
+        for j in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Inner Trustsets", leave=True):
             if i != j:
                 C1 = trustset_list[i]
                 C2 = trustset_list[j]
 
-                valid_path_found = False
-                for c1 in tqdm(C1, desc="Nodes in C1    ", leave=False):
-                    for source in tqdm(G.nodes(), desc="Source Nodes   ", leave=False):
-                        if source == c1:
+                valid_node_found = False
+                for c1 in tqdm(C1, disable=tqdm_disable, desc="Nodes in C1    ", leave=False):
+                    all_paths_valid = True
+
+                    paths = set()
+                    for P in tqdm(G.nodes(), disable=tqdm_disable, desc="Source Node    ", leave=False):               
+                        if P == c1:
                             continue
-                        if nx.has_path(G, source, c1):
-                            for path in nx.all_simple_paths(G, source, c1):
-                                if contains_honest_member(path, C2):
-                                    valid_path_found = True
+
+                        if cached_has_path(P, c1):
+                            for path in cached_all_simple_paths(P, c1):
+                                if not contains_honest_member(path, C2):
+                                    all_paths_valid = False
                                     break
-                            if valid_path_found:
+
+                                paths.add((path[0], path[-1]))
+
+                            if not all_paths_valid:
                                 break
-                    if valid_path_found:
+
+                    if all_paths_valid:
+                        valid_node_found = True
+                        valid_nodes[(i, j)] = {c1: paths}
                         break
 
-                if not valid_path_found:
-                    return False, C1, C2
+                if not valid_node_found:
+                    valid_nodes[(i, j)] = None
+                    dg(G, C1, C2)
+                    return False, valid_nodes
 
-    return True, None, None
+    return True, valid_nodes
+
+
+def check_assumption_5_cpp(G, trustsets, malicious_nodes):
+    # subprocess.run(['./c++/clean_build.sh'], check=True)
+    
+    data_path = "c++/data.json"
+    executable_path = "c++/build/Assumption5"
+    
+    data = {
+        "nodes": list(G.nodes),
+        "edges": list(G.edges),
+        "trustsets": [list(ts) for ts in trustsets],
+        "malicious_nodes": list(malicious_nodes)
+    }
+
+    with open(data_path, 'w') as f:
+        json.dump(data, f)
+
+    process = subprocess.Popen([executable_path, data_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+    for stdout_line in iter(process.stdout.readline, ""):
+        print(stdout_line.strip())
+    process.stdout.close()
+    
+    stderr = process.communicate()[1]
+    if stderr:
+        print(stderr)
+    
+    with open("c++/valid_nodes.json", 'r') as f:
+        valid_nodes_cpp = json.load(f)
+
+    valid_nodes = {}
+    for i, outer_dict in valid_nodes_cpp.items():
+        i = int(i)
+        for j, inner_dict in outer_dict.items():
+            j = int(j)
+            for c1, paths in inner_dict.items():
+                c1 = int(c1)
+                if (i, j) not in valid_nodes:
+                    valid_nodes[(i, j)] = {}
+                valid_nodes[(i, j)][c1] = set((path[0], path[1]) for path in paths)
+
+    return None, valid_nodes
 
 
 def check_assumption_6(node_states, trustsets, malicious_nodes, t_rep):

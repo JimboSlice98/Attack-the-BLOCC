@@ -1,7 +1,9 @@
 import textwrap
+import json
+import time
 import matplotlib.pyplot as plt
 from file_parser import parse_simulation_file, parse_log_file
-from trustsets import create_trustsets, create_malicious_parties
+from trustsets import create_trustsets, create_malicious_parties, save_trustsets, load_trustsets
 from graph import create_graph, visualize_graph
 from assumptions import *
 
@@ -43,6 +45,14 @@ class State:
         )
 
     
+    def save_trustsets(self):
+        save_trustsets(self.trustsets)
+
+    
+    def load_trustsets(self):
+        self.trustsets = load_trustsets()
+
+    
     def create_malicious_parties(self, num_malicious):
         self.malicious_nodes = create_malicious_parties(
             node_positions=self.node_positions, 
@@ -53,6 +63,7 @@ class State:
     def create_graph(self):
         self.connectivity_graph = create_graph(
             node_positions=self.node_positions,
+            malicious_nodes = self.malicious_nodes,
             distance_threshold=14
         )
 
@@ -108,21 +119,47 @@ class State:
     
 
     def check_assumption_5(self):
-        result, C1, C2, violating_source, violating_path = check_assumption_5(
+        start_time = time.time()
+        result, valid_nodes = check_assumption_5(
             G=self.connectivity_graph,
             trustsets=self.trustsets,
             malicious_nodes=self.malicious_nodes
         )
+        end_time = time.time()
         print(f"Assumption 5: {result}")
+        print(valid_nodes)
+        print(f"Assumption 5 execution time: {end_time - start_time:.2f} seconds")
+        return result        # trustset_list = list(self.trustsets)
 
-        if not result:
-            print("Assumption 5 is violated.")
-            print("Trustset C1:", C1)
-            print("Trustset C2:", C2)
-            print("Source node:", violating_source)
-            print("Violating path:", violating_path)
-            visualize_graph(self.connectivity_graph, C1, C2, violating_source, violating_path)
+        # for key, node_and_paths in valid_nodes.items():
+        #     node = list(node_and_paths.keys())[0]
+        #     paths = node_and_paths[node]
 
+        #     print(f"Key: {key}, Node: {node}")
+        #     C1 = trustset_list[key[0]]
+        #     C2 = trustset_list[key[1]]
+        #     print(f"  C1: {C1}")
+        #     print(f"  C2: {C2}")
+        #     print(f"  Paths: {paths}")
+
+        #     visualize_graph(self.connectivity_graph, C1, C2)
+            
+        # if not result:
+        #     print()
+        # return result
+
+
+    def check_assumption_5_cpp(self):
+        start_time = time.time()
+        result, valid_nodes = check_assumption_5_cpp(
+            G=self.connectivity_graph,
+            trustsets=self.trustsets,
+            malicious_nodes=self.malicious_nodes
+        )
+        end_time = time.time()
+        print(f"Assumption 5: {result}")
+        print(valid_nodes)
+        print(f"Assumption 5 execution time: {end_time - start_time:.2f} seconds")
         return result
 
 
@@ -153,13 +190,21 @@ class State:
         self.check_assumption_3()
         self.check_assumption_4()
         self.check_assumption_5()
+        self.check_assumption_5_cpp()
         self.check_assumption_6()
 
+
+    class TupleKeyEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, tuple):
+                return str(obj)
+            return json.JSONEncoder.default(self, obj)
 
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     from state_manager import State
+    from graph import visualize_graph
 
     simulation_file = '../simulation.csc'
     log_file = '../loglistener-new.txt'
@@ -168,12 +213,15 @@ if __name__ == "__main__":
     state.load_simulation_data(simulation_file)
     state.load_log_data(log_file)
 
-    # tx_data = {node_id: node_state['tx'] for node_id, node_state in state.node_states.items()}
-    # print(json.dumps(tx_data, indent=2))
-
-    state.create_trustsets(fraction=2/3, allow_overlap=True)
+    state.create_trustsets(fraction=4/12, allow_overlap=True)
     state.create_malicious_parties(num_malicious=4)
+    # state.save_trustsets()
+    # state.load_trustsets()
     state.create_graph()
 
     state.check_assumptions()
-    
+
+    trustset_list = list(state.trustsets)
+    G = state.connectivity_graph
+    G.remove_nodes_from([5, 9])
+    visualize_graph(state.connectivity_graph, trustset_list[3], trustset_list[248])
