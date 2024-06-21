@@ -78,7 +78,7 @@ def check_assumption_5(G, trustsets, malicious_nodes):
     valid_nodes = {}
 
     def contains_honest_member(path, trustset):
-        return any(node in trustset and node not in malicious_nodes for node in path)
+        return any(node in trustset and node not in malicious_nodes for node in path)  # Can reverse the logic for optimisatiob
 
     def cache_key(*args):
         return hashlib.md5(json.dumps(args, sort_keys=True).encode()).hexdigest()
@@ -98,7 +98,7 @@ def check_assumption_5(G, trustsets, malicious_nodes):
                 C1 = trustset_list[i]
                 C2 = trustset_list[j]
 
-                valid_node_found = False
+                valid_node_found = False  # Rename to valid c1
                 for c1 in tqdm(C1, disable=tqdm_disable, desc="Nodes in C1    ", leave=False):
                     all_paths_valid = True
 

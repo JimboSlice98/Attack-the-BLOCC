@@ -190,15 +190,8 @@ class State:
         self.check_assumption_3()
         self.check_assumption_4()
         self.check_assumption_5()
-        self.check_assumption_5_cpp()
+        # self.check_assumption_5_cpp()
         self.check_assumption_6()
-
-
-    class TupleKeyEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if isinstance(obj, tuple):
-                return str(obj)
-            return json.JSONEncoder.default(self, obj)
 
 
 if __name__ == "__main__":
