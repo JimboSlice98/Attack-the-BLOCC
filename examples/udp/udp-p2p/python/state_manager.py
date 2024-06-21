@@ -119,48 +119,32 @@ class State:
     
 
     def check_assumption_5(self):
-        start_time = time.time()
         result, valid_nodes = check_assumption_5(
             G=self.connectivity_graph,
             trustsets=self.trustsets,
             malicious_nodes=self.malicious_nodes
         )
-        end_time = time.time()
         print(f"Assumption 5: {result}")
-        print(valid_nodes)
-        print(f"Assumption 5 execution time: {end_time - start_time:.2f} seconds")
-        return result        # trustset_list = list(self.trustsets)
+
+        trustset_list = list(self.trustsets)
+        # print(f"Valid Nodes: {valid_nodes}")
 
         # for key, node_and_paths in valid_nodes.items():
-        #     node = list(node_and_paths.keys())[0]
-        #     paths = node_and_paths[node]
+        #     node = list(node_and_paths.keys())
+        #     # paths = node_and_paths[node]
 
         #     print(f"Key: {key}, Node: {node}")
         #     C1 = trustset_list[key[0]]
         #     C2 = trustset_list[key[1]]
         #     print(f"  C1: {C1}")
         #     print(f"  C2: {C2}")
-        #     print(f"  Paths: {paths}")
+        #     # print(f"  Paths: {paths}")
 
         #     visualize_graph(self.connectivity_graph, C1, C2)
             
         # if not result:
         #     print()
         # return result
-
-
-    def check_assumption_5_cpp(self):
-        start_time = time.time()
-        result, valid_nodes = check_assumption_5_cpp(
-            G=self.connectivity_graph,
-            trustsets=self.trustsets,
-            malicious_nodes=self.malicious_nodes
-        )
-        end_time = time.time()
-        print(f"Assumption 5: {result}")
-        print(valid_nodes)
-        print(f"Assumption 5 execution time: {end_time - start_time:.2f} seconds")
-        return result
 
 
     def check_assumption_6(self):
@@ -190,7 +174,6 @@ class State:
         self.check_assumption_3()
         self.check_assumption_4()
         self.check_assumption_5()
-        # self.check_assumption_5_cpp()
         self.check_assumption_6()
 
 
@@ -206,15 +189,9 @@ if __name__ == "__main__":
     state.load_simulation_data(simulation_file)
     state.load_log_data(log_file)
 
-    state.create_trustsets(fraction=4/12, allow_overlap=True)
-    state.create_malicious_parties(num_malicious=4)
-    # state.save_trustsets()
-    # state.load_trustsets()
+    state.create_trustsets(fraction=8/12, allow_overlap=True)
+    state.create_malicious_parties(num_malicious=2)
+    
     state.create_graph()
 
     state.check_assumptions()
-
-    trustset_list = list(state.trustsets)
-    G = state.connectivity_graph
-    G.remove_nodes_from([5, 9])
-    visualize_graph(state.connectivity_graph, trustset_list[3], trustset_list[248])

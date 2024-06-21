@@ -2,9 +2,8 @@ import json
 import networkx as nx
 import textwrap
 from functools import lru_cache
-import concurrent.futures
+from collections import deque
 import hashlib
-import subprocess
 from tqdm import tqdm
 from graph import visualize_graph as dg
 
@@ -73,57 +72,125 @@ def check_assumption_4(node_states, trustsets, malicious_nodes, t_rep):
     return True, None
 
 
-def check_assumption_5(G, trustsets, malicious_nodes):
+# def check_assumption_5_nx(G, trustsets, malicious_nodes):
+#     trustset_list = list(trustsets)
+#     valid_nodes = {}
+
+#     def contains_honest_member(path, trustset):
+#         return any(node in trustset and node not in malicious_nodes for node in path)  # Can reverse the logic for optimisatiob
+
+#     def cache_key(*args):
+#         return hashlib.md5(json.dumps(args, sort_keys=True).encode()).hexdigest()
+
+#     @lru_cache(maxsize=None)
+#     def cached_has_path(P, target):
+#         return nx.has_path(G, P, target)
+
+#     @lru_cache(maxsize=None)
+#     def cached_all_simple_paths(P, target):
+#         return list(nx.all_simple_paths(G, P, target))
+
+#     tqdm_disable = False
+#     for i in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Outer Trustsets"):
+#         for j in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Inner Trustsets", leave=True):
+#             if i != j:
+#                 C1 = trustset_list[i]
+#                 C2 = trustset_list[j]
+
+#                 valid_c1_found = False
+#                 for c1 in tqdm(C1, disable=tqdm_disable, desc="Nodes in C1    ", leave=False):
+#                     all_paths_valid = True
+
+#                     paths = set()
+#                     for P in tqdm(G.nodes(), disable=tqdm_disable, desc="Source Node    ", leave=False):               
+#                         if P == c1:
+#                             continue
+
+#                         if cached_has_path(P, c1):
+#                             for path in cached_all_simple_paths(P, c1):
+#                                 if not contains_honest_member(path, C2):
+#                                     all_paths_valid = False
+#                                     break
+
+#                                 paths.add((path[0], path[-1]))
+
+#                             if not all_paths_valid:
+#                                 break
+
+#                     if all_paths_valid:
+#                         valid_c1_found = True
+#                         valid_nodes[(i, j)] = {c1: paths}
+#                         break
+
+#                 if not valid_c1_found:
+#                     valid_nodes[(i, j)] = None
+#                     dg(G, C1, C2)
+#                     return False, valid_nodes
+
+#     return True, valid_nodes
+
+
+# def bfs_check_paths(G, P, c1, C2, malicious_nodes):
+
+#     def contains_honest_member(node, trustset, malicious_nodes):
+#         return node in trustset and node not in malicious_nodes
+
+#     visited = set()
+#     queue = deque([P])
+
+#     while queue:
+#         current_node = queue.popleft()
+#         if current_node in visited:
+#             continue
+#         visited.add(current_node)
+
+#         if current_node == c1:
+#             continue
+
+#         if contains_honest_member(current_node, C2, malicious_nodes):
+#             continue
+
+#         for neighbor in G.neighbors(current_node):
+#             if neighbor == c1:
+#                 if not contains_honest_member(current_node, C2, malicious_nodes):
+#                     return False
+#             elif neighbor not in visited:
+#                 queue.append(neighbor)
+
+#     return True
+
+
+# def check_assumption_5_bfs(G, trustsets, malicious_nodes):
     trustset_list = list(trustsets)
     valid_nodes = {}
 
-    def contains_honest_member(path, trustset):
-        return any(node in trustset and node not in malicious_nodes for node in path)  # Can reverse the logic for optimisatiob
-
-    def cache_key(*args):
-        return hashlib.md5(json.dumps(args, sort_keys=True).encode()).hexdigest()
-
-    @lru_cache(maxsize=None)
-    def cached_has_path(source, target):
-        return nx.has_path(G, source, target)
-
-    @lru_cache(maxsize=None)
-    def cached_all_simple_paths(source, target):
-        return list(nx.all_simple_paths(G, source, target))
-
-    tqdm_disable = False
+    tqdm_disable = True
     for i in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Outer Trustsets"):
-        for j in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Inner Trustsets", leave=True):
+        for j in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Inner Trustsets", leave=False):
             if i != j:
                 C1 = trustset_list[i]
                 C2 = trustset_list[j]
 
-                valid_node_found = False  # Rename to valid c1
+                print(f"C1: {C1} \nC2: {C2}")
+
+                valid_c1_found = False
                 for c1 in tqdm(C1, disable=tqdm_disable, desc="Nodes in C1    ", leave=False):
                     all_paths_valid = True
 
-                    paths = set()
-                    for P in tqdm(G.nodes(), disable=tqdm_disable, desc="Source Node    ", leave=False):               
+                    for P in tqdm(G.nodes(), disable=tqdm_disable, desc="Source Nodes   ", leave=False):
                         if P == c1:
                             continue
 
-                        if cached_has_path(P, c1):
-                            for path in cached_all_simple_paths(P, c1):
-                                if not contains_honest_member(path, C2):
-                                    all_paths_valid = False
-                                    break
-
-                                paths.add((path[0], path[-1]))
-
-                            if not all_paths_valid:
-                                break
+                        if not bfs_check_paths(G, P, c1, C2, malicious_nodes):
+                            all_paths_valid = False
+                            break
 
                     if all_paths_valid:
-                        valid_node_found = True
-                        valid_nodes[(i, j)] = {c1: paths}
+                        valid_c1_found = True
+                        valid_nodes[(i, j)] = c1
                         break
 
-                if not valid_node_found:
+                if not valid_c1_found:
                     valid_nodes[(i, j)] = None
                     dg(G, C1, C2)
                     return False, valid_nodes
@@ -131,47 +198,41 @@ def check_assumption_5(G, trustsets, malicious_nodes):
     return True, valid_nodes
 
 
-def check_assumption_5_cpp(G, trustsets, malicious_nodes):
-    # subprocess.run(['./c++/clean_build.sh'], check=True)
-    
-    data_path = "c++/data.json"
-    executable_path = "c++/build/Assumption5"
-    
-    data = {
-        "nodes": list(G.nodes),
-        "edges": list(G.edges),
-        "trustsets": [list(ts) for ts in trustsets],
-        "malicious_nodes": list(malicious_nodes)
-    }
-
-    with open(data_path, 'w') as f:
-        json.dump(data, f)
-
-    process = subprocess.Popen([executable_path, data_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-    for stdout_line in iter(process.stdout.readline, ""):
-        print(stdout_line.strip())
-    process.stdout.close()
-    
-    stderr = process.communicate()[1]
-    if stderr:
-        print(stderr)
-    
-    with open("c++/valid_nodes.json", 'r') as f:
-        valid_nodes_cpp = json.load(f)
-
+def check_assumption_5(G, trustsets, malicious_nodes):
+    trustset_list = list(trustsets)
     valid_nodes = {}
-    for i, outer_dict in valid_nodes_cpp.items():
-        i = int(i)
-        for j, inner_dict in outer_dict.items():
-            j = int(j)
-            for c1, paths in inner_dict.items():
-                c1 = int(c1)
-                if (i, j) not in valid_nodes:
-                    valid_nodes[(i, j)] = {}
-                valid_nodes[(i, j)][c1] = set((path[0], path[1]) for path in paths)
+    assumption_validity = False
+    
+    for i in tqdm(range(len(trustset_list)), desc="Outer Trustsets"):
+        for j in range(len(trustset_list)):
+            if i != j:
+                C1 = trustset_list[i]
+                C2 = trustset_list[j]
 
-    return None, valid_nodes
+                valid_c1_found = False
+                for c1 in C1:
+                    all_neighbors_honest = True
+
+                    if c1 in C2 and c1 not in malicious_nodes:
+                        valid_c1_found = True
+                        break
+
+                    for neighbor in G.neighbors(c1):
+                        if neighbor not in C2 or neighbor in malicious_nodes:
+                            all_neighbors_honest = False
+                            break
+
+                    if all_neighbors_honest:
+                        valid_c1_found = True
+                        valid_nodes[(i, j)] = c1
+                        break
+
+                if not valid_c1_found:
+                    valid_nodes[(i, j)] = None
+                    dg(G, C1, C2)
+                    
+
+    return assumption_validity, valid_nodes    
 
 
 def check_assumption_6(node_states, trustsets, malicious_nodes, t_rep):
