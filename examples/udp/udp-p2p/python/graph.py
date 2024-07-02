@@ -2,6 +2,7 @@ import networkx as nx
 import math
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import plotly.graph_objects as go
 
 
 def nodal_distance(node1, node2):
@@ -74,3 +75,45 @@ def visualize_graph(G, C1, C2):
     ax.set_ylim(min(all_y) - y_margin, max(all_y) + y_margin)
 
     plt.show()
+
+
+def visualize_graph_3D(G, C1, C2):
+    pos = nx.spring_layout(G, dim=3)
+    # pos = nx.get_node_attributes(G, 'pos')
+    x_nodes = [pos[i][0] for i in pos]
+    y_nodes = [pos[i][1] for i in pos]
+    z_nodes = [pos[i][2] for i in pos]
+
+    edge_trace = []
+    for edge in G.edges():
+        x0, y0, z0 = pos[edge[0]]
+        x1, y1, z1 = pos[edge[1]]
+        edge_trace.append(go.Scatter3d(
+            x=[x0, x1, None], y=[y0, y1, None], z=[z0, z1, None],
+            mode='lines',
+            line=dict(color='black', width=2),
+            hoverinfo='none'
+        ))
+
+    node_trace = go.Scatter3d(
+        x=x_nodes, y=y_nodes, z=z_nodes,
+        mode='markers',
+        marker=dict(symbol='circle',
+                    size=6,
+                    color=['red' if G.nodes[node].get('malicious', False) else 'blue' if node in C2 else 'green' if node in C1 else 'gray' for node in G.nodes()],
+                    line=dict(color='black', width=1)),
+        hoverinfo='text'
+    )
+
+    fig = go.Figure(data=edge_trace + [node_trace],
+                    layout=go.Layout(
+                        title='3D Network Graph',
+                        showlegend=False,
+                        scene=dict(
+                            xaxis=dict(showbackground=False),
+                            yaxis=dict(showbackground=False),
+                            zaxis=dict(showbackground=False)
+                        )
+                    ))
+
+    fig.show()

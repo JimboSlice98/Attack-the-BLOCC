@@ -4,7 +4,7 @@ import time
 import matplotlib.pyplot as plt
 from file_parser import parse_simulation_file, parse_log_file
 from trustsets import create_trustsets, create_malicious_parties, save_trustsets, load_trustsets
-from graph import create_graph, visualize_graph
+from graph import create_graph, visualize_graph, visualize_graph_3D
 from assumptions import *
 
 
@@ -24,6 +24,7 @@ class State:
 
   
     def load_log_data(self, file_path):
+        print("Loading log data")
         self.log_file_path = file_path
         self.log_data, self.message_groups, self.node_states = parse_log_file(
             file_path=file_path
@@ -31,6 +32,7 @@ class State:
     
 
     def load_simulation_data(self, file_path):
+        print("Loading simulation data")
         self.simulation_file_path = file_path
         self.node_positions = parse_simulation_file(
             file_path=file_path
@@ -38,6 +40,7 @@ class State:
 
     
     def create_trustsets(self, fraction=2/3, allow_overlap=True):
+        print("Creating trustsets")
         self.trustsets = create_trustsets(
             node_positions=self.node_positions, 
             fraction=fraction, 
@@ -54,6 +57,7 @@ class State:
 
     
     def create_malicious_parties(self, num_malicious):
+        print("Assigning malicious nodes")
         self.malicious_nodes = create_malicious_parties(
             node_positions=self.node_positions, 
             num_malicious=num_malicious
@@ -61,6 +65,7 @@ class State:
 
     
     def create_graph(self):
+        print("Creating connectivity graph")
         self.connectivity_graph = create_graph(
             node_positions=self.node_positions,
             malicious_nodes = self.malicious_nodes,
@@ -189,9 +194,11 @@ if __name__ == "__main__":
     state.load_simulation_data(simulation_file)
     state.load_log_data(log_file)
 
-    state.create_trustsets(fraction=8/12, allow_overlap=True)
-    state.create_malicious_parties(num_malicious=2)
-    
-    state.create_graph()
+    # state.create_trustsets(fraction=5/12, allow_overlap=True)
+    state.create_malicious_parties(num_malicious=3)
 
-    state.check_assumptions()
+    state.create_graph()
+    # visualize_graph(state.connectivity_graph, {}, {})
+    visualize_graph_3D(state.connectivity_graph, {}, {})
+
+    # state.check_assumptions()

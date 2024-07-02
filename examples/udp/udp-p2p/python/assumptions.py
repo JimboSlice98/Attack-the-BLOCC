@@ -72,138 +72,13 @@ def check_assumption_4(node_states, trustsets, malicious_nodes, t_rep):
     return True, None
 
 
-# def check_assumption_5_nx(G, trustsets, malicious_nodes):
-#     trustset_list = list(trustsets)
-#     valid_nodes = {}
-
-#     def contains_honest_member(path, trustset):
-#         return any(node in trustset and node not in malicious_nodes for node in path)  # Can reverse the logic for optimisatiob
-
-#     def cache_key(*args):
-#         return hashlib.md5(json.dumps(args, sort_keys=True).encode()).hexdigest()
-
-#     @lru_cache(maxsize=None)
-#     def cached_has_path(P, target):
-#         return nx.has_path(G, P, target)
-
-#     @lru_cache(maxsize=None)
-#     def cached_all_simple_paths(P, target):
-#         return list(nx.all_simple_paths(G, P, target))
-
-#     tqdm_disable = False
-#     for i in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Outer Trustsets"):
-#         for j in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Inner Trustsets", leave=True):
-#             if i != j:
-#                 C1 = trustset_list[i]
-#                 C2 = trustset_list[j]
-
-#                 valid_c1_found = False
-#                 for c1 in tqdm(C1, disable=tqdm_disable, desc="Nodes in C1    ", leave=False):
-#                     all_paths_valid = True
-
-#                     paths = set()
-#                     for P in tqdm(G.nodes(), disable=tqdm_disable, desc="Source Node    ", leave=False):               
-#                         if P == c1:
-#                             continue
-
-#                         if cached_has_path(P, c1):
-#                             for path in cached_all_simple_paths(P, c1):
-#                                 if not contains_honest_member(path, C2):
-#                                     all_paths_valid = False
-#                                     break
-
-#                                 paths.add((path[0], path[-1]))
-
-#                             if not all_paths_valid:
-#                                 break
-
-#                     if all_paths_valid:
-#                         valid_c1_found = True
-#                         valid_nodes[(i, j)] = {c1: paths}
-#                         break
-
-#                 if not valid_c1_found:
-#                     valid_nodes[(i, j)] = None
-#                     dg(G, C1, C2)
-#                     return False, valid_nodes
-
-#     return True, valid_nodes
-
-
-# def bfs_check_paths(G, P, c1, C2, malicious_nodes):
-
-#     def contains_honest_member(node, trustset, malicious_nodes):
-#         return node in trustset and node not in malicious_nodes
-
-#     visited = set()
-#     queue = deque([P])
-
-#     while queue:
-#         current_node = queue.popleft()
-#         if current_node in visited:
-#             continue
-#         visited.add(current_node)
-
-#         if current_node == c1:
-#             continue
-
-#         if contains_honest_member(current_node, C2, malicious_nodes):
-#             continue
-
-#         for neighbor in G.neighbors(current_node):
-#             if neighbor == c1:
-#                 if not contains_honest_member(current_node, C2, malicious_nodes):
-#                     return False
-#             elif neighbor not in visited:
-#                 queue.append(neighbor)
-
-#     return True
-
-
-# def check_assumption_5_bfs(G, trustsets, malicious_nodes):
-    trustset_list = list(trustsets)
-    valid_nodes = {}
-
-    tqdm_disable = True
-    for i in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Outer Trustsets"):
-        for j in tqdm(range(len(trustset_list)), disable=tqdm_disable, desc="Inner Trustsets", leave=False):
-            if i != j:
-                C1 = trustset_list[i]
-                C2 = trustset_list[j]
-
-                print(f"C1: {C1} \nC2: {C2}")
-
-                valid_c1_found = False
-                for c1 in tqdm(C1, disable=tqdm_disable, desc="Nodes in C1    ", leave=False):
-                    all_paths_valid = True
-
-                    for P in tqdm(G.nodes(), disable=tqdm_disable, desc="Source Nodes   ", leave=False):
-                        if P == c1:
-                            continue
-
-                        if not bfs_check_paths(G, P, c1, C2, malicious_nodes):
-                            all_paths_valid = False
-                            break
-
-                    if all_paths_valid:
-                        valid_c1_found = True
-                        valid_nodes[(i, j)] = c1
-                        break
-
-                if not valid_c1_found:
-                    valid_nodes[(i, j)] = None
-                    dg(G, C1, C2)
-                    return False, valid_nodes
-
-    return True, valid_nodes
-
-
 def check_assumption_5(G, trustsets, malicious_nodes):
     trustset_list = list(trustsets)
     valid_nodes = {}
-    assumption_validity = False
+    assumption_validity = True
+    tqdm_disable = True
     
-    for i in tqdm(range(len(trustset_list)), desc="Outer Trustsets"):
+    for i in tqdm(range(len(trustset_list)), disable=tqdm_disable):
         for j in range(len(trustset_list)):
             if i != j:
                 C1 = trustset_list[i]
@@ -230,8 +105,8 @@ def check_assumption_5(G, trustsets, malicious_nodes):
                 if not valid_c1_found:
                     valid_nodes[(i, j)] = None
                     dg(G, C1, C2)
+                    assumption_validity = False
                     
-
     return assumption_validity, valid_nodes    
 
 

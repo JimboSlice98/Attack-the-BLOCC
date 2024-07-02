@@ -7,7 +7,7 @@ def prettify(element):
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
-def create_simulation_xml(rows, cols, spacing_x, spacing_y, filename, tx_range, interference_range, success_ratio_tx, success_ratio_rx):
+def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, filename, tx_range, interference_range, success_ratio_tx, success_ratio_rx):
     simconf = ET.Element("simconf", version="2023090101")
     simulation = ET.SubElement(simconf, "simulation")
     
@@ -55,32 +55,36 @@ def create_simulation_xml(rows, cols, spacing_x, spacing_y, filename, tx_range, 
         ET.SubElement(motetype, "moteinterface").text = interface
     
     mote_id = 1
-    for i in range(rows):
-        for j in range(cols):
-            mote = ET.SubElement(motetype, "mote")
-            interface_config_pos = ET.SubElement(mote, "interface_config")
-            interface_config_pos.text = "org.contikios.cooja.interfaces.Position"
-            ET.SubElement(interface_config_pos, "pos", x=str(j * spacing_x), y=str(i * spacing_y))
-            
-            interface_config_id = ET.SubElement(mote, "interface_config")
-            interface_config_id.text = "org.contikios.cooja.contikimote.interfaces.ContikiMoteID"
-            ET.SubElement(interface_config_id, "id").text = str(mote_id)
-            
-            mote_id += 1
+    for k in range(layers):
+        for i in range(rows):
+            for j in range(cols):
+                mote = ET.SubElement(motetype, "mote")
+                interface_config_pos = ET.SubElement(mote, "interface_config")
+                interface_config_pos.text = "org.contikios.cooja.interfaces.Position"
+                ET.SubElement(interface_config_pos, "pos", x=str(j * spacing_x), y=str(i * spacing_y), z=str(k * spacing_z))
+                
+                interface_config_id = ET.SubElement(mote, "interface_config")
+                interface_config_id.text = "org.contikios.cooja.contikimote.interfaces.ContikiMoteID"
+                ET.SubElement(interface_config_id, "id").text = str(mote_id)
+                
+                mote_id += 1
     
     pretty_xml = prettify(simconf)
     with open(filename, "w") as f:
         f.write(pretty_xml)
 
-# Generate simulation file
-create_simulation_xml(
-    rows=5, 
-    cols=4, 
-    spacing_x=3, 
-    spacing_y=12, 
-    filename="../simulation-large.csc", 
-    tx_range=14, 
-    interference_range=20, 
-    success_ratio_tx=0.9, 
-    success_ratio_rx=0.9
-)
+
+if __name__ == "__main__":
+    create_simulation_xml(
+        rows=3, 
+        cols=4,
+        layers=2, 
+        spacing_x=3, 
+        spacing_y=12, 
+        spacing_z=5,
+        filename="../simulation-large.csc", 
+        tx_range=14, 
+        interference_range=20, 
+        success_ratio_tx=0.9, 
+        success_ratio_rx=0.9
+    )
