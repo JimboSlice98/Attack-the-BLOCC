@@ -24,6 +24,19 @@ def create_trustsets(node_positions, fraction=2/3, allow_overlap=True):
     return trustsets
 
 
+def trustset_generator_factory(node_positions, fraction=2/3):
+    def generator():
+        node_ids = list(node_positions.keys())
+        total_nodes = len(node_ids)
+        trustset_size = int(total_nodes * fraction)
+
+        for combination in itertools.combinations(node_ids, trustset_size):
+            yield frozenset(combination)
+            
+    return generator
+
+
+
 def create_malicious_parties(node_positions, num_malicious):
     node_ids = list(node_positions.keys())
     

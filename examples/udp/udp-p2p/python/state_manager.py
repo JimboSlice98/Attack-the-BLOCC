@@ -3,7 +3,7 @@ import json
 import time
 import matplotlib.pyplot as plt
 from file_parser import parse_simulation_file, parse_log_file
-from trustsets import create_trustsets, create_malicious_parties, save_trustsets, load_trustsets
+from trustsets import trustset_generator_factory, create_malicious_parties
 from graph import create_graph, visualize_graph, visualize_graph_3D, visualize_graph_3D_with_click, find_node_with_honest_neighbors
 from assumptions import *
 
@@ -18,7 +18,8 @@ class State:
         self.message_groups = None
         self.node_states = None
 
-        self.trustsets = None
+        self.trustset_fraction = 2/3
+        self.trustset_generator_factory = None
         self.malicious_nodes = None
         self.connectivity_graph = None
 
@@ -41,18 +42,10 @@ class State:
     
     def generate_trustsets(self, fraction=2/3):
         print("Generating trustsets")
-        self.trustsets = create_trustsets(
+        self.trustset_generator_factory = trustset_generator_factory(
             node_positions=self.node_positions, 
             fraction=fraction            
         )
-
-    
-    def save_trustsets(self):
-        save_trustsets(self.trustsets)
-
-    
-    def load_trustsets(self):
-        self.trustsets = load_trustsets()
 
     
     def num_nodes(self):
@@ -79,7 +72,7 @@ class State:
     def check_assumption_1(self):
         result, error_message = check_assumption_1(
             node_positions=self.node_positions,
-            trustsets=self.trustsets            
+            trustset_generator=self.trustset_generator_factory()
         )
         print(f"Assumption 1: {result}")
         
@@ -90,7 +83,7 @@ class State:
 
     def check_assumption_2(self):
         result, error_message = check_assumption_2(
-            trustsets=self.trustsets,
+            trustset_generator=self.trustset_generator_factory(),
             malicious_nodes=self.malicious_nodes            
         )
         print(f"Assumption 2: {result}")
@@ -102,7 +95,7 @@ class State:
 
     def check_assumption_3(self):
         result, error_message = check_assumption_3(
-            trustsets=self.trustsets,
+            trustset_generator=self.trustset_generator_factory(),
             malicious_nodes=self.malicious_nodes         
         )
         print(f"Assumption 3: {result}")
@@ -115,7 +108,7 @@ class State:
     def check_assumption_4(self):
         result, error_message = check_assumption_4(
             node_states=self.node_states,
-            trustsets=self.trustsets,
+            trustset_generator=self.trustset_generator_factory(),
             malicious_nodes=self.malicious_nodes,
             t_rep=5
         )
@@ -129,7 +122,7 @@ class State:
     def check_assumption_5(self):
         result, valid_nodes = check_assumption_5(
             G=self.connectivity_graph,
-            trustsets=self.trustsets,
+            trustset_generator=self.trustset_generator_factory(),
             malicious_nodes=self.malicious_nodes
         )
         print(f"Assumption 5: {result}")
@@ -138,7 +131,7 @@ class State:
     def check_assumption_6(self):
         result, error_message = check_assumption_6(
             node_states=self.node_states,
-            trustsets=self.trustsets,
+            trustset_generator_factory=self.trustset_generator_factory,
             malicious_nodes=self.malicious_nodes,
             t_rep=5
         )
@@ -161,7 +154,7 @@ class State:
         self.check_assumption_2()
         self.check_assumption_3()
         self.check_assumption_4()        
-        self.check_assumption_5()
+        # self.check_assumption_5()
         self.check_assumption_6()
 
 

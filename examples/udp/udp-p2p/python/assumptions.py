@@ -8,8 +8,8 @@ from tqdm import tqdm
 from graph import visualize_graph as dg
 
 
-def check_assumption_1(node_positions, trustsets):
-    for trustset in trustsets:
+def check_assumption_1(node_positions, trustset_generator):
+    for trustset in trustset_generator:
         if not trustset.issubset(node_positions.keys()):
             missing_nodes = trustset - node_positions.keys()
             error_message = textwrap.indent(textwrap.dedent(f"""
@@ -22,8 +22,8 @@ def check_assumption_1(node_positions, trustsets):
     return True, None
 
 
-def check_assumption_2(trustsets, malicious_nodes):
-    for trustset in trustsets:
+def check_assumption_2(trustset_generator, malicious_nodes):
+    for trustset in trustset_generator:
         if trustset.issubset(malicious_nodes):
             error_message = textwrap.indent(textwrap.dedent(f"""
                 There is at least one pure malicious trustset.
@@ -36,8 +36,8 @@ def check_assumption_2(trustsets, malicious_nodes):
     return True, None
 
 
-def check_assumption_3(trustsets, malicious_nodes):
-    for trustset in trustsets:
+def check_assumption_3(trustset_generator, malicious_nodes):
+    for trustset in trustset_generator:
         if trustset.isdisjoint(malicious_nodes):
             return True, None
 
@@ -49,9 +49,9 @@ def check_assumption_3(trustsets, malicious_nodes):
     return False, error_message
 
 
-def check_assumption_4(node_states, trustsets, malicious_nodes, t_rep):
+def check_assumption_4(node_states, trustset_generator, malicious_nodes, t_rep):
     honest_nodes = set(node_states.keys()) - malicious_nodes
-    fully_honest_nodes = set().union(*{trustset for trustset in trustsets if trustset.isdisjoint(malicious_nodes)})
+    fully_honest_nodes = set().union(*{trustset for trustset in trustset_generator if trustset.isdisjoint(malicious_nodes)})
 
     for node in honest_nodes:
         messages = node_states[node]['tx']
@@ -110,14 +110,15 @@ def check_assumption_5(G, trustsets, malicious_nodes):
     return assumption_validity, valid_nodes    
 
 
-def check_assumption_6(node_states, trustsets, malicious_nodes, t_rep):
+def check_assumption_6(node_states, trustset_generator_factory, malicious_nodes, t_rep):
     honest_nodes = set(node_states.keys()) - malicious_nodes
 
     for node in malicious_nodes:
         messages = node_states[node]['tx']
         for message in messages:
             attestations = message['attestations']
-            for trustset in trustsets:
+            trustset_generator = trustset_generator_factory()
+            for trustset in trustset_generator:
                 if not any(attestation['attest_node'] in (trustset & honest_nodes) for attestation in attestations):
                     json_message = json.dumps(message, indent=2)
                     json_message_indented = textwrap.indent(json_message, ' ' * 4)
