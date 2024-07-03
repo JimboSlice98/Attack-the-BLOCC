@@ -15,7 +15,7 @@ def parse_simulation_file(file_path):
             
             if position is not None and node_id is not None:
                 node_id_int = int(node_id.text)
-                node_positions[node_id_int] = (float(position.get('x')), float(position.get('y')))
+                node_positions[node_id_int] = (float(position.get('x')), float(position.get('y')),float(position.get('z')))
                 
     return node_positions
 
@@ -88,8 +88,8 @@ def parse_log_file(file_path):
 """
 pos_dict
 {
-    node_id_1: (x_coordinate_1, y_coordinate_1),  # int: (float, float)
-    node_id_2: (x_coordinate_2, y_coordinate_2),  # int: (float, float)
+    node_id_1: (x_coordinate_1, y_coordinate_1, z_coordinate_1),  # int: (float, float, float)
+    node_id_2: (x_coordinate_2, y_coordinate_2, z_coordinate_2),  # int: (float, float, float)
     # More nodes...
 }
 

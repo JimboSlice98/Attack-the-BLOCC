@@ -3,12 +3,14 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import plotly.graph_objects as go
+from dash import Dash, html, dcc, Input, Output, State
+from tqdm import tqdm
 
 
 def nodal_distance(node1, node2):
-    x1, y1 = node1
-    x2, y2 = node2
-    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+    x1, y1, z1 = node1
+    x2, y2, z2 = node2
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)
 
 
 def create_graph(node_positions, malicious_nodes, distance_threshold):
@@ -51,6 +53,13 @@ def visualize_graph(G, C1, C2):
     pos = nx.spring_layout(G)
     pos = nx.get_node_attributes(G, 'pos')
     node_size = 500
+    
+    z_layers = set([pos[node][2] for node in pos])
+    if len(z_layers) > 1:
+        print("Simulation is 3D, exiting visualization.")
+        return
+
+    pos = {node: (pos[node][0], pos[node][1]) for node in pos}
     fig, ax = plt.subplots(figsize=(10, 8))
 
     nx.draw_networkx_edges(G, pos, ax=ax, edge_color='black', width=1.5)
@@ -77,12 +86,29 @@ def visualize_graph(G, C1, C2):
     plt.show()
 
 
-def visualize_graph_3D(G, C1, C2):
+def visualize_graph_3D(G, C1, C2, port=45145):
     pos = nx.spring_layout(G, dim=3)
-    # pos = nx.get_node_attributes(G, 'pos')
+    pos = nx.get_node_attributes(G, 'pos')
     x_nodes = [pos[i][0] for i in pos]
     y_nodes = [pos[i][1] for i in pos]
     z_nodes = [pos[i][2] for i in pos]
+
+    node_colors = []
+    node_lines = []
+    for node in G.nodes():
+        if node in C1 and node in C2:
+            node_colors.append('purple')
+        elif node in C1:
+            node_colors.append('green')
+        elif node in C2:
+            node_colors.append('blue')
+        else:
+            node_colors.append('lightgray')
+        
+        if G.nodes[node].get('malicious', False):
+            node_lines.append('red')
+        else:
+            node_lines.append('black')
 
     edge_trace = []
     for edge in G.edges():
@@ -99,9 +125,9 @@ def visualize_graph_3D(G, C1, C2):
         x=x_nodes, y=y_nodes, z=z_nodes,
         mode='markers',
         marker=dict(symbol='circle',
-                    size=6,
-                    color=['red' if G.nodes[node].get('malicious', False) else 'blue' if node in C2 else 'green' if node in C1 else 'gray' for node in G.nodes()],
-                    line=dict(color='black', width=1)),
+                    size=12,
+                    color=node_colors,
+                    line=dict(color=node_lines, width=2)),
         hoverinfo='text'
     )
 
@@ -112,8 +138,147 @@ def visualize_graph_3D(G, C1, C2):
                         scene=dict(
                             xaxis=dict(showbackground=False),
                             yaxis=dict(showbackground=False),
-                            zaxis=dict(showbackground=False)
+                            zaxis=dict(showbackground=False),
+                            aspectmode='data'
                         )
                     ))
 
     fig.show()
+
+
+def visualize_graph_3D_with_click(G, C1, C2, port=45145):
+    pos = nx.spring_layout(G, dim=3)
+    pos = nx.get_node_attributes(G, 'pos')
+    x_nodes = [pos[i][0] for i in pos]
+    y_nodes = [pos[i][1] for i in pos]
+    z_nodes = [pos[i][2] for i in pos]
+
+    node_colors = []
+    node_lines = []
+    for node in G.nodes():
+        if node in C1 and node in C2:
+            node_colors.append('purple')
+        elif node in C1:
+            node_colors.append('green')
+        elif node in C2:
+            node_colors.append('blue')
+        else:
+            node_colors.append('lightgray')
+        
+        if G.nodes[node].get('malicious', False):
+            node_lines.append('red')
+        else:
+            node_lines.append('black')
+
+    app = Dash(__name__)
+    
+    edge_trace = []
+    for edge in G.edges():
+        x0, y0, z0 = pos[edge[0]]
+        x1, y1, z1 = pos[edge[1]]
+        edge_trace.append(go.Scatter3d(
+            x=[x0, x1, None], y=[y0, y1, None], z=[z0, z1, None],
+            mode='lines',
+            line=dict(color='grey', width=1),
+            hoverinfo='none',
+            customdata=[edge]
+        ))
+
+    node_trace = go.Scatter3d(
+        x=x_nodes, y=y_nodes, z=z_nodes,
+        mode='markers',
+        marker=dict(symbol='circle',
+                    size=6,
+                    color=node_colors,
+                    line=dict(color=node_lines, width=2)),
+        hoverinfo='text',
+        customdata=list(G.nodes())
+    )
+
+    fig = go.Figure(data=edge_trace + [node_trace],
+                    layout=go.Layout(
+                        title='3D Network Graph',
+                        showlegend=False,
+                        scene=dict(
+                            xaxis=dict(showbackground=False),
+                            yaxis=dict(showbackground=False),
+                            zaxis=dict(showbackground=False),
+                            aspectmode='data'
+                        ),
+                        hovermode='closest'
+                    ))
+
+    app.layout = html.Div([
+        dcc.Checklist(
+            id='toggle-edges',
+            options=[{'label': 'Show Grey Edges', 'value': 'show'}],
+            value=['show']
+        ),
+        dcc.Graph(id='3d-network-graph', figure=fig, style={'height': '80vh'}),
+        dcc.Store(id='camera-store', data=dict(up=dict(), center=dict(), eye=dict())),
+        dcc.Store(id='clicked-node', data=None)
+    ])
+
+    @app.callback(
+        Output('3d-network-graph', 'figure'),
+        Output('camera-store', 'data'),
+        Input('3d-network-graph', 'clickData'),
+        Input('toggle-edges', 'value'),
+        State('3d-network-graph', 'relayoutData'),
+        State('camera-store', 'data')
+    )
+    def display_click_data(clickData, toggle_edges, relayoutData, camera_data):
+        new_fig = fig
+        if relayoutData and 'scene.camera' in relayoutData:
+            camera_data['up'] = relayoutData['scene.camera']['up']
+            camera_data['center'] = relayoutData['scene.camera']['center']
+            camera_data['eye'] = relayoutData['scene.camera']['eye']
+        
+        show_edges = 'show' in toggle_edges
+
+        clicked_node = None
+        if clickData and 'points' in clickData and clickData['points']:
+            try:
+                clicked_node = clickData['points'][0]['customdata']
+            except KeyError:
+                pass
+        
+        if clicked_node is not None:
+            for i, edge in enumerate(G.edges()):
+                if clicked_node in edge:
+                    new_fig.data[i].line.width = 4
+                    new_fig.data[i].line.color = 'black'
+                else:
+                    new_fig.data[i].line.width = 1
+                    new_fig.data[i].line.color = 'grey' if show_edges else 'rgba(0,0,0,0)'
+        else:
+            for trace in new_fig.data[:-1]:  # Keep nodes always visible
+                trace.line.width = 1
+                trace.line.color = 'grey' if show_edges else 'rgba(0,0,0,0)'
+
+        new_fig.update_layout(
+            scene_camera=dict(
+                up=camera_data.get('up', {}),
+                center=camera_data.get('center', {}),
+                eye=camera_data.get('eye', {})
+            )
+        )
+        
+        return new_fig, camera_data
+
+    app.run_server(port=port, debug=True)
+
+
+def find_node_with_honest_neighbors(G, malicious_nodes):
+    valid_nodes = {}
+    node_found = False
+    tqdm_disable = False
+
+    for node in tqdm(G):
+        if any(neighbor in malicious_nodes for neighbor in G.neighbors(node)):
+            continue
+        else:
+            node_found = True
+            print(node)
+
+    return node_found

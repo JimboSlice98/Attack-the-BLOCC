@@ -76,13 +76,13 @@ def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, f
 
 if __name__ == "__main__":
     create_simulation_xml(
-        rows=3, 
-        cols=4,
-        layers=2, 
+        rows=4, 
+        cols=12,
+        layers=6,
         spacing_x=3, 
         spacing_y=12, 
         spacing_z=5,
-        filename="../simulation-large.csc", 
+        filename="../simulation-z-large.csc", 
         tx_range=14, 
         interference_range=20, 
         success_ratio_tx=0.9, 

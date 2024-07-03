@@ -4,7 +4,7 @@ import time
 import matplotlib.pyplot as plt
 from file_parser import parse_simulation_file, parse_log_file
 from trustsets import create_trustsets, create_malicious_parties, save_trustsets, load_trustsets
-from graph import create_graph, visualize_graph, visualize_graph_3D
+from graph import create_graph, visualize_graph, visualize_graph_3D, visualize_graph_3D_with_click, find_node_with_honest_neighbors
 from assumptions import *
 
 
@@ -39,12 +39,11 @@ class State:
         )
 
     
-    def create_trustsets(self, fraction=2/3, allow_overlap=True):
-        print("Creating trustsets")
+    def generate_trustsets(self, fraction=2/3):
+        print("Generating trustsets")
         self.trustsets = create_trustsets(
             node_positions=self.node_positions, 
-            fraction=fraction, 
-            allow_overlap=allow_overlap
+            fraction=fraction            
         )
 
     
@@ -54,6 +53,10 @@ class State:
     
     def load_trustsets(self):
         self.trustsets = load_trustsets()
+
+    
+    def num_nodes(self):
+        return len(self.node_positions)
 
     
     def create_malicious_parties(self, num_malicious):
@@ -131,26 +134,6 @@ class State:
         )
         print(f"Assumption 5: {result}")
 
-        trustset_list = list(self.trustsets)
-        # print(f"Valid Nodes: {valid_nodes}")
-
-        # for key, node_and_paths in valid_nodes.items():
-        #     node = list(node_and_paths.keys())
-        #     # paths = node_and_paths[node]
-
-        #     print(f"Key: {key}, Node: {node}")
-        #     C1 = trustset_list[key[0]]
-        #     C2 = trustset_list[key[1]]
-        #     print(f"  C1: {C1}")
-        #     print(f"  C2: {C2}")
-        #     # print(f"  Paths: {paths}")
-
-        #     visualize_graph(self.connectivity_graph, C1, C2)
-            
-        # if not result:
-        #     print()
-        # return result
-
 
     def check_assumption_6(self):
         result, error_message = check_assumption_6(
@@ -169,7 +152,7 @@ class State:
     def check_assumptions(self):
         print(textwrap.dedent(f"""
             ===================================================================
-            Honest nodes: {set(self.node_states.keys()) - self.malicious_nodes}
+            Honest nodes: {set(self.node_positions.keys()) - self.malicious_nodes}
             Malicious nodes: {self.malicious_nodes}
             ===================================================================
         """))
@@ -177,7 +160,7 @@ class State:
         self.check_assumption_1()
         self.check_assumption_2()
         self.check_assumption_3()
-        self.check_assumption_4()
+        self.check_assumption_4()        
         self.check_assumption_5()
         self.check_assumption_6()
 
@@ -194,11 +177,15 @@ if __name__ == "__main__":
     state.load_simulation_data(simulation_file)
     state.load_log_data(log_file)
 
-    # state.create_trustsets(fraction=5/12, allow_overlap=True)
-    state.create_malicious_parties(num_malicious=3)
+    max_malicious = state.num_nodes() // 3 - 1
+
+    state.generate_trustsets(fraction=2/3)
+    state.create_malicious_parties(num_malicious=max_malicious)
 
     state.create_graph()
-    # visualize_graph(state.connectivity_graph, {}, {})
-    visualize_graph_3D(state.connectivity_graph, {}, {})
+    # visualize_graph_3D(state.connectivity_graph, {}, {})
+    # print(find_node_with_honest_neighbors(state.connectivity_graph, state.malicious_nodes))
+    # visualize_graph_3D_with_click(state.connectivity_graph, {}, {})
+    visualize_graph(state.connectivity_graph, {}, {})
 
-    # state.check_assumptions()
+    state.check_assumptions()
