@@ -9,7 +9,7 @@ from graph import visualize_graph as dg
 
 
 def check_assumption_1(node_positions, trustset_generator):
-    for trustset in trustset_generator:
+    for trustset in tqdm(trustset_generator):
         if not trustset.issubset(node_positions.keys()):
             missing_nodes = trustset - node_positions.keys()
             error_message = textwrap.indent(textwrap.dedent(f"""
@@ -23,7 +23,7 @@ def check_assumption_1(node_positions, trustset_generator):
 
 
 def check_assumption_2(trustset_generator, malicious_nodes):
-    for trustset in trustset_generator:
+    for trustset in tqdm(trustset_generator):
         if trustset.issubset(malicious_nodes):
             error_message = textwrap.indent(textwrap.dedent(f"""
                 There is at least one pure malicious trustset.
@@ -37,7 +37,7 @@ def check_assumption_2(trustset_generator, malicious_nodes):
 
 
 def check_assumption_3(trustset_generator, malicious_nodes):
-    for trustset in trustset_generator:
+    for trustset in tqdm(trustset_generator):
         if trustset.isdisjoint(malicious_nodes):
             return True, None
 
@@ -53,7 +53,7 @@ def check_assumption_4(node_states, trustset_generator, malicious_nodes, t_rep):
     honest_nodes = set(node_states.keys()) - malicious_nodes
     fully_honest_nodes = set().union(*{trustset for trustset in trustset_generator if trustset.isdisjoint(malicious_nodes)})
 
-    for node in honest_nodes:
+    for node in tqdm(honest_nodes):
         messages = node_states[node]['tx']
         for message in messages:
             attestations = message['attestations']
@@ -72,18 +72,17 @@ def check_assumption_4(node_states, trustset_generator, malicious_nodes, t_rep):
     return True, None
 
 
-def check_assumption_5(G, trustsets, malicious_nodes):
-    trustset_list = list(trustsets)
+def check_assumption_5(G, trustset_generator_factory, malicious_nodes):
     valid_nodes = {}
     assumption_validity = True
     tqdm_disable = True
     
-    for i in tqdm(range(len(trustset_list)), disable=tqdm_disable):
-        for j in range(len(trustset_list)):
-            if i != j:
-                C1 = trustset_list[i]
-                C2 = trustset_list[j]
-
+    trustset_generator_1 = trustset_generator_factory()
+    trustset_generator_2 = trustset_generator_factory()
+    
+    for C1 in tqdm(trustset_generator_1, disable=tqdm_disable):
+        for C2 in trustset_generator_2:
+            if C1 != C2:
                 valid_c1_found = False
                 for c1 in C1:
                     all_neighbors_honest = True
@@ -99,15 +98,46 @@ def check_assumption_5(G, trustsets, malicious_nodes):
 
                     if all_neighbors_honest:
                         valid_c1_found = True
-                        valid_nodes[(i, j)] = c1
+                        valid_nodes[(C1, C2)] = c1
                         break
 
                 if not valid_c1_found:
-                    valid_nodes[(i, j)] = None
+                    valid_nodes[(C1, C2)] = None
                     dg(G, C1, C2)
                     assumption_validity = False
+        
+        trustset_generator_2 = trustset_generator_factory()
                     
-    return assumption_validity, valid_nodes    
+    return assumption_validity, valid_nodes
+
+
+def check_assumption_5_fast(G, trustset_generator_factory, malicious_nodes):
+    valid_nodes = {}
+    assumption_validity = True
+    tqdm_disable = True
+    
+    trustset_generator_1 = trustset_generator_factory()
+    trustset_generator_2 = trustset_generator_factory()
+    
+    for C1 in tqdm(trustset_generator_1, disable=tqdm_disable):
+        for C2 in trustset_generator_2:
+            if C1 != C2:
+                valid_c1_found = False
+                for c1 in C1:
+
+                    if c1 in C2 and c1 not in malicious_nodes:
+                        valid_c1_found = True
+                        break
+
+                if not valid_c1_found:
+                    valid_nodes[(C1, C2)] = None
+                    dg(G, C1, C2)
+                    assumption_validity = False
+        
+        trustset_generator_2 = trustset_generator_factory()
+                    
+    return assumption_validity, valid_nodes
+   
 
 
 def check_assumption_6(node_states, trustset_generator_factory, malicious_nodes, t_rep):

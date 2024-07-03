@@ -1,6 +1,7 @@
 import itertools
 import random
 import json
+import math
 
 
 def create_trustsets(node_positions, fraction=2/3, allow_overlap=True):
@@ -32,9 +33,8 @@ def trustset_generator_factory(node_positions, fraction=2/3):
 
         for combination in itertools.combinations(node_ids, trustset_size):
             yield frozenset(combination)
-            
-    return generator
 
+    return generator
 
 
 def create_malicious_parties(node_positions, num_malicious):

@@ -122,7 +122,7 @@ class State:
     def check_assumption_5(self):
         result, valid_nodes = check_assumption_5(
             G=self.connectivity_graph,
-            trustset_generator=self.trustset_generator_factory(),
+            trustset_generator_factory=self.trustset_generator_factory,
             malicious_nodes=self.malicious_nodes
         )
         print(f"Assumption 5: {result}")
@@ -154,7 +154,7 @@ class State:
         self.check_assumption_2()
         self.check_assumption_3()
         self.check_assumption_4()        
-        # self.check_assumption_5()
+        self.check_assumption_5()
         self.check_assumption_6()
 
 
@@ -163,22 +163,23 @@ if __name__ == "__main__":
     from state_manager import State
     from graph import visualize_graph
 
-    simulation_file = '../simulation.csc'
+    simulation_file = '../simulation-z-large.csc'
     log_file = '../loglistener-new.txt'
 
     state = State()
     state.load_simulation_data(simulation_file)
     state.load_log_data(log_file)
 
-    max_malicious = state.num_nodes() // 3 - 1
+    max_malicious = state.num_nodes() // 3
 
     state.generate_trustsets(fraction=2/3)
     state.create_malicious_parties(num_malicious=max_malicious)
 
     state.create_graph()
-    # visualize_graph_3D(state.connectivity_graph, {}, {})
+    
+    visualize_graph_3D(state.connectivity_graph, {}, {})
     # print(find_node_with_honest_neighbors(state.connectivity_graph, state.malicious_nodes))
     # visualize_graph_3D_with_click(state.connectivity_graph, {}, {})
-    visualize_graph(state.connectivity_graph, {}, {})
-
+    # visualize_graph(state.connectivity_graph, {}, {})
+    
     state.check_assumptions()
