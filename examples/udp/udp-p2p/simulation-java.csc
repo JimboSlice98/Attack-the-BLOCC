@@ -2,7 +2,6 @@
 <simconf version="2023090101">
   <simulation>
     <title>My simulation</title>
-    <speedlimit>20.0</speedlimit>
     <randomseed>123456</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
@@ -63,7 +62,7 @@
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
       <viewport>4.88544704914079 0.0 0.0 4.88544704914079 -54.14192546656379 118.19272539077168</viewport>
     </plugin_config>
-    <bounds x="1" y="1" height="400" width="400" />
+    <bounds x="1" y="1" height="400" width="400" z="2" />
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.LogListener
@@ -72,7 +71,7 @@
       <formatted_time />
       <coloring />
     </plugin_config>
-    <bounds x="400" y="160" height="240" width="1320" z="3" />
+    <bounds x="400" y="160" height="670" width="1320" z="1" />
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.TimeLine
@@ -85,7 +84,7 @@
       <showLEDs />
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
-    <bounds x="0" y="1859" height="166" width="1720" z="2" />
+    <bounds x="0" y="1859" height="166" width="1720" z="4" />
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Notes
@@ -93,6 +92,26 @@
       <notes>Enter notes here</notes>
       <decorations>true</decorations>
     </plugin_config>
-    <bounds x="400" y="0" height="160" width="1320" z="1" />
+    <bounds x="400" y="0" height="160" width="1320" z="3" />
+  </plugin>
+  <plugin>
+    org.contikios.cooja.plugins.ScriptRunner
+    <plugin_config>
+      <script>/*
+ * Example Contiki test script (JavaScript).
+ * A Contiki test script acts on mote output, such as via printf()'s.
+ * The script may operate on the following variables:
+ *  Mote mote, int id, String msg
+ */
+
+TIMEOUT(65000);
+
+while (true) {
+  log.log(time + ":" + id + ":" + msg + "\n");
+  YIELD();
+}</script>
+      <active>true</active>
+    </plugin_config>
+    <bounds x="324" y="1086" height="700" width="600" />
   </plugin>
 </simconf>
