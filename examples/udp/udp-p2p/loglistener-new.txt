@@ -1,9 +1,9 @@
 01:01.294	ID:1	[INFO: Node      ] Tx: '0|1|0|61001'
-01:01.321	ID:2	[INFO: Node      ] Rx: '0|1|0|61001' from node: '1'         -> Rebroadcast message
+01:01.321	ID:	[INFO: Node      ] Rx: '0|1|0|61001' from node: '1'         -> Rebroadcast message
 01:01.321	ID:3	[INFO: Node      ] Rx: '0|1|0|61001' from node: '1'         -> Rebroadcast message
 01:01.321	ID:4	[INFO: Node      ] Rx: '0|1|0|61001' from node: '1'         -> Rebroadcast message
 01:01.321	ID:5	[INFO: Node      ] Rx: '0|1|0|61001' from node: '1'         -> Rebroadcast message
-01:01.321	ID:6	[INFO: Node      ] Rx: '0|1|0|61001' from node: '1'         -> Rebroadcast message
+01:01.321	ID:62	[INFO: Node      ] Rx: '0|1|0|61001' from node: '1'         -> Rebroadcast message
 01:01.322	ID:2	[INFO: Node      ] Ax: '0|1|2|60430'
 01:01.322	ID:3	[INFO: Node      ] Ax: '0|1|3|61020'
 01:01.322	ID:4	[INFO: Node      ] Ax: '0|1|4|61271'

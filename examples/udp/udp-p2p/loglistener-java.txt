@@ -1,0 +1,32 @@
+01:00.990	ID:1	Tx: '0|1|0|60990000'
+01:00.995	ID:2	Rx: '0|1|0|60990000' from node: '1'                -> Rebroadcast message
+01:00.995	ID:2	Ax: '0|1|2|60995000
+01:01.039	ID:1	Rx: '0|1|0|60990000' from node: '2'                -> Duplicate
+01:01.039	ID:3	Rx: '0|1|0|60990000' from node: '2'                -> Rebroadcast message
+01:01.039	ID:3	Ax: '0|1|3|61039904
+01:01.049	ID:1	Rx: '0|1|2|60995000' from node: '2'                -> Attestation received
+01:01.049	ID:3	Rx: '0|1|2|60995000' from node: '2'                -> Rebroadcast attestation
+01:01.075	ID:2	Rx: '0|1|0|60990000' from node: '3'                -> Duplicate
+01:01.085	ID:2	Rx: '0|1|3|61039904' from node: '3'                -> Rebroadcast attestation
+01:01.093	ID:2	Rx: '0|1|2|60995000' from node: '3'                -> Duplicate
+01:01.121	ID:1	Rx: '0|1|3|61039904' from node: '2'                -> Attestation received
+01:01.121	ID:3	Rx: '0|1|3|61039904' from node: '2'                -> Duplicate
+
+01:01.990	ID:2	Tx: '0|2|0|61990000'
+01:01.995	ID:1	Rx: '0|2|0|61990000' from node: '2'                -> Rebroadcast message
+01:01.995	ID:1	Ax: '0|2|1|61995000
+01:01.995	ID:3	Rx: '0|2|0|61990000' from node: '2'                -> Rebroadcast message
+01:01.995	ID:3	Ax: '0|2|3|61995000
+
+01:02.990	ID:3	Tx: '0|3|0|62990000'
+01:02.995	ID:2	Rx: '0|3|0|62990000' from node: '3'                -> Rebroadcast message
+01:02.995	ID:2	Ax: '0|3|2|62995000
+01:03.032	ID:1	Rx: '0|3|0|62990000' from node: '2'                -> Rebroadcast message
+01:03.032	ID:1	Ax: '0|3|1|63032218
+01:03.032	ID:3	Rx: '0|3|0|62990000' from node: '2'                -> Duplicate
+01:03.042	ID:1	Rx: '0|3|2|62995000' from node: '2'                -> Rebroadcast attestation
+01:03.042	ID:3	Rx: '0|3|2|62995000' from node: '2'                -> Attestation received
+01:03.067	ID:2	Rx: '0|3|0|62990000' from node: '1'                -> Duplicate
+01:03.077	ID:2	Rx: '0|3|1|63032218' from node: '1'                -> Rebroadcast attestation
+01:03.116	ID:1	Rx: '0|3|1|63032218' from node: '2'                -> Duplicate
+01:03.116	ID:3	Rx: '0|3|1|63032218' from node: '2'                -> Attestation received

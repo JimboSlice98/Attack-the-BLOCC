@@ -116,7 +116,7 @@ PROCESS_THREAD(udp_p2p_process, ev, data) {
 
   // Initialize UDP connection and wait 10s
   simple_udp_register(&udp_conn, UDP_PORT, NULL, UDP_PORT, udp_rx_callback);
-  etimer_set(&periodic_timer, CLOCK_SECOND * (node_id * 3));
+  etimer_set(&periodic_timer, CLOCK_SECOND * node_id);
   PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
 
   // Initialize serial line
