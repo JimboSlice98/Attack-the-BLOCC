@@ -2,7 +2,7 @@
 <simconf version="2023090101">
   <simulation>
     <title>My simulation</title>
-    <randomseed>123456</randomseed>
+    <randomseed>generated</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
       org.contikios.cooja.radiomediums.UDGM
@@ -71,7 +71,7 @@
       <formatted_time />
       <coloring />
     </plugin_config>
-    <bounds x="400" y="160" height="670" width="1320" z="1" />
+    <bounds x="400" y="160" height="868" width="1320" z="1" />
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.TimeLine
@@ -97,21 +97,9 @@
   <plugin>
     org.contikios.cooja.plugins.ScriptRunner
     <plugin_config>
-      <script>/*
- * Example Contiki test script (JavaScript).
- * A Contiki test script acts on mote output, such as via printf()'s.
- * The script may operate on the following variables:
- *  Mote mote, int id, String msg
- */
-
-TIMEOUT(65000);
-
-while (true) {
-  log.log(time + ":" + id + ":" + msg + "\n");
-  YIELD();
-}</script>
+      <scriptfile>[COOJA_DIR]/headless_logger.js</scriptfile>
       <active>true</active>
     </plugin_config>
-    <bounds x="324" y="1086" height="700" width="600" />
+    <bounds x="843" y="74" height="700" width="600" />
   </plugin>
 </simconf>
