@@ -1,0 +1,425 @@
+1:00.990  ID:1  Tx: '0|1|0|60990000'
+1:00.996  ID:2  Rx: '0|1|0|60990000' from node: '1'                -> Rebroadcast message
+1:00.996  ID:2  Ax: '0|1|2|60996000
+1:00.996  ID:3  Rx: '0|1|0|60990000' from node: '1'                -> Rebroadcast message
+1:00.996  ID:3  Ax: '0|1|3|60996000
+1:00.996  ID:4  Rx: '0|1|0|60990000' from node: '1'                -> Rebroadcast message
+1:00.996  ID:4  Ax: '0|1|4|60996000
+1:00.996  ID:5  Rx: '0|1|0|60990000' from node: '1'                -> Rebroadcast message
+1:00.996  ID:5  Ax: '0|1|5|60996000
+1:00.996  ID:6  Rx: '0|1|0|60990000' from node: '1'                -> Rebroadcast message
+1:00.996  ID:6  Ax: '0|1|6|60996000
+1:01.002  ID:1  Rx: '0|1|0|60990000' from node: '2'                -> Duplicate
+1:01.002  ID:3  Rx: '0|1|0|60990000' from node: '2'                -> Duplicate
+1:01.002  ID:4  Rx: '0|1|0|60990000' from node: '2'                -> Duplicate
+1:01.002  ID:6  Rx: '0|1|0|60990000' from node: '2'                -> Duplicate
+1:01.009  ID:1  Rx: '0|1|0|60990000' from node: '6'                -> Duplicate
+1:01.009  ID:2  Rx: '0|1|0|60990000' from node: '6'                -> Duplicate
+1:01.009  ID:3  Rx: '0|1|0|60990000' from node: '6'                -> Duplicate
+1:01.009  ID:4  Rx: '0|1|0|60990000' from node: '6'                -> Duplicate
+1:01.009  ID:5  Rx: '0|1|0|60990000' from node: '6'                -> Duplicate
+1:01.009  ID:7  Rx: '0|1|0|60990000' from node: '6'                -> Rebroadcast message
+1:01.009  ID:7  Ax: '0|1|7|61009000
+1:01.009  ID:8  Rx: '0|1|0|60990000' from node: '6'                -> Rebroadcast message
+1:01.009  ID:8  Ax: '0|1|8|61009000
+1:01.009  ID:9  Rx: '0|1|0|60990000' from node: '6'                -> Rebroadcast message
+1:01.009  ID:9  Ax: '0|1|9|61009000
+1:01.015  ID:4  Rx: '0|1|0|60990000' from node: '7'                -> Duplicate
+1:01.015  ID:5  Rx: '0|1|0|60990000' from node: '7'                -> Duplicate
+1:01.015  ID:6  Rx: '0|1|0|60990000' from node: '7'                -> Duplicate
+1:01.015  ID:8  Rx: '0|1|0|60990000' from node: '7'                -> Duplicate
+1:01.015  ID:9  Rx: '0|1|0|60990000' from node: '7'                -> Duplicate
+1:01.015  ID:10  Rx: '0|1|0|60990000' from node: '7'                -> Rebroadcast message
+1:01.015  ID:10  Ax: '0|1|10|61015000
+1:01.015  ID:11  Rx: '0|1|0|60990000' from node: '7'                -> Rebroadcast message
+1:01.015  ID:11  Ax: '0|1|11|61015000
+1:01.015  ID:12  Rx: '0|1|0|60990000' from node: '7'                -> Rebroadcast message
+1:01.015  ID:12  Ax: '0|1|12|61015000
+1:01.021  ID:7  Rx: '0|1|9|61009000' from node: '9'                -> Rebroadcast attestation
+1:01.021  ID:8  Rx: '0|1|9|61009000' from node: '9'                -> Rebroadcast attestation
+1:01.021  ID:10  Rx: '0|1|9|61009000' from node: '9'                -> Rebroadcast attestation
+1:01.021  ID:11  Rx: '0|1|9|61009000' from node: '9'                -> Rebroadcast attestation
+1:01.021  ID:12  Rx: '0|1|9|61009000' from node: '9'                -> Rebroadcast attestation
+1:01.026  ID:1  Rx: '0|1|3|60996000' from node: '3'                -> Attestation received
+1:01.026  ID:2  Rx: '0|1|3|60996000' from node: '3'                -> Rebroadcast attestation
+1:01.027  ID:8  Rx: '0|1|9|61009000' from node: '7'                -> Duplicate
+1:01.027  ID:9  Rx: '0|1|9|61009000' from node: '7'                -> Duplicate
+1:01.027  ID:10  Rx: '0|1|9|61009000' from node: '7'                -> Duplicate
+1:01.027  ID:11  Rx: '0|1|9|61009000' from node: '7'                -> Duplicate
+1:01.027  ID:12  Rx: '0|1|9|61009000' from node: '7'                -> Duplicate
+1:01.032  ID:1  Rx: '0|1|3|60996000' from node: '2'                -> Duplicate
+1:01.032  ID:3  Rx: '0|1|3|60996000' from node: '2'                -> Duplicate
+1:01.032  ID:4  Rx: '0|1|3|60996000' from node: '2'                -> Rebroadcast attestation
+1:01.032  ID:5  Rx: '0|1|3|60996000' from node: '2'                -> Rebroadcast attestation
+1:01.032  ID:6  Rx: '0|1|3|60996000' from node: '2'                -> Rebroadcast attestation
+1:01.038  ID:1  Rx: '0|1|3|60996000' from node: '4'                -> Duplicate
+1:01.038  ID:2  Rx: '0|1|3|60996000' from node: '4'                -> Duplicate
+1:01.038  ID:3  Rx: '0|1|3|60996000' from node: '4'                -> Duplicate
+1:01.038  ID:5  Rx: '0|1|3|60996000' from node: '4'                -> Duplicate
+1:01.038  ID:6  Rx: '0|1|3|60996000' from node: '4'                -> Duplicate
+1:01.042  ID:10  Rx: '0|1|9|61009000' from node: '12'               -> Duplicate
+1:01.042  ID:11  Rx: '0|1|9|61009000' from node: '12'               -> Duplicate
+1:01.044  ID:1  Rx: '0|1|0|60990000' from node: '3'                -> Duplicate
+1:01.044  ID:2  Rx: '0|1|0|60990000' from node: '3'                -> Duplicate
+1:01.044  ID:4  Rx: '0|1|0|60990000' from node: '3'                -> Duplicate
+1:01.044  ID:5  Rx: '0|1|0|60990000' from node: '3'                -> Duplicate
+1:01.044  ID:6  Rx: '0|1|0|60990000' from node: '3'                -> Duplicate
+1:01.049  ID:10  Rx: '0|1|9|61009000' from node: '11'               -> Duplicate
+1:01.049  ID:12  Rx: '0|1|9|61009000' from node: '11'               -> Duplicate
+1:01.053  ID:2  Rx: '0|1|3|60996000' from node: '5'                -> Duplicate
+1:01.053  ID:3  Rx: '0|1|3|60996000' from node: '5'                -> Duplicate
+1:01.053  ID:4  Rx: '0|1|3|60996000' from node: '5'                -> Duplicate
+1:01.053  ID:6  Rx: '0|1|3|60996000' from node: '5'                -> Duplicate
+1:01.059  ID:10  Rx: '0|1|11|61015000' from node: '11'              -> Rebroadcast attestation
+1:01.059  ID:12  Rx: '0|1|11|61015000' from node: '11'              -> Rebroadcast attestation
+1:01.061  ID:1  Rx: '0|1|5|60996000' from node: '5'                -> Attestation received
+1:01.061  ID:2  Rx: '0|1|5|60996000' from node: '5'                -> Rebroadcast attestation
+1:01.061  ID:3  Rx: '0|1|5|60996000' from node: '5'                -> Rebroadcast attestation
+1:01.061  ID:4  Rx: '0|1|5|60996000' from node: '5'                -> Rebroadcast attestation
+1:01.061  ID:6  Rx: '0|1|5|60996000' from node: '5'                -> Rebroadcast attestation
+1:01.065  ID:11  Rx: '0|1|11|61015000' from node: '10'              -> Duplicate
+1:01.065  ID:12  Rx: '0|1|11|61015000' from node: '10'              -> Duplicate
+1:01.067  ID:1  Rx: '0|1|3|60996000' from node: '6'                -> Duplicate
+1:01.067  ID:2  Rx: '0|1|3|60996000' from node: '6'                -> Duplicate
+1:01.067  ID:3  Rx: '0|1|3|60996000' from node: '6'                -> Duplicate
+1:01.067  ID:4  Rx: '0|1|3|60996000' from node: '6'                -> Duplicate
+1:01.067  ID:5  Rx: '0|1|3|60996000' from node: '6'                -> Duplicate
+1:01.073  ID:7  Rx: '0|1|0|60990000' from node: '12'               -> Duplicate
+1:01.073  ID:8  Rx: '0|1|0|60990000' from node: '12'               -> Duplicate
+1:01.073  ID:9  Rx: '0|1|0|60990000' from node: '12'               -> Duplicate
+1:01.073  ID:10  Rx: '0|1|0|60990000' from node: '12'               -> Duplicate
+1:01.073  ID:11  Rx: '0|1|0|60990000' from node: '12'               -> Duplicate
+1:01.077  ID:1  Rx: '0|1|2|60996000' from node: '2'                -> Attestation received
+1:01.077  ID:3  Rx: '0|1|2|60996000' from node: '2'                -> Rebroadcast attestation
+1:01.077  ID:4  Rx: '0|1|2|60996000' from node: '2'                -> Rebroadcast attestation
+1:01.077  ID:5  Rx: '0|1|2|60996000' from node: '2'                -> Rebroadcast attestation
+1:01.077  ID:6  Rx: '0|1|2|60996000' from node: '2'                -> Rebroadcast attestation
+1:01.079  ID:7  Rx: '0|1|9|61009000' from node: '10'               -> Duplicate
+1:01.079  ID:8  Rx: '0|1|9|61009000' from node: '10'               -> Duplicate
+1:01.079  ID:9  Rx: '0|1|9|61009000' from node: '10'               -> Duplicate
+1:01.079  ID:11  Rx: '0|1|9|61009000' from node: '10'               -> Duplicate
+1:01.079  ID:12  Rx: '0|1|9|61009000' from node: '10'               -> Duplicate
+1:01.083  ID:1  Rx: '0|1|2|60996000' from node: '3'                -> Duplicate
+1:01.083  ID:2  Rx: '0|1|2|60996000' from node: '3'                -> Duplicate
+1:01.083  ID:5  Rx: '0|1|2|60996000' from node: '3'                -> Duplicate
+1:01.083  ID:6  Rx: '0|1|2|60996000' from node: '3'                -> Duplicate
+1:01.086  ID:10  Rx: '0|1|0|60990000' from node: '11'               -> Duplicate
+1:01.086  ID:12  Rx: '0|1|0|60990000' from node: '11'               -> Duplicate
+1:01.088  ID:1  Rx: '0|1|0|60990000' from node: '5'                -> Duplicate
+1:01.088  ID:2  Rx: '0|1|0|60990000' from node: '5'                -> Duplicate
+1:01.088  ID:3  Rx: '0|1|0|60990000' from node: '5'                -> Duplicate
+1:01.088  ID:4  Rx: '0|1|0|60990000' from node: '5'                -> Duplicate
+1:01.088  ID:6  Rx: '0|1|0|60990000' from node: '5'                -> Duplicate
+1:01.098  ID:11  Rx: '0|1|10|61015000' from node: '10'              -> Rebroadcast attestation
+1:01.098  ID:12  Rx: '0|1|10|61015000' from node: '10'              -> Rebroadcast attestation
+1:01.100  ID:1  Rx: '0|1|2|60996000' from node: '4'                -> Duplicate
+1:01.100  ID:5  Rx: '0|1|2|60996000' from node: '4'                -> Duplicate
+1:01.100  ID:6  Rx: '0|1|2|60996000' from node: '4'                -> Duplicate
+1:01.104  ID:10  Rx: '0|1|10|61015000' from node: '11'              -> Duplicate
+1:01.104  ID:12  Rx: '0|1|10|61015000' from node: '11'              -> Duplicate
+1:01.110  ID:1  Rx: '0|1|5|60996000' from node: '3'                -> Duplicate
+1:01.110  ID:2  Rx: '0|1|5|60996000' from node: '3'                -> Duplicate
+1:01.111  ID:7  Rx: '0|1|9|61009000' from node: '8'                -> Duplicate
+1:01.111  ID:9  Rx: '0|1|9|61009000' from node: '8'                -> Duplicate
+1:01.111  ID:10  Rx: '0|1|9|61009000' from node: '8'                -> Duplicate
+1:01.111  ID:11  Rx: '0|1|9|61009000' from node: '8'                -> Duplicate
+1:01.111  ID:12  Rx: '0|1|9|61009000' from node: '8'                -> Duplicate
+1:01.117  ID:1  Rx: '0|1|2|60996000' from node: '5'                -> Duplicate
+1:01.117  ID:3  Rx: '0|1|2|60996000' from node: '5'                -> Duplicate
+1:01.117  ID:4  Rx: '0|1|2|60996000' from node: '5'                -> Duplicate
+1:01.117  ID:6  Rx: '0|1|2|60996000' from node: '5'                -> Duplicate
+1:01.117  ID:10  Rx: '0|1|11|61015000' from node: '12'              -> Duplicate
+1:01.117  ID:11  Rx: '0|1|11|61015000' from node: '12'              -> Duplicate
+1:01.124  ID:11  Rx: '0|1|0|60990000' from node: '10'               -> Duplicate
+1:01.124  ID:12  Rx: '0|1|0|60990000' from node: '10'               -> Duplicate
+1:01.126  ID:1  Rx: '0|1|2|60996000' from node: '6'                -> Duplicate
+1:01.126  ID:3  Rx: '0|1|2|60996000' from node: '6'                -> Duplicate
+1:01.126  ID:4  Rx: '0|1|2|60996000' from node: '6'                -> Duplicate
+1:01.126  ID:5  Rx: '0|1|2|60996000' from node: '6'                -> Duplicate
+1:01.135  ID:8  Rx: '0|1|7|61009000' from node: '7'                -> Rebroadcast attestation
+1:01.135  ID:9  Rx: '0|1|7|61009000' from node: '7'                -> Rebroadcast attestation
+1:01.135  ID:10  Rx: '0|1|7|61009000' from node: '7'                -> Rebroadcast attestation
+1:01.135  ID:11  Rx: '0|1|7|61009000' from node: '7'                -> Rebroadcast attestation
+1:01.135  ID:12  Rx: '0|1|7|61009000' from node: '7'                -> Rebroadcast attestation
+1:01.140  ID:1  Rx: '0|1|5|60996000' from node: '2'                -> Duplicate
+1:01.140  ID:3  Rx: '0|1|5|60996000' from node: '2'                -> Duplicate
+1:01.141  ID:7  Rx: '0|1|7|61009000' from node: '8'                -> Duplicate
+1:01.141  ID:9  Rx: '0|1|7|61009000' from node: '8'                -> Duplicate
+1:01.141  ID:10  Rx: '0|1|7|61009000' from node: '8'                -> Duplicate
+1:01.141  ID:11  Rx: '0|1|7|61009000' from node: '8'                -> Duplicate
+1:01.141  ID:12  Rx: '0|1|7|61009000' from node: '8'                -> Duplicate
+1:01.148  ID:7  Rx: '0|1|10|61015000' from node: '12'              -> Rebroadcast attestation
+1:01.148  ID:8  Rx: '0|1|10|61015000' from node: '12'              -> Rebroadcast attestation
+1:01.148  ID:9  Rx: '0|1|10|61015000' from node: '12'              -> Rebroadcast attestation
+1:01.148  ID:10  Rx: '0|1|10|61015000' from node: '12'              -> Duplicate
+1:01.148  ID:11  Rx: '0|1|10|61015000' from node: '12'              -> Duplicate
+1:01.154  ID:5  Rx: '0|1|10|61015000' from node: '7'               -> Rebroadcast attestation
+1:01.154  ID:6  Rx: '0|1|10|61015000' from node: '7'               -> Rebroadcast attestation
+1:01.154  ID:8  Rx: '0|1|10|61015000' from node: '7'               -> Duplicate
+1:01.154  ID:9  Rx: '0|1|10|61015000' from node: '7'               -> Duplicate
+1:01.154  ID:10  Rx: '0|1|10|61015000' from node: '7'               -> Duplicate
+1:01.154  ID:11  Rx: '0|1|10|61015000' from node: '7'               -> Duplicate
+1:01.154  ID:12  Rx: '0|1|10|61015000' from node: '7'               -> Duplicate
+1:01.160  ID:1  Rx: '0|1|6|60996000' from node: '6'                -> Attestation received
+1:01.160  ID:2  Rx: '0|1|6|60996000' from node: '6'                -> Rebroadcast attestation
+1:01.160  ID:3  Rx: '0|1|6|60996000' from node: '6'                -> Rebroadcast attestation
+1:01.160  ID:4  Rx: '0|1|6|60996000' from node: '6'                -> Rebroadcast attestation
+1:01.160  ID:5  Rx: '0|1|6|60996000' from node: '6'                -> Rebroadcast attestation
+1:01.162  ID:10  Rx: '0|1|7|61009000' from node: '12'               -> Duplicate
+1:01.162  ID:11  Rx: '0|1|7|61009000' from node: '12'               -> Duplicate
+1:01.166  ID:1  Rx: '0|1|6|60996000' from node: '2'                -> Duplicate
+1:01.166  ID:3  Rx: '0|1|6|60996000' from node: '2'                -> Duplicate
+1:01.166  ID:4  Rx: '0|1|6|60996000' from node: '2'                -> Duplicate
+1:01.166  ID:5  Rx: '0|1|6|60996000' from node: '2'                -> Duplicate
+1:01.166  ID:6  Rx: '0|1|6|60996000' from node: '2'                -> Duplicate
+1:01.172  ID:4  Rx: '0|1|8|61009000' from node: '8'                -> Rebroadcast attestation
+1:01.172  ID:5  Rx: '0|1|8|61009000' from node: '8'                -> Rebroadcast attestation
+1:01.172  ID:6  Rx: '0|1|8|61009000' from node: '8'                -> Rebroadcast attestation
+1:01.172  ID:7  Rx: '0|1|8|61009000' from node: '8'                -> Rebroadcast attestation
+1:01.172  ID:9  Rx: '0|1|8|61009000' from node: '8'                -> Rebroadcast attestation
+1:01.172  ID:10  Rx: '0|1|8|61009000' from node: '8'                -> Rebroadcast attestation
+1:01.172  ID:11  Rx: '0|1|8|61009000' from node: '8'                -> Rebroadcast attestation
+1:01.172  ID:12  Rx: '0|1|8|61009000' from node: '8'                -> Rebroadcast attestation
+1:01.177  ID:4  Rx: '0|1|7|61009000' from node: '9'                -> Rebroadcast attestation
+1:01.177  ID:5  Rx: '0|1|7|61009000' from node: '9'                -> Rebroadcast attestation
+1:01.177  ID:6  Rx: '0|1|7|61009000' from node: '9'                -> Rebroadcast attestation
+1:01.177  ID:7  Rx: '0|1|7|61009000' from node: '9'                -> Duplicate
+1:01.177  ID:8  Rx: '0|1|7|61009000' from node: '9'                -> Duplicate
+1:01.177  ID:10  Rx: '0|1|7|61009000' from node: '9'                -> Duplicate
+1:01.177  ID:11  Rx: '0|1|7|61009000' from node: '9'                -> Duplicate
+1:01.177  ID:12  Rx: '0|1|7|61009000' from node: '9'                -> Duplicate
+1:01.183  ID:1  Rx: '0|1|5|60996000' from node: '4'                -> Duplicate
+1:01.183  ID:2  Rx: '0|1|5|60996000' from node: '4'                -> Duplicate
+1:01.183  ID:5  Rx: '0|1|5|60996000' from node: '4'                -> Duplicate
+1:01.183  ID:6  Rx: '0|1|5|60996000' from node: '4'                -> Duplicate
+1:01.185  ID:10  Rx: '0|1|7|61009000' from node: '11'               -> Duplicate
+1:01.185  ID:12  Rx: '0|1|7|61009000' from node: '11'               -> Duplicate
+1:01.193  ID:11  Rx: '0|1|8|61009000' from node: '10'               -> Duplicate
+1:01.193  ID:12  Rx: '0|1|8|61009000' from node: '10'               -> Duplicate
+1:01.194  ID:1  Rx: '0|1|6|60996000' from node: '5'                -> Duplicate
+1:01.194  ID:2  Rx: '0|1|6|60996000' from node: '5'                -> Duplicate
+1:01.194  ID:3  Rx: '0|1|6|60996000' from node: '5'                -> Duplicate
+1:01.194  ID:4  Rx: '0|1|6|60996000' from node: '5'                -> Duplicate
+1:01.194  ID:6  Rx: '0|1|6|60996000' from node: '5'                -> Duplicate
+1:01.200  ID:1  Rx: '0|1|4|60996000' from node: '4'                -> Attestation received
+1:01.200  ID:2  Rx: '0|1|4|60996000' from node: '4'                -> Rebroadcast attestation
+1:01.200  ID:3  Rx: '0|1|4|60996000' from node: '4'                -> Rebroadcast attestation
+1:01.200  ID:5  Rx: '0|1|4|60996000' from node: '4'                -> Rebroadcast attestation
+1:01.200  ID:6  Rx: '0|1|4|60996000' from node: '4'                -> Rebroadcast attestation
+1:01.200  ID:11  Rx: '0|1|7|61009000' from node: '10'               -> Duplicate
+1:01.200  ID:12  Rx: '0|1|7|61009000' from node: '10'               -> Duplicate
+1:01.206  ID:1  Rx: '0|1|7|61009000' from node: '5'                -> Attestation received
+1:01.206  ID:2  Rx: '0|1|7|61009000' from node: '5'                -> Rebroadcast attestation
+1:01.206  ID:3  Rx: '0|1|7|61009000' from node: '5'                -> Rebroadcast attestation
+1:01.206  ID:4  Rx: '0|1|7|61009000' from node: '5'                -> Duplicate
+1:01.206  ID:6  Rx: '0|1|7|61009000' from node: '5'                -> Duplicate
+1:01.206  ID:7  Rx: '0|1|7|61009000' from node: '5'                -> Duplicate
+1:01.206  ID:8  Rx: '0|1|7|61009000' from node: '5'                -> Duplicate
+1:01.206  ID:9  Rx: '0|1|7|61009000' from node: '5'                -> Duplicate
+1:01.212  ID:1  Rx: '0|1|7|61009000' from node: '2'                -> Duplicate
+1:01.212  ID:3  Rx: '0|1|7|61009000' from node: '2'                -> Duplicate
+1:01.212  ID:4  Rx: '0|1|7|61009000' from node: '2'                -> Duplicate
+1:01.212  ID:5  Rx: '0|1|7|61009000' from node: '2'                -> Duplicate
+1:01.212  ID:6  Rx: '0|1|7|61009000' from node: '2'                -> Duplicate
+1:01.218  ID:1  Rx: '0|1|6|60996000' from node: '4'                -> Duplicate
+1:01.218  ID:2  Rx: '0|1|6|60996000' from node: '4'                -> Duplicate
+1:01.218  ID:3  Rx: '0|1|6|60996000' from node: '4'                -> Duplicate
+1:01.218  ID:5  Rx: '0|1|6|60996000' from node: '4'                -> Duplicate
+1:01.218  ID:6  Rx: '0|1|6|60996000' from node: '4'                -> Duplicate
+1:01.218  ID:7  Rx: '0|1|6|60996000' from node: '4'                -> Rebroadcast attestation
+1:01.218  ID:8  Rx: '0|1|6|60996000' from node: '4'                -> Rebroadcast attestation
+1:01.218  ID:9  Rx: '0|1|6|60996000' from node: '4'                -> Rebroadcast attestation
+1:01.224  ID:7  Rx: '0|1|10|61015000' from node: '9'               -> Duplicate
+1:01.224  ID:8  Rx: '0|1|10|61015000' from node: '9'               -> Duplicate
+1:01.224  ID:10  Rx: '0|1|10|61015000' from node: '9'               -> Duplicate
+1:01.224  ID:12  Rx: '0|1|10|61015000' from node: '9'               -> Duplicate
+1:01.225  ID:1  Rx: '0|1|7|61009000' from node: '3'                -> Duplicate
+1:01.225  ID:2  Rx: '0|1|7|61009000' from node: '3'                -> Duplicate
+1:01.233  ID:7  Rx: '0|1|0|60990000' from node: '8'                -> Duplicate
+1:01.233  ID:9  Rx: '0|1|0|60990000' from node: '8'                -> Duplicate
+1:01.233  ID:10  Rx: '0|1|0|60990000' from node: '8'                -> Duplicate
+1:01.233  ID:11  Rx: '0|1|0|60990000' from node: '8'                -> Duplicate
+1:01.233  ID:12  Rx: '0|1|0|60990000' from node: '8'                -> Duplicate
+1:01.238  ID:1  Rx: '0|1|4|60996000' from node: '2'                -> Duplicate
+1:01.238  ID:3  Rx: '0|1|4|60996000' from node: '2'                -> Duplicate
+1:01.244  ID:1  Rx: '0|1|8|61009000' from node: '5'                -> Attestation received
+1:01.244  ID:2  Rx: '0|1|8|61009000' from node: '5'                -> Rebroadcast attestation
+1:01.244  ID:3  Rx: '0|1|8|61009000' from node: '5'                -> Rebroadcast attestation
+1:01.244  ID:4  Rx: '0|1|8|61009000' from node: '5'                -> Duplicate
+1:01.244  ID:6  Rx: '0|1|8|61009000' from node: '5'                -> Duplicate
+1:01.244  ID:7  Rx: '0|1|8|61009000' from node: '5'                -> Duplicate
+1:01.244  ID:9  Rx: '0|1|8|61009000' from node: '5'                -> Duplicate
+1:01.250  ID:7  Rx: '0|1|0|60990000' from node: '9'                -> Duplicate
+1:01.250  ID:8  Rx: '0|1|0|60990000' from node: '9'                -> Duplicate
+1:01.250  ID:11  Rx: '0|1|0|60990000' from node: '9'                -> Duplicate
+1:01.250  ID:12  Rx: '0|1|0|60990000' from node: '9'                -> Duplicate
+1:01.250  ID:1  Rx: '0|1|8|61009000' from node: '2'                -> Duplicate
+1:01.250  ID:3  Rx: '0|1|8|61009000' from node: '2'                -> Duplicate
+1:01.256  ID:1  Rx: '0|1|8|61009000' from node: '3'                -> Duplicate
+1:01.256  ID:2  Rx: '0|1|8|61009000' from node: '3'                -> Duplicate
+1:01.257  ID:7  Rx: '0|1|8|61009000' from node: '9'                -> Duplicate
+1:01.257  ID:8  Rx: '0|1|8|61009000' from node: '9'                -> Duplicate
+1:01.257  ID:10  Rx: '0|1|8|61009000' from node: '9'                -> Duplicate
+1:01.257  ID:11  Rx: '0|1|8|61009000' from node: '9'                -> Duplicate
+1:01.257  ID:12  Rx: '0|1|8|61009000' from node: '9'                -> Duplicate
+1:01.263  ID:1  Rx: '0|1|10|61015000' from node: '5'               -> Attestation received
+1:01.263  ID:2  Rx: '0|1|10|61015000' from node: '5'               -> Rebroadcast attestation
+1:01.263  ID:3  Rx: '0|1|10|61015000' from node: '5'               -> Rebroadcast attestation
+1:01.263  ID:4  Rx: '0|1|10|61015000' from node: '5'               -> Rebroadcast attestation
+1:01.263  ID:6  Rx: '0|1|10|61015000' from node: '5'               -> Duplicate
+1:01.263  ID:10  Rx: '0|1|8|61009000' from node: '12'               -> Duplicate
+1:01.263  ID:11  Rx: '0|1|8|61009000' from node: '12'               -> Duplicate
+1:01.269  ID:1  Rx: '0|1|7|61009000' from node: '4'                -> Duplicate
+1:01.269  ID:2  Rx: '0|1|7|61009000' from node: '4'                -> Duplicate
+1:01.269  ID:3  Rx: '0|1|7|61009000' from node: '4'                -> Duplicate
+1:01.269  ID:5  Rx: '0|1|7|61009000' from node: '4'                -> Duplicate
+1:01.269  ID:6  Rx: '0|1|7|61009000' from node: '4'                -> Duplicate
+1:01.269  ID:7  Rx: '0|1|7|61009000' from node: '4'                -> Duplicate
+1:01.269  ID:8  Rx: '0|1|7|61009000' from node: '4'                -> Duplicate
+1:01.269  ID:9  Rx: '0|1|7|61009000' from node: '4'                -> Duplicate
+1:01.275  ID:1  Rx: '0|1|8|61009000' from node: '6'                -> Duplicate
+1:01.275  ID:2  Rx: '0|1|8|61009000' from node: '6'                -> Duplicate
+1:01.275  ID:3  Rx: '0|1|8|61009000' from node: '6'                -> Duplicate
+1:01.275  ID:4  Rx: '0|1|8|61009000' from node: '6'                -> Duplicate
+1:01.275  ID:5  Rx: '0|1|8|61009000' from node: '6'                -> Duplicate
+1:01.275  ID:7  Rx: '0|1|8|61009000' from node: '6'                -> Duplicate
+1:01.275  ID:8  Rx: '0|1|8|61009000' from node: '6'                -> Duplicate
+1:01.275  ID:9  Rx: '0|1|8|61009000' from node: '6'                -> Duplicate
+1:01.283  ID:7  Rx: '0|1|12|61015000' from node: '12'              -> Rebroadcast attestation
+1:01.283  ID:8  Rx: '0|1|12|61015000' from node: '12'              -> Rebroadcast attestation
+1:01.283  ID:9  Rx: '0|1|12|61015000' from node: '12'              -> Rebroadcast attestation
+1:01.283  ID:10  Rx: '0|1|12|61015000' from node: '12'              -> Rebroadcast attestation
+1:01.283  ID:11  Rx: '0|1|12|61015000' from node: '12'              -> Rebroadcast attestation
+1:01.283  ID:1  Rx: '0|1|6|60996000' from node: '3'                -> Duplicate
+1:01.283  ID:2  Rx: '0|1|6|60996000' from node: '3'                -> Duplicate
+1:01.283  ID:4  Rx: '0|1|6|60996000' from node: '3'                -> Duplicate
+1:01.283  ID:5  Rx: '0|1|6|60996000' from node: '3'                -> Duplicate
+1:01.283  ID:6  Rx: '0|1|6|60996000' from node: '3'                -> Duplicate
+1:01.289  ID:8  Rx: '0|1|12|61015000' from node: '7'               -> Duplicate
+1:01.289  ID:9  Rx: '0|1|12|61015000' from node: '7'               -> Duplicate
+1:01.289  ID:10  Rx: '0|1|12|61015000' from node: '7'               -> Duplicate
+1:01.289  ID:11  Rx: '0|1|12|61015000' from node: '7'               -> Duplicate
+1:01.294  ID:1  Rx: '0|1|10|61015000' from node: '3'               -> Duplicate
+1:01.295  ID:8  Rx: '0|1|8|61009000' from node: '7'                -> Duplicate
+1:01.295  ID:9  Rx: '0|1|8|61009000' from node: '7'                -> Duplicate
+1:01.295  ID:10  Rx: '0|1|8|61009000' from node: '7'                -> Duplicate
+1:01.295  ID:11  Rx: '0|1|8|61009000' from node: '7'                -> Duplicate
+1:01.295  ID:12  Rx: '0|1|8|61009000' from node: '7'                -> Duplicate
+1:01.302  ID:7  Rx: '0|1|6|60996000' from node: '9'                -> Duplicate
+1:01.302  ID:8  Rx: '0|1|6|60996000' from node: '9'                -> Duplicate
+1:01.302  ID:10  Rx: '0|1|6|60996000' from node: '9'                -> Rebroadcast attestation
+1:01.302  ID:11  Rx: '0|1|6|60996000' from node: '9'                -> Rebroadcast attestation
+1:01.302  ID:12  Rx: '0|1|6|60996000' from node: '9'                -> Rebroadcast attestation
+1:01.305  ID:1  Rx: '0|1|4|60996000' from node: '3'                -> Duplicate
+1:01.305  ID:2  Rx: '0|1|4|60996000' from node: '3'                -> Duplicate
+1:01.308  ID:11  Rx: '0|1|6|60996000' from node: '10'               -> Duplicate
+1:01.308  ID:12  Rx: '0|1|6|60996000' from node: '10'               -> Duplicate
+1:01.311  ID:1  Rx: '0|1|8|61009000' from node: '4'                -> Duplicate
+1:01.311  ID:2  Rx: '0|1|8|61009000' from node: '4'                -> Duplicate
+1:01.311  ID:3  Rx: '0|1|8|61009000' from node: '4'                -> Duplicate
+1:01.311  ID:5  Rx: '0|1|8|61009000' from node: '4'                -> Duplicate
+1:01.311  ID:6  Rx: '0|1|8|61009000' from node: '4'                -> Duplicate
+1:01.322  ID:1  Rx: '0|1|4|60996000' from node: '6'                -> Duplicate
+1:01.322  ID:2  Rx: '0|1|4|60996000' from node: '6'                -> Duplicate
+1:01.322  ID:4  Rx: '0|1|4|60996000' from node: '6'                -> Duplicate
+1:01.322  ID:5  Rx: '0|1|4|60996000' from node: '6'                -> Duplicate
+1:01.322  ID:7  Rx: '0|1|4|60996000' from node: '6'                -> Rebroadcast attestation
+1:01.322  ID:8  Rx: '0|1|4|60996000' from node: '6'                -> Rebroadcast attestation
+1:01.322  ID:9  Rx: '0|1|4|60996000' from node: '6'                -> Rebroadcast attestation
+1:01.328  ID:4  Rx: '0|1|4|60996000' from node: '7'                -> Duplicate
+1:01.328  ID:5  Rx: '0|1|4|60996000' from node: '7'                -> Duplicate
+1:01.328  ID:6  Rx: '0|1|4|60996000' from node: '7'                -> Duplicate
+1:01.328  ID:8  Rx: '0|1|4|60996000' from node: '7'                -> Duplicate
+1:01.328  ID:9  Rx: '0|1|4|60996000' from node: '7'                -> Duplicate
+1:01.328  ID:10  Rx: '0|1|4|60996000' from node: '7'                -> Rebroadcast attestation
+1:01.328  ID:11  Rx: '0|1|4|60996000' from node: '7'                -> Rebroadcast attestation
+1:01.328  ID:12  Rx: '0|1|4|60996000' from node: '7'                -> Rebroadcast attestation
+1:01.334  ID:11  Rx: '0|1|12|61015000' from node: '10'              -> Duplicate
+1:01.334  ID:12  Rx: '0|1|12|61015000' from node: '10'              -> Duplicate
+1:01.337  ID:1  Rx: '0|1|10|61015000' from node: '6'               -> Duplicate
+1:01.337  ID:3  Rx: '0|1|10|61015000' from node: '6'               -> Duplicate
+1:01.337  ID:4  Rx: '0|1|10|61015000' from node: '6'               -> Duplicate
+1:01.337  ID:5  Rx: '0|1|10|61015000' from node: '6'               -> Duplicate
+1:01.340  ID:11  Rx: '0|1|4|60996000' from node: '10'               -> Duplicate
+1:01.340  ID:12  Rx: '0|1|4|60996000' from node: '10'               -> Duplicate
+1:01.348  ID:4  Rx: '0|1|6|60996000' from node: '7'                -> Duplicate
+1:01.348  ID:5  Rx: '0|1|6|60996000' from node: '7'                -> Duplicate
+1:01.348  ID:6  Rx: '0|1|6|60996000' from node: '7'                -> Duplicate
+1:01.348  ID:8  Rx: '0|1|6|60996000' from node: '7'                -> Duplicate
+1:01.348  ID:9  Rx: '0|1|6|60996000' from node: '7'                -> Duplicate
+1:01.348  ID:10  Rx: '0|1|6|60996000' from node: '7'                -> Duplicate
+1:01.348  ID:11  Rx: '0|1|6|60996000' from node: '7'                -> Duplicate
+1:01.348  ID:12  Rx: '0|1|6|60996000' from node: '7'                -> Duplicate
+1:01.358  ID:7  Rx: '0|1|12|61015000' from node: '11'              -> Duplicate
+1:01.358  ID:8  Rx: '0|1|12|61015000' from node: '11'              -> Duplicate
+1:01.358  ID:9  Rx: '0|1|12|61015000' from node: '11'              -> Duplicate
+1:01.358  ID:10  Rx: '0|1|12|61015000' from node: '11'              -> Duplicate
+1:01.358  ID:12  Rx: '0|1|12|61015000' from node: '11'              -> Duplicate
+1:01.366  ID:4  Rx: '0|1|6|60996000' from node: '8'                -> Duplicate
+1:01.366  ID:5  Rx: '0|1|6|60996000' from node: '8'                -> Duplicate
+1:01.366  ID:6  Rx: '0|1|6|60996000' from node: '8'                -> Duplicate
+1:01.366  ID:7  Rx: '0|1|6|60996000' from node: '8'                -> Duplicate
+1:01.366  ID:9  Rx: '0|1|6|60996000' from node: '8'                -> Duplicate
+1:01.366  ID:12  Rx: '0|1|6|60996000' from node: '8'                -> Duplicate
+1:01.376  ID:4  Rx: '0|1|4|60996000' from node: '9'                -> Duplicate
+1:01.376  ID:6  Rx: '0|1|4|60996000' from node: '9'                -> Duplicate
+1:01.376  ID:7  Rx: '0|1|4|60996000' from node: '9'                -> Duplicate
+1:01.376  ID:10  Rx: '0|1|4|60996000' from node: '9'                -> Duplicate
+1:01.376  ID:11  Rx: '0|1|4|60996000' from node: '9'                -> Duplicate
+1:01.376  ID:12  Rx: '0|1|4|60996000' from node: '9'                -> Duplicate
+1:01.387  ID:7  Rx: '0|1|6|60996000' from node: '11'               -> Duplicate
+1:01.387  ID:8  Rx: '0|1|6|60996000' from node: '11'               -> Duplicate
+1:01.387  ID:9  Rx: '0|1|6|60996000' from node: '11'               -> Duplicate
+1:01.387  ID:10  Rx: '0|1|6|60996000' from node: '11'               -> Duplicate
+1:01.387  ID:12  Rx: '0|1|6|60996000' from node: '11'               -> Duplicate
+1:01.399  ID:4  Rx: '0|1|12|61015000' from node: '8'               -> Rebroadcast attestation
+1:01.399  ID:5  Rx: '0|1|12|61015000' from node: '8'               -> Rebroadcast attestation
+1:01.399  ID:7  Rx: '0|1|12|61015000' from node: '8'               -> Duplicate
+1:01.399  ID:9  Rx: '0|1|12|61015000' from node: '8'               -> Duplicate
+1:01.399  ID:10  Rx: '0|1|12|61015000' from node: '8'               -> Duplicate
+1:01.399  ID:11  Rx: '0|1|12|61015000' from node: '8'               -> Duplicate
+1:01.399  ID:12  Rx: '0|1|12|61015000' from node: '8'               -> Duplicate
+1:01.405  ID:1  Rx: '0|1|12|61015000' from node: '4'               -> Attestation received
+1:01.405  ID:3  Rx: '0|1|12|61015000' from node: '4'               -> Rebroadcast attestation
+1:01.405  ID:5  Rx: '0|1|12|61015000' from node: '4'               -> Duplicate
+1:01.405  ID:6  Rx: '0|1|12|61015000' from node: '4'               -> Rebroadcast attestation
+1:01.410  ID:10  Rx: '0|1|6|60996000' from node: '12'               -> Duplicate
+1:01.410  ID:11  Rx: '0|1|6|60996000' from node: '12'               -> Duplicate
+1:01.411  ID:1  Rx: '0|1|10|61015000' from node: '4'               -> Duplicate
+1:01.411  ID:2  Rx: '0|1|10|61015000' from node: '4'               -> Duplicate
+1:01.411  ID:3  Rx: '0|1|10|61015000' from node: '4'               -> Duplicate
+1:01.411  ID:5  Rx: '0|1|10|61015000' from node: '4'               -> Duplicate
+1:01.411  ID:6  Rx: '0|1|10|61015000' from node: '4'               -> Duplicate
+1:01.424  ID:4  Rx: '0|1|12|61015000' from node: '9'               -> Duplicate
+1:01.424  ID:5  Rx: '0|1|12|61015000' from node: '9'               -> Duplicate
+1:01.424  ID:6  Rx: '0|1|12|61015000' from node: '9'               -> Duplicate
+1:01.424  ID:7  Rx: '0|1|12|61015000' from node: '9'               -> Duplicate
+1:01.424  ID:8  Rx: '0|1|12|61015000' from node: '9'               -> Duplicate
+1:01.424  ID:10  Rx: '0|1|12|61015000' from node: '9'               -> Duplicate
+1:01.424  ID:11  Rx: '0|1|12|61015000' from node: '9'               -> Duplicate
+1:01.424  ID:12  Rx: '0|1|12|61015000' from node: '9'               -> Duplicate
+1:01.434  ID:10  Rx: '0|1|4|60996000' from node: '12'               -> Duplicate
+1:01.434  ID:11  Rx: '0|1|4|60996000' from node: '12'               -> Duplicate
+1:01.437  ID:2  Rx: '0|1|12|61015000' from node: '6'               -> Rebroadcast attestation
+1:01.437  ID:3  Rx: '0|1|12|61015000' from node: '6'               -> Duplicate
+1:01.437  ID:4  Rx: '0|1|12|61015000' from node: '6'               -> Duplicate
+1:01.437  ID:5  Rx: '0|1|12|61015000' from node: '6'               -> Duplicate
+1:01.443  ID:1  Rx: '0|1|12|61015000' from node: '2'               -> Duplicate
+1:01.443  ID:3  Rx: '0|1|12|61015000' from node: '2'               -> Duplicate
+1:01.443  ID:4  Rx: '0|1|12|61015000' from node: '2'               -> Duplicate
+1:01.443  ID:5  Rx: '0|1|12|61015000' from node: '2'               -> Duplicate
+1:01.443  ID:6  Rx: '0|1|12|61015000' from node: '2'               -> Duplicate
+1:01.453  ID:1  Rx: '0|1|12|61015000' from node: '5'               -> Duplicate
+1:01.453  ID:2  Rx: '0|1|12|61015000' from node: '5'               -> Duplicate
+1:01.453  ID:3  Rx: '0|1|12|61015000' from node: '5'               -> Duplicate
+1:01.453  ID:4  Rx: '0|1|12|61015000' from node: '5'               -> Duplicate
+1:01.453  ID:6  Rx: '0|1|12|61015000' from node: '5'               -> Duplicate
+1:01.453  ID:7  Rx: '0|1|12|61015000' from node: '5'               -> Duplicate
+1:01.453  ID:8  Rx: '0|1|12|61015000' from node: '5'               -> Duplicate
+1:01.453  ID:9  Rx: '0|1|12|61015000' from node: '5'               -> Duplicate
+1:01.487  ID:1  Rx: '0|1|12|61015000' from node: '3'               -> Duplicate
+1:01.487  ID:2  Rx: '0|1|12|61015000' from node: '3'               -> Duplicate
+1:01.487  ID:4  Rx: '0|1|12|61015000' from node: '3'               -> Duplicate
+1:01.487  ID:5  Rx: '0|1|12|61015000' from node: '3'               -> Duplicate
+1:01.487  ID:6  Rx: '0|1|12|61015000' from node: '3'               -> Duplicate
+1:01.990  ID:2  Tx: '0|2|0|61990000'

@@ -2,7 +2,6 @@
 <simconf version="2023090101">
   <simulation>
     <title>My simulation</title>
-    <speedlimit>1.0</speedlimit>
     <randomseed>123456</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
@@ -18,7 +17,7 @@
     <motetype>
       org.contikios.cooja.contikimote.ContikiMoteType
       <description>Cooja Mote Type #1</description>
-      <source>[CONFIG_DIR]/udp-p2p.c</source>
+      <source>[CONTIKI_DIR]/examples/udp-p2p/udp-p2p.c</source>
       <commands>$(MAKE) -j$(CPUS) udp-p2p.cooja TARGET=cooja</commands>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.Battery</moteinterface>
@@ -39,31 +38,11 @@
       <mote>
         <interface_config>
           org.contikios.cooja.interfaces.Position
-          <pos x="83.73409704724742" y="87.73682265953447" />
+          <pos x="67.23371657139013" y="92.73637759551951" />
         </interface_config>
         <interface_config>
           org.contikios.cooja.contikimote.interfaces.ContikiMoteID
           <id>1</id>
-        </interface_config>
-      </mote>
-      <mote>
-        <interface_config>
-          org.contikios.cooja.interfaces.Position
-          <pos x="40.64126122441502" y="96.20307607001338" />
-        </interface_config>
-        <interface_config>
-          org.contikios.cooja.contikimote.interfaces.ContikiMoteID
-          <id>2</id>
-        </interface_config>
-      </mote>
-      <mote>
-        <interface_config>
-          org.contikios.cooja.interfaces.Position
-          <pos x="3.901223605162542" y="114.4319484573308" />
-        </interface_config>
-        <interface_config>
-          org.contikios.cooja.contikimote.interfaces.ContikiMoteID
-          <id>3</id>
         </interface_config>
       </mote>
     </motetype>
@@ -76,9 +55,9 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>3.6187458644754997 0.0 0.0 3.6187458644754997 26.60453401466471 -172.02188973878884</viewport>
+      <viewport>0.9090909090909091 0.0 0.0 0.9090909090909091 132.87843948055442 88.69420218589136</viewport>
     </plugin_config>
-    <bounds x="1" y="1" height="400" width="400" z="1" />
+    <bounds x="1" y="1" height="400" width="400" z="3" />
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.LogListener
@@ -87,20 +66,18 @@
       <formatted_time />
       <coloring />
     </plugin_config>
-    <bounds x="400" y="160" height="891" width="1320" />
+    <bounds x="400" y="160" height="240" width="1320" z="2" />
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.TimeLine
     <plugin_config>
       <mote>0</mote>
-      <mote>1</mote>
-      <mote>2</mote>
       <showRadioRXTX />
       <showRadioHW />
       <showLEDs />
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
-    <bounds x="0" y="1859" height="166" width="1720" z="3" />
+    <bounds x="0" y="1859" height="166" width="1720" z="1" />
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Notes
@@ -108,6 +85,6 @@
       <notes>Enter notes here</notes>
       <decorations>true</decorations>
     </plugin_config>
-    <bounds x="400" y="0" height="160" width="1320" z="2" />
+    <bounds x="400" y="0" height="160" width="1320" />
   </plugin>
 </simconf>

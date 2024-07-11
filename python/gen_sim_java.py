@@ -7,11 +7,11 @@ def prettify(element):
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
-def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, filename, tx_range, interference_range, success_ratio_tx, success_ratio_rx):
+def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, tx_range, interference_range, success_ratio_tx, success_ratio_rx):
     simconf = ET.Element("simconf", version="2023090101")
     simulation = ET.SubElement(simconf, "simulation")
     
-    ET.SubElement(simulation, "title").text = "My simulation"
+    ET.SubElement(simulation, "title").text = f"java_{rows}x{cols}x{layers}"
     ET.SubElement(simulation, "randomseed").text = "generated"
     ET.SubElement(simulation, "motedelay_us").text = "1000000"
     
@@ -45,7 +45,7 @@ def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, f
                 
                 interface_config_pos = ET.SubElement(mote, "interface_config")
                 interface_config_pos.text = "org.contikios.cooja.interfaces.Position"
-                ET.SubElement(interface_config_pos, "pos", x=str(j * spacing_x), y=str(i * spacing_y))
+                ET.SubElement(interface_config_pos, "pos", x=str(j * spacing_x), y=str(i * spacing_y), z=str(k * spacing_z))
                 
                 mote_id += 1
     
@@ -71,7 +71,7 @@ def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, f
                 "formatted_time": "",
                 "coloring": ""
             },
-            "bounds": {"x": "400", "y": "160", "height": "868", "width": "1320", "z": "1"}
+            "bounds": {"x": "400", "y": "160", "height": "900", "width": "1320", "z": "1"}
         },
         {
             "name": "org.contikios.cooja.plugins.TimeLine",
@@ -98,7 +98,7 @@ def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, f
                 "scriptfile": "[COOJA_DIR]/headless_logger.js",
                 "active": "true"
             },
-            "bounds": {"x": "843", "y": "74", "height": "700", "width": "600"}
+            "bounds": {"x": "400", "y": "1060", "height": "700", "width": "1320"}
         }
     ]
     
@@ -117,6 +117,7 @@ def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, f
             bounds.set(key, value)
     
     pretty_xml = prettify(simconf)
+    filename = f"../simulations/java_{rows}x{cols}x{layers}.csc"
     with open(filename, "w") as f:
         f.write(pretty_xml)
 
@@ -124,12 +125,11 @@ def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, f
 if __name__ == "__main__":
     create_simulation_xml(
         rows=4, 
-        cols=12,
+        cols=3,
         layers=1,
         spacing_x=3, 
         spacing_y=12, 
         spacing_z=5,
-        filename="../simulation-z-java.csc", 
         tx_range=14, 
         interference_range=20, 
         success_ratio_tx=0.9, 

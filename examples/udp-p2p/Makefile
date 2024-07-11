@@ -6,5 +6,5 @@ MAKE_ROUTING = MAKE_ROUTING_NULLROUTING
 all: $(CONTIKI_PROJECT)
 CFLAGS += -DPROJECT_CONF_H=\"project-conf.h\"
 
-CONTIKI = ../../..
+CONTIKI = ../..
 include $(CONTIKI)/Makefile.include

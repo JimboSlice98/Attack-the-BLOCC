@@ -31,7 +31,7 @@ public class Peer2PeerMote extends AbstractApplicationMote {
   private static final long TRANSMISSION_DURATION = Simulation.MILLISECOND*5;                               // UDP broadcast time: 5ms
   private static final long SEND_INTERVAL = Simulation.MILLISECOND*(1000*60 - 5) - TRANSMISSION_DURATION;   // Send request every 60 seconds
   private static final long MS = Simulation.MILLISECOND;
-  private static final int TTL = 200;
+  private static final int TTL = 1000;
   private static final int LOG_LENGTH = 50;
   private long txCount = 0;
   private Map<String, Long> msgCache = new HashMap<>();
@@ -79,7 +79,7 @@ public class Peer2PeerMote extends AbstractApplicationMote {
       // Handle incomming attestations
       if (attestNode != 0 && originNode != getID()) {
         logf(logMsg, "Rebroadcast attestation");
-        broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, TTL);
+        broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, TTL, 1);
         return;
       }
       else if (attestNode != 0) {
@@ -89,14 +89,14 @@ public class Peer2PeerMote extends AbstractApplicationMote {
 
       // Handle incomming messages
       logf(logMsg, "Rebroadcast message");
-      broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, TTL);
+      broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, TTL, 1);
 
       // Create new attestation
       timeOfBroadcast = getSimulation().getSimulationTime();
       key = messageNum + "|" + originNode + "|" + getID();
       log("Ax: '" + key + "|" + timeOfBroadcast);
       msgCache.put(key, timeOfBroadcast);
-      broadcastPacket(messageNum, originNode, getID(), timeOfBroadcast, TTL);
+      broadcastPacket(messageNum, originNode, getID(), timeOfBroadcast, TTL, 1);
 
     } catch (NumberFormatException e) {
       System.out.println("Mote " + getID() + " received bad data: " + e);
@@ -118,39 +118,40 @@ public class Peer2PeerMote extends AbstractApplicationMote {
         msgCache.put(data, timeOfBroadcast);
         txCount++;
 
-        broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, TTL);
+        broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, TTL, 1);
         schedulePeriodicPacket(0);
       }
     }, getSimulation().getSimulationTime() + SEND_INTERVAL + timeOffset);
   }
 
 
-  private void broadcastPacket(long messageNum, int originNode, int attestNode, long timeOfBroadcast, int ttl) {
+  private void broadcastPacket(long messageNum, int originNode, int attestNode, long timeOfBroadcast, int ttl, int timeOffset) {
     if (ttl <= 0) {
-      System.out.println("Mote " + getID() + " message TTL expired for " + messageNum + "|" + originNode + "|" + attestNode);
+      System.out.println(formatTime(getSimulation().getSimulationTimeMillis()) + "  ID " + getID() + ": TTL expired for " + messageNum + "|" + originNode + "|" + attestNode);
       return;
     }
 
-    // System.out.println("Mote " + getID() + " scheduling to relay message " + messageNum + "|" + originNode + "|" + attestNode
-    //   + " at " + getSimulation().getSimulationTimeMillis() + " for execution at " + (getSimulation().getSimulationTime() + 1*MS));
+    // System.out.println(formatTime(getSimulation().getSimulationTimeMillis()) + "  ID " + getID() + ": scheduling transmission of " + messageNum + "|" + originNode + "|" + attestNode
+    //   + " for execution at " + formatTime(getSimulation().getSimulationTimeMillis() + timeOffset));
   
     getSimulation().scheduleEvent(new MoteTimeEvent(this) {
       @Override
       public void execute(long t) {
         if (radio.isTransmitting() || radio.isReceiving() || radio.isInterfered()) {
-          int randomDelay = rd.nextInt(11);
-          // System.out.println("Mote " + getID() + " detected busy channel or interference, rescheduling message " + messageNum + "|" + originNode + "|" + attestNode + " with delay " + randomDelay + " ms and new TTL " + (ttl - randomDelay));
-          broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, ttl - randomDelay);
+          int randomDelay = rd.nextInt(50);
+          // System.out.println(formatTime(getSimulation().getSimulationTimeMillis()) + "  ID " + getID() + ": interfered, rescheduling transmission of " + messageNum + "|" + originNode + "|" + attestNode
+          //   + " with delay " + randomDelay + " ms and new TTL " + (ttl - randomDelay));
+
+          broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, ttl - randomDelay, randomDelay);
           return;
         }
   
-        // System.out.println("Mote " + getID() + " sending relayed message " + messageNum + "|" + originNode + "|" + attestNode
-        // + " at " + getSimulation().getSimulationTimeMillis());
+        System.out.println(formatTime(getSimulation().getSimulationTimeMillis()) + "  ID " + getID() + ": transmitting " + messageNum + "|" + originNode + "|" + attestNode + " with TTL " + ttl);
   
         String data = messageNum + "|" + originNode + "|" + attestNode + "|" + timeOfBroadcast + "|" + getID();
         radio.startTransmittingPacket(new COOJARadioPacket(data.getBytes(StandardCharsets.UTF_8)), TRANSMISSION_DURATION);
       }
-    }, getSimulation().getSimulationTime() + 1*MS);
+    }, getSimulation().getSimulationTime() + timeOffset*MS);
   }
 
   
@@ -158,6 +159,18 @@ public class Peer2PeerMote extends AbstractApplicationMote {
     String logData = String.format("%-" + LOG_LENGTH + "s", logMsg) + " -> " + additionalMsg;
     log(logData);
     // System.out.println(logData);
+  }
+
+
+  public static String formatTime(long milliseconds) {
+    long mins = milliseconds / 60000;
+    long secs = (milliseconds % 60000) / 1000;
+    long millis = milliseconds % 1000;
+
+    String paddedSecs = String.format("%02d", secs);
+    String paddedMillis = String.format("%03d", millis);
+
+    return mins + ":" + paddedSecs + "." + paddedMillis;
   }
 
 
