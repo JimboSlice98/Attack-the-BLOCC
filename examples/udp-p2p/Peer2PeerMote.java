@@ -33,6 +33,7 @@ public class Peer2PeerMote extends AbstractApplicationMote {
   private static final long MS = Simulation.MILLISECOND;
   private static final int TTL = 1000;
   private static final int LOG_LENGTH = 50;
+  private static final int LOGTIME_LENGTH = 30;
   private long txCount = 0;
   private Map<String, Long> msgCache = new HashMap<>();
 
@@ -42,7 +43,7 @@ public class Peer2PeerMote extends AbstractApplicationMote {
   
 
   protected void execute(long time) {
-    System.out.println("Mote " + getID() + " execute() function called");
+    // System.out.println("Mote " + getID() + " execute() function called");
     if (radio == null) {
       radio = (ApplicationRadio) getInterfaces().getRadio();
       rd = getSimulation().getRandomGenerator();
@@ -70,7 +71,7 @@ public class Peer2PeerMote extends AbstractApplicationMote {
 
       // Check to see if the mote has received this packet before
       if (msgCache.containsKey(key)) {
-        logf(logMsg, "Duplicate");
+        // logf(logMsg, "Duplicate");
         return;
       }
 
@@ -78,7 +79,7 @@ public class Peer2PeerMote extends AbstractApplicationMote {
       
       // Handle incomming attestations
       if (attestNode != 0 && originNode != getID()) {
-        logf(logMsg, "Rebroadcast attestation");
+        // logf(logMsg, "Rebroadcast attestation");
         broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, TTL, 1);
         return;
       }
@@ -88,13 +89,13 @@ public class Peer2PeerMote extends AbstractApplicationMote {
       }
 
       // Handle incomming messages
-      logf(logMsg, "Rebroadcast message");
+      // logf(logMsg, "Rebroadcast message");
       broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, TTL, 1);
 
       // Create new attestation
       timeOfBroadcast = getSimulation().getSimulationTime();
       key = messageNum + "|" + originNode + "|" + getID();
-      log("Ax: '" + key + "|" + timeOfBroadcast);
+      // logf("Ax: '" + key + "|" + timeOfBroadcast, null);
       msgCache.put(key, timeOfBroadcast);
       broadcastPacket(messageNum, originNode, getID(), timeOfBroadcast, TTL, 1);
 
@@ -114,7 +115,7 @@ public class Peer2PeerMote extends AbstractApplicationMote {
         long timeOfBroadcast = getSimulation().getSimulationTime();
 
         String data = messageNum + "|" + originNode + "|" + attestNode;
-        log("Tx: " + "'" + data + "|" + timeOfBroadcast + "'");
+        logf("Tx: " + "'" + data + "|" + timeOfBroadcast + "'", null);
         msgCache.put(data, timeOfBroadcast);
         txCount++;
 
@@ -141,13 +142,11 @@ public class Peer2PeerMote extends AbstractApplicationMote {
           int randomDelay = rd.nextInt(50);
           // System.out.println(formatTime(getSimulation().getSimulationTimeMillis()) + "  ID " + getID() + ": interfered, rescheduling transmission of " + messageNum + "|" + originNode + "|" + attestNode
           //   + " with delay " + randomDelay + " ms and new TTL " + (ttl - randomDelay));
-
-          broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, ttl - randomDelay, randomDelay);
+          broadcastPacket(messageNum, originNode, attestNode, timeOfBroadcast, ttl, randomDelay);
           return;
         }
   
-        System.out.println(formatTime(getSimulation().getSimulationTimeMillis()) + "  ID " + getID() + ": transmitting " + messageNum + "|" + originNode + "|" + attestNode + " with TTL " + ttl);
-  
+        // System.out.println(formatTime(getSimulation().getSimulationTimeMillis()) + "  ID " + getID() + ": transmitting " + messageNum + "|" + originNode + "|" + attestNode + " with TTL " + ttl);  
         String data = messageNum + "|" + originNode + "|" + attestNode + "|" + timeOfBroadcast + "|" + getID();
         radio.startTransmittingPacket(new COOJARadioPacket(data.getBytes(StandardCharsets.UTF_8)), TRANSMISSION_DURATION);
       }
@@ -156,9 +155,19 @@ public class Peer2PeerMote extends AbstractApplicationMote {
 
   
   private void logf(String logMsg, String additionalMsg) {
-    String logData = String.format("%-" + LOG_LENGTH + "s", logMsg) + " -> " + additionalMsg;
+    String logData;
+    if (additionalMsg != null) {
+      logData = String.format("%-" + LOG_LENGTH + "s", logMsg) + " -> " + additionalMsg;
+    }
+    else {
+      logData = logMsg;
+    }
     log(logData);
-    // System.out.println(logData);
+    System.out.println(
+      String.format(
+        "%-" + LOGTIME_LENGTH + "s", formatTime(getSimulation().getSimulationTimeMillis()) + "  ID: " + getID()
+      ) + "  " + logData
+    );
   }
 
 

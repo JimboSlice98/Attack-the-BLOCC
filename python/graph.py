@@ -21,7 +21,7 @@ def create_graph(node_positions, malicious_nodes, distance_threshold):
     malicious_attributes = {node: node in malicious_nodes for node in node_positions}
     nx.set_node_attributes(G, malicious_attributes, 'malicious')
 
-    for node_id_1, pos1 in node_positions.items():
+    for node_id_1, pos1 in tqdm(node_positions.items(), disable=True):
         for node_id_2, pos2 in node_positions.items():
             if node_id_1 != node_id_2:
                 distance = nodal_distance(pos1, pos2)
@@ -271,14 +271,13 @@ def visualize_graph_3D_with_click(G, C1, C2, port=45145):
 
 def find_node_with_honest_neighbors(G, malicious_nodes):
     valid_nodes = {}
-    node_found = False
+    node_found = 0
     tqdm_disable = False
 
-    for node in tqdm(G):
+    for node in tqdm(G, disable=True):
         if any(neighbor in malicious_nodes for neighbor in G.neighbors(node)):
             continue
         else:
-            node_found = True
-            print(node)
+            node_found += 1
 
     return node_found

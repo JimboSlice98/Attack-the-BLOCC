@@ -7,12 +7,12 @@ def prettify(element):
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
-def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, tx_range, interference_range, success_ratio_tx, success_ratio_rx, language):
+def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, tx_range, interference_range, success_ratio, language):
     simconf = ET.Element("simconf", version="2023090101")
     simulation = ET.SubElement(simconf, "simulation")
     
     title_prefix = "c" if language == "c" else "java"
-    ET.SubElement(simulation, "title").text = f"{title_prefix}_{rows}x{cols}x{layers}"
+    ET.SubElement(simulation, "title").text = f"{title_prefix}_{rows}x{cols}x{layers}_{success_ratio}"
     ET.SubElement(simulation, "randomseed").text = "generated"
     ET.SubElement(simulation, "motedelay_us").text = "1000000"
     
@@ -20,8 +20,8 @@ def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, t
     radiomedium.text = "org.contikios.cooja.radiomediums.UDGM"
     ET.SubElement(radiomedium, "transmitting_range").text = str(tx_range)
     ET.SubElement(radiomedium, "interference_range").text = str(interference_range)
-    ET.SubElement(radiomedium, "success_ratio_tx").text = str(success_ratio_tx)
-    ET.SubElement(radiomedium, "success_ratio_rx").text = str(success_ratio_rx)
+    ET.SubElement(radiomedium, "success_ratio_tx").text = str(success_ratio)
+    ET.SubElement(radiomedium, "success_ratio_rx").text = str(success_ratio)
     
     events = ET.SubElement(simulation, "events")
     ET.SubElement(events, "logoutput").text = "40000"
@@ -95,7 +95,7 @@ def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, t
                     "org.contikios.cooja.plugins.skins.TrafficVisualizerSkin",
                     "org.contikios.cooja.plugins.skins.UDGMVisualizerSkin"
                 ],
-                "viewport": "4.88544704914079 0.0 0.0 4.88544704914079 -54.14192546656379 118.19272539077168"
+                "viewport": "8.737373737373737 0.0 0.0 8.737373737373737 167.7878787878788 15.727272727272732"
             },
             "bounds": {"x": "1", "y": "1", "height": "400", "width": "400", "z": "2"}
         },
@@ -152,22 +152,21 @@ def create_simulation_xml(rows, cols, layers, spacing_x, spacing_y, spacing_z, t
             bounds.set(key, value)
     
     pretty_xml = prettify(simconf)
-    filename = f"../simulations/{title_prefix}_{rows}x{cols}x{layers}_sim.csc"
+    filename = f"../simulations/{title_prefix}_{rows}x{cols}x{layers}_{success_ratio}_sim.csc"
     with open(filename, "w") as f:
         f.write(pretty_xml)
 
 
 if __name__ == "__main__":
     create_simulation_xml(
-        rows=4, 
-        cols=3,
-        layers=1,
+        rows=14,
+        cols=10,
+        layers=12,
         spacing_x=3, 
         spacing_y=12, 
         spacing_z=5,
         tx_range=14, 
         interference_range=20, 
-        success_ratio_tx=0.9, 
-        success_ratio_rx=0.9,
-        language="c"
+        success_ratio=1,
+        language="java"
     )

@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import re
 from collections import defaultdict
+from tqdm import tqdm
 
 
 def parse_simulation_file(file_path):
@@ -16,8 +17,18 @@ def parse_simulation_file(file_path):
             if position is not None and node_id is not None:
                 node_id_int = int(node_id.text)
                 node_positions[node_id_int] = (float(position.get('x')), float(position.get('y')),float(position.get('z')))
-                
-    return node_positions
+    
+    radiomedium = root.find(".//radiomedium")
+    transmitting_range = float(radiomedium.find(".//transmitting_range").text)
+    interference_range = float(radiomedium.find(".//interference_range").text)
+    
+    return node_positions, transmitting_range, interference_range
+
+
+def parse_timestamp(timestamp_str):
+    minutes, seconds = map(float, timestamp_str.split(':'))
+    total_seconds = minutes * 60 + seconds
+    return {'minutes': int(minutes), 'seconds': seconds, 'total_seconds': total_seconds}
 
 
 def parse_log_file(file_path):
@@ -25,19 +36,29 @@ def parse_log_file(file_path):
     message_groups = defaultdict(list)
     node_states = defaultdict(lambda: {'tx': [], 'rx': []})
 
+    # log_pattern = re.compile(  # C
+    #     r'(?P<timestamp>\d+:\d+\.\d+)\tID:(?P<node_id>\d+)\t\[[A-Z]+: Node\s*\]\s*'
+    #     r'(?P<action>[A-Za-z]+): \'(?P<message_num>\d+)\|(?P<origin_node>\d+)\|(?P<attest_node>\d+)\|(?P<broadcast_time>\d+)\''
+    #     r'(?: from node: \'(?P<from_node>\d+)\')?\s*(?:->\s*(?P<comment>.*))?'
+    # )
+
     log_pattern = re.compile(
-        r'(?P<timestamp>\d+:\d+\.\d+)\tID:(?P<node_id>\d+)\t\[[A-Z]+: Node\s*\]\s*'
+        r'(?P<timestamp>\d+:\d+\.\d+)\s+ID:(?P<node_id>\d+)\s+'
         r'(?P<action>[A-Za-z]+): \'(?P<message_num>\d+)\|(?P<origin_node>\d+)\|(?P<attest_node>\d+)\|(?P<broadcast_time>\d+)\''
         r'(?: from node: \'(?P<from_node>\d+)\')?\s*(?:->\s*(?P<comment>.*))?'
     )
+
+    with open(file_path, 'r') as file:
+        total_lines = sum(1 for _ in file)
     
     with open(file_path, 'r') as file:
-        for line in file:
+        for line in tqdm(file, total=total_lines):
             match = log_pattern.match(line)
             if match:
                 log_entry = match.groupdict()
                 
-                log_entry['timestamp'] = float(log_entry['timestamp'].replace(':', ''))
+                # log_entry['timestamp'] = float(log_entry['timestamp'].replace(':', ''))
+                # log_entry['timestamp'] = parse_timestamp(log_entry['timestamp'])
                 log_entry['node_id'] = int(log_entry['node_id'])
                 log_entry['message_num'] = int(log_entry['message_num'])
                 log_entry['origin_node'] = int(log_entry['origin_node'])
@@ -46,10 +67,10 @@ def parse_log_file(file_path):
                 if log_entry['from_node'] is not None:
                     log_entry['from_node'] = int(log_entry['from_node'])
                 
-                log_data[log_entry['node_id']].append(log_entry)
+                # log_data[log_entry['node_id']].append(log_entry)
                 
-                message_key = (log_entry['message_num'], log_entry['origin_node'], log_entry['attest_node'])
-                message_groups[message_key].append(log_entry)
+                # message_key = (log_entry['message_num'], log_entry['origin_node'], log_entry['attest_node'])
+                # message_groups[message_key].append(log_entry)
                 
                 node_id = log_entry['node_id']
                 action = log_entry['action'].lower()
